@@ -1,0 +1,31 @@
+<!--
+/**
+ * Fichiers utf-8 français pour le CMS e107 version 0.8 α
+ * accessoirement compatible 0.7.11
+ * Licence GNU/GPL
+ * Traducteurs: communauté française e107 http://etalkers.tuxfamily.org/
+ *
+ * $Source: /cvsroot/touchatou/e107_french/e107_docs/help/French/Aide,v $
+ * $Revision: 1.7 $
+ * $Date: 2009/02/02 22:01:01 $
+ * $Author: marj_nl_fr $
+ */
+-->
+
+Q>	J’ai effectué quelques changements sur mon site et maintenant j’obtiens des erreurs MySQL et mon site n’apparait pas.
+A>	Il est possible que votre noyau soit corrompu. Le noyau contient les paramètres de configuration et les variables d’e107.
+Pour réinstaller les préférences par défaut du noyau, allez sur la page http://votre-site.com/e107_files/resetcore/resetcore.php.
+Faites toujours une sauvegarde de votre noyau (depuis le gestionnaire de bases de données) avant de procéder à des changements.
+Vous pourrez ainsi le restaurer si les choses tournent mal (depuis la page resetcore.php).
+
+Q>	J’ai oublié mon mot de passe d’administrateur principal et maintenant je n’ai plus accès à mon espace administrateur.
+A>	Pour de très bonnes raisons de sécurité il est impossible de réinitialiser votre mot de passe à moins que vous ne soyez connecté.
+Si vous n’avez pas écrit votre mot de passe dans un endroit sûr, faites le, et ce scénario ne se reproduira plus.
+Pour réinitialiser votre mot de passe vous devez utiliser PHPMyAdmin ou un gestionnaire MySQL similaire.
+Aller dans la table “e107_user”. L’administrateur principal (main admin) devraient être l’utilisateur numéro 1 (user_id).
+Cliquez sur le bouton d’édition et changez le mot de passe en entant 4cb9c8a8048fd02294477fcb1a41191a. Votre mot de passe est alors changé en “changeme”.
+Connectez vous à votre site et <strong>mettez à jour votre mot de passe immédiatement</strong>.
+
+Q>	J’ai installé un thème/plugin etc. et maintenant mon site est devenu inaccessible! Que puis-je faire?
+A>	Utiliser resetcore.php (voir ci-dessus).
+Ou, si vous savez quel thème/plugin, supprimez le via FTP

@@ -1,0 +1,36 @@
+<!--
+/**
+ * Fichiers utf-8 français pour le CMS e107 version 0.8 α
+ * accessoirement compatible 0.7.11
+ * Licence GNU/GPL
+ * Traducteurs: communauté française e107 http://etalkers.tuxfamily.org/
+ *
+ * $Source: /cvsroot/touchatou/e107_french/e107_docs/help/French/Pr&eacute;f&eacute;rences,v $
+ * $Revision: 1.5 $
+ * $Date: 2009/02/02 22:01:01 $
+ * $Author: marj_nl_fr $
+ */
+-->
+
+Q>  Comment puis-je modifier les thèmes?
+A>  Il ya une section dans votre page des préférences qui vous permet de changer votre thème. Vérifiez votre nouveau thème via l'aperçu notament pour les anciens thèmes certains ne sont plus compatibles et pourraient rendre votre site inutilisable si il sont appliquées.
+
+Q>	Qu’est-ce que la COPPA?
+A>	Le <span lang="en" xml:lang="en">Children’s Online Privacy Protection Act</span> (COPPA) est une loi des États-Unis 1998 visant à protéger la vie privée des enfants sur Internet.
+
+Cette loi concerne la collecte, par des personnes physiques ou morales sous le joug de la juridiction des États-Unis, d’informations sur les mineurs de moins de 13 ans. Elle précise les éléments qu’un site web doit faire apparaitre dans sa charte de protection de la vie privée, la nécessité d’un consentement accordé par l’un des parents (ou tuteur légal), et les responsabilités incombant au webmestre pour protéger la vie privée des mineurs de moins de 13 ans, y compris par des restrictions sur le commerce en ligne.
+
+A ne pas confondre avec le COPA qui a pour objet la protection des mineurs faces aux contenus choquants, notamment pornographiques, déclarée non conforme à la constitution américaine.
+
+Source: http://fr.wikipedia.org/wiki/COPPA
+
+Q>	Qu’est-ce que la protection anti-flood?
+A>	Elle empêche votre site d’être submergé par des appels HTTP répétitifs qui peuvent rendre votre site inaccessible à terme.
+
+Q>	Dois-je employer des cookies ou des sessions pour suivre mes membres?
+A>	C’est à vous de choisir.
+Si votre site fonctionne bien avec des cookies (l’option par défaut) laissez tel quel.
+Si vous préférez employer des sessions PHP, employez les :) (un outil de traitement de session créé spécialement à cet effet est employé par e107 pour stocker et manipuler les sessions).
+
+Q>  Pourquoi devrais-je utiliser mon site en mode standard?
+A>  Si vous développez un thème et avez des problèmes d'affichage dans Firefox / Mozilla et IE, essayez cochant cette case. IE sera ensuite mis en mode standard.
