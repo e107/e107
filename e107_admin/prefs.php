@@ -1,16 +1,19 @@
 <?php
 /*
-* e107 website system
-*
-* Copyright (C) 2008-2010 e107 Inc (e107.org)
-* Released under the terms and conditions of the
-* GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
-*
-* Site preferences editing
-*
-* $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/prefs.php $
-* $Id: prefs.php 11670 2010-08-20 12:59:41Z e107steved $
-*
++ ----------------------------------------------------------------------------+
+|     e107 website system
+|
+|     Copyright (C) 2001-2002 Steve Dunstan (jalist@e107.org)
+|     Copyright (C) 2008-2010 e107 Inc (e107.org)
+|
+|     Released under the terms and conditions of the
+|     GNU General Public License (http://gnu.org).
+|
+|     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/prefs.php $
+|     $Revision: 11727 $
+|     $Id: prefs.php 11727 2010-08-31 18:06:48Z e107steved $
+|     $Author: e107steved $
++----------------------------------------------------------------------------+
 */
 
 // Experimental e-token
@@ -686,7 +689,7 @@ $text .= "<div id='textpost' style='display:none; text-align:center'>
 	<tr>
 	<td class='forumheader3' style='width:50%;'>".PRFLAN_215.":  <div class='smalltext'>".PRFLAN_216."</div></td>
 	<td class='forumheader3' style='width:50%; text-align: right;'>
-	".r_userclass('post_script',$pref['post_script'],'off','nobody,admin,main,classes')."
+	".r_userclass('post_script',$pref['post_script'],'off','nobody,member,admin,main,classes')."
 	</td>
 	</tr>\n
 

@@ -1,4 +1,4 @@
-/* $Id: youtube.bb 11665 2010-08-19 14:50:28Z secretr $ */
+/* $Id: youtube.bb 11678 2010-08-22 00:43:45Z e107coders $ */
 // [youtube=tiny|small|medium|big|huge or width,height|norel&border&privacy&nofull]ID[/youtube]
 // Youtube ID is the only required data!
 // TODO - more: http://code.google.com/apis/youtube/player_parameters.html
@@ -47,7 +47,7 @@ switch ($parms[0])
 	break;
 }
 
-$yID = preg_replace('/[^0-9a-z\-_]/i', '', $code_text);
+$yID = preg_replace('/[^0-9a-z\-_\&]/i', '', $code_text);
 
 $url = isset($params['privacy']) ? 'http://www.youtube-nocookie.com/v/' : 'http://www.youtube.com/v/';
 $url .= $yID.'?fs=1';
