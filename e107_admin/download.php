@@ -10,8 +10,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/download.php $
-|     $Revision: 11719 $
-|     $Id: download.php 11719 2010-08-30 10:23:38Z e107steved $
+|     $Revision: 11807 $
+|     $Id: download.php 11807 2010-09-21 12:54:22Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -64,7 +64,7 @@ if (e_QUERY)
 	$tmp = explode('.', e_QUERY);
 	$action = $tmp[0];
 	$sub_action = varset($tmp[1],'');
-	$id = varset($tmp[2],'');
+	$id = intval(varset($tmp[2],''));
 	$from = varset($tmp[3], 0);
 	unset($tmp);
 }
@@ -76,7 +76,7 @@ if(isset($_POST['delete']))
 	unset($_POST['searchquery']);
 }
 
-$from = varset($from, 0);
+$from = intval(varset($from, 0));
 $amount = 50;
 
 
@@ -198,6 +198,7 @@ if(isset($_POST['updatelimits']))
 	}
 	foreach(array_keys($_POST['count_num']) as $id)
 	{
+		$id = intval($id);
 		if(!$_POST['count_num'][$id] && !$_POST['count_days'][$id] && !$_POST['bw_num'][$id] && !$_POST['bw_days'][$id])
 		{
 			//All entries empty - Remove record
@@ -234,7 +235,7 @@ if($action == "mirror")
 if ($action == "dlm")
 {
 	$action = "create";
-	$id = $sub_action;
+	$id = intval($sub_action);
 	$sub_action = "dlm";
 }
 
@@ -348,7 +349,7 @@ if ($action == "opt")
 		<tr><td class='forumheader3'>
 		".LAN_ORDER."
 		</td>
-		<td class='forumheader3' text-align:left'>
+		<td class='forumheader3' style='text-align:left'>
 		<select name='download_sort' class='tbox'>". ($pref['download_sort'] == "ASC" ? "<option value='ASC' selected='selected'>".DOWLAN_62."</option>" : "<option value='ASC'>".DOWLAN_62."</option>"). ($pref['download_sort'] == "DESC" ? "<option value='DESC' selected='selected'>".DOWLAN_63."</option>" : "<option value='DESC'>".DOWLAN_63."</option>")."
 		</select>
 		</td>
@@ -657,7 +658,7 @@ class download
 
 		$text .= "<div style='cursor:pointer' onclick=\"expandit('sdisp')\">".LAN_DISPLAYOPT."</div>";
 		$text .= "<div id='sdisp' style='padding-top:4px;display:none;text-align:center;margin-left:auto;margin-right:auto'>
-		<table class='forumheader3' style='width:95%'><tr>";
+		<table class='forumheader3' style='width:95%'>";
 
 /*
 		$fields = mysql_list_fields($mySQLdefaultdb, MPREFIX."download");
@@ -670,18 +671,31 @@ class download
 
         $m = 0;
 		$replacechar = array("download_","_");
-	foreach($fname as $fcol)
-	{
-        $checked = (in_array($fcol,$search_display)) ? "checked='checked'" : "";
+		
+		foreach($fname as $fcol)
+		{
+			if($m == 0)
+			{
+				$text .= "<tr>\n";	
+			}
+			
+	        $checked = (in_array($fcol,$search_display)) ? "checked='checked'" : "";
+			
 			$text .= "<td style='text-align:left; padding:0px'>";
 			$text .= "<input type='checkbox' name='searchdisp[]' value='".$fcol."' $checked />".str_replace($replacechar," ",$fcol) . "</td>\n";
 			$m++;
-	  if($m == 5)
-	  {
-				$text .= "</tr><tr>";
+				
+		  	if($m == 5)
+		  	{
+				$text .= "</tr>";
 				$m = 0;
-			 }
-        }
+			}
+		}
+		
+		if($m != 0)
+		{
+			$text .= "</tr>";
+		}
 
 		$text .= "</table></div>
 		</form>\n
@@ -899,6 +913,7 @@ class download
       <option value='MB'>".CORE_LAN_MB."</option>
       <option value='GB'>".CORE_LAN_GB."</option>
       <option value='TB'>".CORE_LAN_TB."</option>
+	  </select>
       </div>
 
 			</td>
@@ -912,7 +927,7 @@ class download
 		// See if any mirrors to display
 		if(!$sql -> db_Select("download_mirror"))
 		{	// No mirrors defined here
-			$text .= DOWLAN_144."</tr>";
+			$text .= DOWLAN_144."</td></tr>";
 		}
 		else
 		{
@@ -1147,7 +1162,7 @@ class download
 				<td style='width:30%' class='forumheader3'>".DOWLAN_103.":<br /></td>
 				<td style='width:70%' class='forumheader3'>
 				<input type='checkbox' name='remove_upload' value='1' />
-				<input type='hidden' name='remove_id' value='$id' />
+				<input type='hidden' name='remove_id' value='{$id}' />
 				</td>
 			</tr>
             ";
@@ -1158,9 +1173,12 @@ class download
 			<td colspan='2' style='text-align:center' class='forumheader'>";
 
 
-		if ($id && $sub_action == "edit") {
+		if ($id && $sub_action == "edit") 
+		{
 			$text .= "<input class='button' type='submit' name='submit_download' value='".DOWLAN_24."' /> ";
-		} else {
+		} 
+		else 
+		{
 			$text .= "<input class='button' type='submit' name='submit_download' value='".DOWLAN_25."' />";
 		}
 

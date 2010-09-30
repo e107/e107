@@ -11,9 +11,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/page.php $
-|     $Revision: 11678 $
-|     $Id: page.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11787 $
+|     $Id: page.php 11787 2010-09-16 13:04:59Z e107steved $
+|     $Author: e107steved $
 |
 +----------------------------------------------------------------------------+
 */
@@ -224,6 +224,17 @@ class pageClass
 
 		if(preg_match_all("/\[newpage.*?\]/si", $this -> pageText, $pt))
 		{
+			if (substr($this->pageText, 0, 6) == '[html]')
+			{	// Need to strip html bbcode from wysiwyg on multi-page docs (handled automatically on single pages)
+				if (substr($this->pageText, -7, 7) == '[/html]')
+				{
+					$this->pageText = substr($this->pageText, 6, -7);
+				}
+				else
+				{
+					$this->pageText = substr($this->pageText, 6);
+				}
+			}
 			$pages = preg_split("/\[newpage.*?\]/si", $this -> pageText, -1, PREG_SPLIT_NO_EMPTY);
 			$this -> multipageFlag = TRUE;
 		}

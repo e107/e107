@@ -4,9 +4,9 @@
 |     e107 website system - Language File.
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_languages/English/admin/lan_filemanager.php $
-|     $Revision: 11678 $
-|     $Id: lan_filemanager.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11790 $
+|     $Id: lan_filemanager.php 11790 2010-09-16 20:02:09Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 define("FMLAN_1", "Uploaded");
@@ -18,7 +18,7 @@ define("FMLAN_4", "The uploaded file exceeds the upload_max_filesize directive i
 // define("FMLAN_7", "No file was uploaded.");
 // define("FMLAN_8", "Uploaded file size 0 bytes");
 // define("FMLAN_9", "The file did not upload. Filename");
-// define("FMLAN_10", "Error");
+define('FMLAN_10', 'Error');
 // define("FMLAN_11", "Probably incorrect permissions on upload directory.");
 define("FMLAN_12", "file");
 define("FMLAN_13", "files");
@@ -61,6 +61,8 @@ define("FMLAN_47", "User Uploads");
 define("FMLAN_48", "Move selected to");
 define("FMLAN_49", "Please confirm you wish to move the selected files.");
 define("FMLAN_50", "Move");
+define('FMLAN_51', 'Unidentified error: ');
+
 
 
 

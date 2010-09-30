@@ -10,8 +10,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/event_class.php $
-|     $Revision: 11678 $
-|     $Id: event_class.php 11678 2010-08-22 00:43:45Z e107coders $
+|     $Revision: 11769 $
+|     $Id: event_class.php 11769 2010-09-09 10:03:49Z e107coders $
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
@@ -50,7 +50,16 @@ class e107_event
 	 */
 	function register($eventname, $function, $include='')
 	{
-		// 
+		if(!isset($_SESSION['e_EVENT_functions'][$eventname])) // Notice removal
+		{
+			$_SESSION['e_EVENT_functions'][$eventname] = array();		
+		}
+		
+		if(!isset($_SESSION['e_EVENT_includes'][$eventname])) // Notice removal
+		{
+			$_SESSION['e_EVENT_includes'][$eventname] = array();		
+		}  
+		
 		if ($include!='')
 		{
 			// $this->includes[$eventname][] = $include;

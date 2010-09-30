@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/emoticon.php $
-|     $Revision: 11678 $
-|     $Id: emoticon.php 11678 2010-08-22 00:43:45Z e107coders $
+|     $Revision: 11797 $
+|     $Id: emoticon.php 11797 2010-09-17 21:58:27Z e107coders $
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
@@ -149,6 +149,7 @@ class emotec
 		<td class='forumheader' style='width: 50%;'>".EMOLAN_3."</td>
 		<td class='forumheader' style='width: 10%; text-align: center;'>".EMOLAN_8."</td>
 		<td class='forumheader' style='width: 20%;'>".EMOLAN_9."</td>
+		</tr>
 		";
 
 		$reject = array('^\.$','^\.\.$','^\/$','^CVS$','thumbs\.db','.*\._$', 'emoteconf*', '\.bak$');

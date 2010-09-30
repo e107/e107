@@ -11,7 +11,7 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/signup.php $
-|     $Id: signup.php 11753 2010-09-06 20:59:15Z e107coders $
+|     $Id: signup.php 11760 2010-09-07 17:02:27Z e107steved $
 +----------------------------------------------------------------------------+
 */
 
@@ -483,6 +483,7 @@ global $db_debug;
 		{
 			$error_message .= LAN_202."\\n";
 			$error = TRUE;
+			$admin_log->log_event(LAN_SIGNUP_102,LAN_SIGNUP_103.$e107->getip(),4);
 		}
 	}
 

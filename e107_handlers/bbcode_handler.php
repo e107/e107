@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/bbcode_handler.php $
-|     $Revision: 11747 $
-|     $Id: bbcode_handler.php 11747 2010-09-05 08:37:33Z e107steved $
+|     $Revision: 11799 $
+|     $Id: bbcode_handler.php 11799 2010-09-18 14:32:12Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -289,22 +289,24 @@ class e_bbcode
 		{	// Find the file
 			if ($this->bbLocation[$code] == 'core')
 			{
-				$bbFile = e_FILE.'bbcode/'.strtolower(str_replace('_', '', $code));
+				$bbPath = e_FILE.'bbcode/';
+				$bbFile = strtolower(str_replace('_', '', $code));
 			}
 			else
 			{	// Add code to check for plugin bbcode addition
-				$bbFile = e_PLUGIN.$this->bbLocation[$code].'/'.strtolower($code);
+				$bbPath = e_PLUGIN.$this->bbLocation[$code].'/';
+				$bbFile = strtolower($code);
 			}
-			if (file_exists($bbFile.'.php'))
+			if (file_exists($bbPath.'bb_'.$bbFile.'.php'))
 			{	// Its a bbcode class file
-				require_once($bbFile.'.php');
+				require_once($bbPath.'bb_'.$bbFile.'.php');
 				//echo "Load: {$bbFile}.php<br />";
 				$className = 'bb_'.$code;
 				$this->bbList[$code] = new $className();
 			}
-			elseif (file_exists($bbFile.'.bb'))
+			elseif (file_exists($bbPath.$bbFile.'.bb'))
 			{
-				$bbcode = file_get_contents($bbFile.'.bb');
+				$bbcode = file_get_contents($bbPath.$bbFile.'.bb');
 				$this->bbList[$code] = $bbcode;
 			}
 			else

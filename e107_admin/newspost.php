@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/newspost.php $
-|     $Revision: 11735 $
-|     $Id: newspost.php 11735 2010-09-02 21:15:31Z e107steved $
-|     $Author: e107steved $
+|     $Revision: 11789 $
+|     $Id: newspost.php 11789 2010-09-16 17:16:49Z nlstart $
+|     $Author: nlstart $
 +----------------------------------------------------------------------------+
 */
 require_once('../class2.php');
@@ -738,7 +738,7 @@ class newspost
 				<td class='forumheader3'><a style='cursor: pointer' onclick='expandit(this);'>".$user['user_name']."</a>
 					<div style='display: none;'>
 						<select class='tbox' name='news_author'>";
-		$query = "SELECT * FROM #user WHERE (user_admin = '1' AND user_perms = '0') OR (user_perms REGEXP 'H.') ORDER BY user_id";
+		$query = "SELECT * FROM #user WHERE (user_admin = '1' AND ((user_perms  = '0') OR (user_perms  = '0.'))) OR (user_perms REGEXP 'H.') ORDER BY user_id";
 		$sql->db_Select_Gen($query);
 		while (list($user_id,$user_name) = $sql->db_Fetch())
 		{

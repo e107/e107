@@ -12,16 +12,16 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_plugins/links_page/e_help.php $
-|     $Revision: 11752 $
-|     $Id: e_help.php 11752 2010-09-06 20:51:09Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11758 $
+|     $Id: e_help.php 11758 2010-09-07 12:18:00Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 
 
 if (!defined('e107_INIT')) { exit; }
 
-include_lan(e_PLUGIN.'links_page/languages/'.e_LANGUAGE.'.php');
+include_lan(e_PLUGIN.'links_page/languages/'.e_LANGUAGE.'_help.php');
 
 if(!e_QUERY){
 	$text = LAN_ADMIN_HELP_1;

@@ -10,8 +10,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_plugins/login_menu/login_menu.php $
-|     $Revision: 11696 $
-|     $Id: login_menu.php 11696 2010-08-24 07:26:44Z e107steved $
+|     $Revision: 11760 $
+|     $Id: login_menu.php 11760 2010-09-07 17:02:27Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -19,7 +19,7 @@
 /**
 *	@package e107
 *	@subpackage	login_menu
-*	@version $Id: login_menu.php 11696 2010-08-24 07:26:44Z e107steved $;
+*	@version $Id: login_menu.php 11760 2010-09-07 17:02:27Z e107steved $;
 *
 */
 if (!defined('e107_INIT')) { exit; }
@@ -176,7 +176,7 @@ if (USER == TRUE || ADMIN == TRUE)
 }
 else
 {
-	if (!$LOGIN_MENU_FORM || !$LOGIN_MENU_MESSAGE)
+	if (!isset($LOGIN_MENU_FORM) || !isset($LOGIN_MENU_MESSAGE))
 	{
 		if (file_exists(THEME."login_menu_template.php"))
 		{
@@ -187,7 +187,8 @@ else
 			require_once(e_PLUGIN."login_menu/login_menu_template.php");
 		}
 	}
-	if(!$LOGIN_MENU_FORM || !$LOGIN_MENU_MESSAGE){
+	if(!isset($LOGIN_MENU_FORM) || !isset($LOGIN_MENU_MESSAGE))
+	{
     	require(e_PLUGIN."login_menu/login_menu_template.php");
 	}
 

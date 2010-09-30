@@ -4,8 +4,8 @@
 |     e107 website system - Language File.
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_languages/English/admin/lan_language.php $
-|     $Revision: 11757 $
-|     $Id: lan_language.php 11757 2010-09-06 23:39:35Z e107coders $
+|     $Revision: 11786 $
+|     $Id: lan_language.php 11786 2010-09-15 22:12:49Z e107coders $
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
@@ -42,6 +42,7 @@ define("LANG_LAN_EML", "Please email your language pack to:");
 define("LANG_LAN_25", "Please check that CORE_LC and CORE_LC2 have values in [lcpath] and try again.");
 define("LANG_LAN_26", "Please make sure you are using default folder names in e107_config.php (eg. 'e107_languages/', 'e107_plugins/' etc.) and try again.");
 define("LANG_LAN_27", "Please verify your language files ('Verify') then try again.");
+define("LANG_LAN_28", "Check this box if you're an [e107 certified translator].");
 
 
 ?>

@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/userclass2.php $
-|     $Revision: 11712 $
-|     $Id: userclass2.php 11712 2010-08-28 10:59:58Z secretr $
-|     $Author: secretr $
+|     $Revision: 11794 $
+|     $Id: userclass2.php 11794 2010-09-17 13:28:28Z e107coders $
+|     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
 
@@ -369,7 +369,8 @@ else
 			<tr>
 			<td class='forumheader3'>{$row['userclass_name']}</td>
 			<td class='forumheader3'>".r_userclass_name($rEditClass)."</td>
-			<td class='forumheader3'>{$row['userclass_description']}</td>";
+			<td class='forumheader3'>{$row['userclass_description']}</td>
+			</tr>";
 		}
 	}
 }

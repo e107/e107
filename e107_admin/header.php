@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/header.php $
-|     $Revision: 11678 $
-|     $Id: header.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11760 $
+|     $Id: header.php 11760 2010-09-07 17:02:27Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 
@@ -364,18 +364,26 @@ if (!function_exists('show_admin_menu')) {
 			$text = $BUTTONS_START;
 		}
 
-		foreach (array_keys($e107_vars) as $act) {
-			if (!isset($e107_vars[$act]['perm']) || !$e107_vars[$act]['perm'] || getperms($e107_vars[$act]['perm'])) {
-				if ($active_page == $act || (str_replace("?", "", e_PAGE.e_QUERY) == str_replace("?", "", $act))) {
+		foreach (array_keys($e107_vars) as $act) 
+		{
+			if (!isset($e107_vars[$act]['perm']) || !$e107_vars[$act]['perm'] || getperms($e107_vars[$act]['perm'])) 
+			{
+				if ($active_page == $act || (str_replace("?", "", e_PAGE.e_QUERY) == str_replace("?", "", $act))) 
+				{
 					$BUTTON_TEMPLATE = $sub_link ? $SUB_BUTTON_OVER : $BUTTON_OVER;
-				} else {
+				} 
+				else 
+				{
 					$BUTTON_TEMPLATE = $sub_link ? $SUB_BUTTON : $BUTTON;
 				}
 				$replace[0] = str_replace(" ", "&nbsp;", $e107_vars[$act]['text']);
-				$replace[1] = $e107_vars[$act]['link'];
-				if (!empty($e107_vars[$act]['include'])) {
+				$replace[1] = varset($e107_vars[$act]['link'], '');
+				if (!empty($e107_vars[$act]['include'])) 
+				{
 					$replace[2] = $e107_vars[$act]['include'];
-				} else {
+				} 
+				else 
+				{
 					$replace[2] = $js ? "onclick=\"showhideit('".$act."');\"" : "onclick=\"document.location='".$e107_vars[$act]['link']."'; disabled=true;\"";
 				}
 				$replace[3] = $title;

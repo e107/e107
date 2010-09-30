@@ -11,9 +11,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/email.php $
-|     $Revision: 11678 $
-|     $Id: email.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11808 $
+|     $Id: email.php 11808 2010-09-21 18:04:36Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 
@@ -94,7 +94,7 @@ if (isset($_POST['emailsubmit']))
 
 	if ($comments == '')
 	{
-		$message = LAN_EMAIL_188.' '.SITENAME.' ('.SITEURL.')';
+		$message = LAN_EMAIL_6.' '.SITENAME.' ('.SITEURL.')';
 		if (USER == TRUE)
 		{
 			$message .= "\n\n".LAN_EMAIL_1." ".USERNAME;
@@ -106,7 +106,7 @@ if (isset($_POST['emailsubmit']))
 	}
 	else
 	{
-		$message .= $comments."\n";
+//		$message .= $comments."\n";		// Added into message later
 	}
 	$ip = $e107->getip();
 	$message .= "\n\n".LAN_EMAIL_2." ".$ip."\n\n";

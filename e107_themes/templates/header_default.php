@@ -6,8 +6,8 @@
 |     Released under the terms and conditions of the GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_themes/templates/header_default.php $
-|     $Revision: 11678 $
-|     $Id: header_default.php 11678 2010-08-22 00:43:45Z e107coders $
+|     $Revision: 11763 $
+|     $Id: header_default.php 11763 2010-09-07 18:51:43Z e107coders $
 |     $Author: e107coders $
 +-----------------------------------------------------------------------------------------------+
 */
@@ -220,7 +220,7 @@ if(function_exists('core_head')){ echo core_head(); }
 echo "<!-- *META* -->\n";
 
 // --- Load plugin Meta files and eplug_ before others --------
-if (is_array($pref['e_meta_list']))
+if (varset($pref['e_meta_list']) && is_array($pref['e_meta_list']))
 {
 	foreach($pref['e_meta_list'] as $val)
 	{

@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/lancheck.php $
-|     $Revision: 11740 $
-|     $Id: lancheck.php 11740 2010-09-03 22:10:22Z e107coders $
+|     $Revision: 11810 $
+|     $Id: lancheck.php 11810 2010-09-22 21:02:57Z e107coders $
 |     $Author: e107coders $
 |	  With code from Izydor and Lolo.
 +----------------------------------------------------------------------------+
@@ -237,17 +237,24 @@ if(isset($_POST['language_sel']) && isset($_POST['language'])){
 	
 	$icon = ($_SESSION['lancheck_'.$_POST['language']]['total']>0) ? ADMIN_FALSE_ICON : ADMIN_TRUE_ICON;	
 	
-	$message .= "<div>".$icon." ".LAN_CHECK_23.": ".$_SESSION['lancheck_'.$_POST['language']]['total']."</div>";	
+	
+	$errors_diz = (defsettrue('LAN_CHECK_23')) ? LAN_CHECK_23 : "Errors Found";
+	
+	$message .= "<div>".$icon." ".$errors_diz.": ".$_SESSION['lancheck_'.$_POST['language']]['total']."</div>";	
+
+	$just_go_diz = (defsettrue('LAN_CHECK_20')) ? LAN_CHECK_20 : "Generate Language Pack";
+	$lang_sel_diz = (defsettrue('LAN_CHECK_21')) ? LAN_CHECK_21 : "Verify Again";
+	
 	$message .= "<span>
 	<br /><br />
 	<input type='hidden' name='language' value='".$_POST['language']."' />
-    <input type='submit' name='ziplang' value=\"".LAN_CHECK_20."\" class='button' />
+    <input type='submit' name='just_go' value=\"".$just_go_diz."\" class='button' />
 	</span>
     </form>
 	<form name='refresh' method='post' action='".e_SELF."'>
 	<span>
 	<input type='hidden' name='language' value='".$_POST['language']."' />
-    <input type='submit' name='language_sel' value=\"".LAN_CHECK_21."\" class='button' />
+    <input type='submit' name='language_sel' value=\"".$lang_sel_diz."\" class='button' />
 	</span>
     </form>
 	</div>";

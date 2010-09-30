@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/e_parse_class.php $
-|     $Revision: 11755 $
-|     $Id: e_parse_class.php 11755 2010-09-06 21:39:09Z e107steved $
+|     $Revision: 11804 $
+|     $Id: e_parse_class.php 11804 2010-09-21 07:38:40Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -308,7 +308,6 @@ class e_parse
 		}
 		else
 		{
-			//libxml_use_internal_errors(TRUE);
 			if (FALSE === ($info = simplexml_load_string($matches[4])))
 			{
 				//print_a($matches);
@@ -337,7 +336,7 @@ class e_parse
 				print_a($info);
 				return '[sanitised]'.$ok.'B'.htmlspecialchars($matches[0]).'B[/sanitised]';
 			}
-			$target =  $info2['@attributes'];
+			$target =  (array)$info2['@attributes'];
 			unset($info);
 			$ws = varset($target['width'], 0);
 			$hs = varset($target['height'], 0);

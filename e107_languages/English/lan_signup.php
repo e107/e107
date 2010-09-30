@@ -4,9 +4,9 @@
 |     e107 website system - Language File.
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_languages/English/lan_signup.php $
-|     $Revision: 11678 $
-|     $Id: lan_signup.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 11760 $
+|     $Id: lan_signup.php 11760 2010-09-07 17:02:27Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 define("PAGE_NAME", "Register");
@@ -129,6 +129,9 @@ define("LAN_SIGNUP_98", "Confirm Your Email Address");
 define("LAN_SIGNUP_99", "Problem Encountered");
 define("LAN_SIGNUP_100", "Admin Approval Pending");
 
+
+define('LAN_SIGNUP_102', 'Signup refused');
+define('LAN_SIGNUP_103', 'Too many users already using IP address: ');
 
 
 
