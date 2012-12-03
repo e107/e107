@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/e_parse_class.php $
-|     $Revision: 11804 $
-|     $Id: e_parse_class.php 11804 2010-09-21 07:38:40Z e107steved $
+|     $Revision: 12319 $
+|     $Id: e_parse_class.php 12319 2011-07-13 19:43:05Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -86,11 +86,23 @@ class e_parse
 				'body' =>					// text is 'body' or 'bulk' text (e.g. custom page body, content body)
 					array(
 						// no changes to default-on items
-						'defs'=>TRUE, 'constants'=>TRUE, 'parse_sc'=>TRUE),
+						//'defs'=>TRUE, 'constants'=>TRUE, 'parse_sc'=>TRUE),
+						'defs'=>TRUE, 'constants'=>'full', 'parse_sc'=>TRUE),
 
 				'user_body' =>					// text is user-entered (i.e. untrusted)'body' or 'bulk' text (e.g. custom page body, content body)
 					array(
-						'constants'=>TRUE
+						'constants'=>'full'
+						),
+
+				// text is 'body' of email or similar - being sent 'off-site' so don't rely on server availability
+				'e_body' =>
+					array(
+						'defs'=>TRUE, 'constants'=>'full', 'parse_sc'=>TRUE,'emotes_off'=>TRUE, 'link_click' => FALSE
+						),
+				// text is text-only 'body' of email or similar - being sent 'off-site' so don't rely on server availability
+				'e_body_plain' =>
+					array(
+						'defs'=>TRUE, 'constants'=>'full', 'parse_sc'=>TRUE,'emotes_off'=>TRUE, 'link_click' => FALSE, 'retain_nl' => TRUE, 'no_tags' => TRUE
 						),
 
 				'linktext' =>			// text is the 'content' of a link (A tag, etc)
@@ -159,6 +171,10 @@ class e_parse
 			{
 				$no_encode = TRUE;
 			}
+			if (!isset($pref['html_abuse']) || $pref['html_abuse'])
+			{
+				if ($this->htmlAbuseFilter($data)) $no_encode = FALSE;
+			}
 			if ($no_encode === TRUE && $mod != 'no_html')
 			{
 				$search = array('$', '"', "'", '\\', '<?');
@@ -182,11 +198,46 @@ class e_parse
 
 
 
+	/**
+	 *	Check for HTML closing tag for input elements, without corresponding opening tag
+	 *
+	 *	@param string $data
+	 *	@param string $tagList - if empty, uses default list of input tags. Otherwise a CSV list of tags to check (any type)
+	 *
+	 *	@return boolean TRUE if an unopened closing tag found
+	 *					FALSE if nothing found
+	 */
+	function htmlAbuseFilter($data, $tagList = '')
+	{
+		if ($tagList == '')
+		{
+			$checkTags = array('textarea', 'input', 'td', 'tr', 'table');
+		}
+		else
+		{
+			$checkTags = explode(',', $tagList);
+		}
+		$data = preg_replace('#\[code\].*?\[\/code\]#i', '', $data);		// Ignore code blocks
+		foreach ($checkTags as $tag)
+		{
+			if (($pos = stripos($data, '</'.$tag)) !== FALSE)
+			{
+				if ((($bPos = stripos($data, '<'.$tag )) === FALSE) || ($bPos > $pos))
+				{
+					return TRUE;		// Potentially abusive HTML found
+				}
+			}
+		}
+		return FALSE;		// Nothing detected
+	}
+
+
+
 	function dataFilter($data)
 	{
 		$ans = '';
 		$vetWords = array('<applet', '<body', '<embed', '<frame', '<script', '<frameset', '<html', '<iframe', 
-					'<style', '<layer', '<link', '<ilayer', '<meta', '<object', 'javascript:', 'vbscript:');
+					'<style', '<layer', '<link', '<ilayer', '<meta', '<object', '<plaintext', 'javascript:', 'vbscript:');
 
 		$ret = preg_split('#(\[code.*?\[/code.*?])#mis', $data, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
@@ -219,9 +270,21 @@ class e_parse
 					$s = preg_replace_callback('#('.implode('|', $vl).')#mis', array($this, 'modtag'), $t);
 				}
 			}
+			$s = preg_replace('#(?:onmouse.+?|onclick|onfocus)\s*?\=#i', '[sanitised]$0[/sanitised]', $s);
+			$s = preg_replace_callback('#base64([,\(])(.+?)([\)\'\"])#mis', array($this, 'proc64'), $s);
 			$ans .= $s;
 		}
 		return $ans;
+	}
+
+
+	/**
+	 * Check base-64 encoded code
+	 */
+	function proc64($match)
+	{
+		$decode = base64_decode($match[2]);
+		return 'base64'.$match[1].base64_encode($this->dataFilter($decode)).$match[3];
 	}
 
 
@@ -837,7 +900,18 @@ class e_parse
 	}
 
 
-	function toHTML($text, $parseBB = FALSE, $modifiers = "", $postID = "", $wrap=FALSE) {
+
+
+
+	/**
+	 *		HTML Parser function - converts DB-stored text for display
+	 *
+	 *	@param integer|boolean $wrap - if false, no word wrap is performed
+	 *				- if numeric, value used as maximum length of a word
+	 *				- if non-boolean evaluating to false, set to configured value of word wrap for pages
+	 */
+	function toHTML($text, $parseBB = FALSE, $modifiers = "", $postID = "", $wrap=FALSE) 
+	{
 		if ($text == '')
 		{
 			return $text;
@@ -926,7 +1000,7 @@ class e_parse
 		}
 
 
-		if(!$wrap && $pref['main_wordwrap']) $wrap = $pref['main_wordwrap'];
+		if (($wrap !== FALSE) && !$wrap && $pref['main_wordwrap']) $wrap = $pref['main_wordwrap'];
         $text = " ".$text;
 
 
@@ -944,23 +1018,24 @@ class e_parse
 		{
             if ($pref['link_replace'] && !$opts['no_replace'])
 			{
-              $_ext = ($pref['links_new_window'] ? " rel=\"external\"" : "");
-// 			  $text = preg_replace("#(^|[\n ])([\w]+?://[^ \"\n\r\t<,]*)#is", "\\1<a href=\"\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
-              $text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
-//			  $text = preg_replace("#(^|[\n \]])((www|ftp)\.[\w+-]+?\.[\w+\-.]*(?(?=/)(/.+?(?=\s|,\s))|(?=\W)))#is", "\\1<a href=\"http://\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
-			  $text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
+				$_ext = ($pref['links_new_window'] ? " rel=\"external\"" : "");
+//				$text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
+//				$text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
+				$text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
+				$text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" {$_ext}>".$pref['link_text']."</a>", $text);
 
-			  $email_text = ($pref['email_text']) ? $this->replaceConstants($pref['email_text']) : LAN_EMAIL_SUBS;
-              $text = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a rel='external' href='javascript:window.location=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\";self.close();' onmouseover='window.status=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\"; return true;' onmouseout='window.status=\"\";return true;'>".$email_text."</a>", $text);
+				$email_text = ($pref['email_text']) ? $this->replaceConstants($pref['email_text']) : LAN_EMAIL_SUBS;
+				$text = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a rel='external' href='javascript:window.location=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\";self.close();' onmouseover='window.status=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\"; return true;' onmouseout='window.status=\"\";return true;'>".$email_text."</a>", $text);
 
 			}
 			else
 			{
+//				$text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" rel=\"external\">\\2</a>", $text);
+//				$text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" rel=\"external\">\\2</a>", $text);
+				$text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" rel=\"external\">\\2</a>", $text);
+				$text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" rel=\"external\">\\2</a>", $text);
+				
 	           	$email_text = (CHARSET != "utf-8" && CHARSET != "UTF-8") ? "\\1\\2&copy;\\3" : "\\1\\2©\\3";
-	//          $text = preg_replace("#(^|[\n ])([\w]+?://[^ \"\n\r\t<,]*)#is", "\\1<a href=\"\\2\" rel=\"external\">\\2</a>", $text);
-				$text = preg_replace("#(^|[\s])([\w]+?://(?:[\w-%]+?)(?:\.[\w-%]+?)+.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"\\2\" rel=\"external\">\\2</a>", $text);
-	//			$text = preg_replace("#(^|[\n \]])((www|ftp)\.[\w+-]+?\.[\w+\-.]*(?(?=/)(/.+?(?=\s|,\s))|(?=\W)))#is", "\\1<a href=\"http://\\2\" rel=\"external\">\\2</a>", $text);
-				$text = preg_replace("#(^|[\s])((?:www|ftp)(?:\.[\w-%]+?){2}.*?)(?=$|[\s()[\]<]|\.\s|\.$|,\s|,$)#is", "\\1<a href=\"http://\\2\" rel=\"external\">\\2</a>", $text);
 				$text = preg_replace("#([\n ])([a-z0-9\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a rel='external' href='javascript:window.location=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\";self.close();' onmouseover='window.status=\"mai\"+\"lto:\"+\"\\2\"+\"@\"+\"\\3\"; return true;' onmouseout='window.status=\"\";return true;'>".$email_text."</a>", $text);
 			}
         }
@@ -1019,7 +1094,7 @@ class e_parse
 		// replace all {e_XXX} constants with their e107 value AFTER the bbcodes have been parsed.
 		if ($opts['constants'])
 		{
-		   	$text = $this->replaceConstants($text);
+		   	$text = $this->replaceConstants($text, $opts['constants']);
 		}
 
 		// profanity filter
@@ -1141,21 +1216,21 @@ class e_parse
 		return $text;
 	}
 
-//
-// $nonrelative:
-//   "full" = produce absolute URL path, e.g. http://sitename.com/e107_plugins/etc
-//   TRUE = produce truncated URL path, e.g. e107plugins/etc
-//   "" (default) = URL's get relative path e.g. ../e107_plugins/etc
-//
-// $all - if TRUE, then
-//		when $nonrelative is "full" or TRUE, USERID is also replaced...
-//		when $nonrelative is "" (default), ALL other e107 constants are replaced
-//
-// only an ADMIN user can convert {e_ADMIN}
-//
+	/**
+	 * Convert e107 Path Constants (eg. {e_PLUGIN}) to real paths
+	 * @param object $text
+	 * @param object $nonrelative [optional] 
+	 * "full" = produce absolute URL path, e.g. http://sitename.com/e107_plugins/etc
+	 * TRUE = produce truncated URL path, e.g. e107plugins/etc
+	 * '' (default) = URL's get relative path e.g. ../e107_plugins/etc
+	 * @param object $all [optional] if TRUE, then
+	 * when $nonrelative is "full" or TRUE, USERID is also replaced...
+	 * when $nonrelative is "" (default) or FALSE, ALL other e107 constants are replaced
+	 * @return string
+	 */
 	function replaceConstants($text, $nonrelative = "", $all = false)
 	{
-		if($nonrelative != "")
+		if (($nonrelative != "") && ($nonrelative !== FALSE))
 		{
 			global $IMAGES_DIRECTORY, $PLUGINS_DIRECTORY, $FILES_DIRECTORY, $THEMES_DIRECTORY,$DOWNLOADS_DIRECTORY,$ADMIN_DIRECTORY;
 			$replace_relative = array("",

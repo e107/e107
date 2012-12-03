@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/header.php $
-|     $Revision: 11760 $
-|     $Id: header.php 11760 2010-09-07 17:02:27Z e107steved $
-|     $Author: e107steved $
+|     $Revision: 12315 $
+|     $Id: header.php 12315 2011-07-08 03:02:34Z e107coders $
+|     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
 
@@ -105,6 +105,12 @@ if (!defined('ADMIN_DELETE_ICON'))
 	define("ADMIN_DELETE_ICON_PATH", e_IMAGE."admin_images/delete_16.png");
 }
 
+if (!defined('ADMIN_WARNING_ICON'))
+{
+	define("ADMIN_WARNING_ICON", "<img src='".e_IMAGE_ABS."admin_images/nopreview.png' alt='' title='".LAN_WARNING."' style='border:0px' />");
+	define("ADMIN_WARNING_ICON_PATH", e_IMAGE."admin_images/nopreview.png");
+}
+
 //
 // C: Send start of HTML
 //
@@ -127,7 +133,9 @@ echo "<!-- *JS* -->\n";
 if (varset($pref['wysiwyg'],FALSE) && check_class($pref['post_html']) && varset($e_wysiwyg) != "") {
 	require_once(e_HANDLER."tiny_mce/wysiwyg.php");
 	define("e_WYSIWYG",TRUE);
-	echo wysiwyg($e_wysiwyg);
+	$wy = new wysiwyg($e_wysiwyg);
+	$wy->render();
+	// echo wysiwyg($e_wysiwyg);
 }else{
 	define("e_WYSIWYG",FALSE);
 }
@@ -301,6 +309,7 @@ if (!function_exists('show_admin_menu')) {
 	function show_admin_menu($title, $active_page, $e107_vars, $js = FALSE, $sub_link = FALSE, $sortlist = FALSE) {
 		global $ns, $BUTTON, $BUTTON_OVER, $BUTTONS_START, $BUTTONS_END, $SUB_BUTTON, $SUB_BUTTON_OVER, $SUB_BUTTONS_START, $SUB_BUTTONS_END;
 		$id_title = "yop_".str_replace(" ", "", $title);
+						
 		if (!isset($BUTTONS_START)) {
 			$BUTTONS_START = "<div style='text-align:center; width:100%'><table class='fborder' style='width:98%;'>\n";
 		}

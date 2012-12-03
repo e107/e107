@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/news.php $
-|     $Revision: 11678 $
-|     $Id: news.php 11678 2010-08-22 00:43:45Z e107coders $
+|     $Revision: 12324 $
+|     $Id: news.php 12324 2011-07-23 21:02:44Z e107coders $
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
@@ -66,9 +66,9 @@ if (is_numeric($action) && isset($tmp[1]) && (($tmp[1] == 'list') || ($tmp[1] ==
 
 if ($action == 'all' || $action == 'cat') 
 {
-  $sub_action = intval(varset($tmp[1],0));
+	$sub_action = intval(varset($tmp[1],0));
 }
-
+unset($tmp);
 /*
 Variables Used:
 	$action - the basic display format/filter
@@ -237,8 +237,9 @@ if ($action == 'extend')
 		{
 		  if($pref['meta_news_summary'] && $news['news_title'])
 		  {
-			define('META_DESCRIPTION',SITENAME.': '.$news['news_title'].' - '.$news['news_summary']);
+				setNewsMeta('extend',$news);
 		  }
+		  
 		  define("e_PAGETITLE",$news['news_title']);
 		}
 
@@ -246,26 +247,33 @@ if ($action == 'extend')
 		{
 			/* Added by nlStart - show links to previous and next news */
 			if (!isset($news['news_extended'])) $news['news_extended'] = '';
-			$news['news_extended'].="<div style='text-align:center;'><a href='".e_SELF."?cat.".$id."'>".LAN_NEWS_85."</a> &nbsp; <a href='".e_SELF."'>".LAN_NEWS_84."</a></div>";
+			
+			$news['news_extended'].="<div style='text-align:center;'><a class='news-extended-category-link' href='".e_SELF."?cat.".$id."'>".LAN_NEWS_85."</a> &nbsp; <a class='news-extended-overview-link' href='".e_SELF."'>".LAN_NEWS_84."</a></div>";
+			
 			$prev_query = "SELECT news_id, news_title FROM `#news`
 				WHERE `news_id` < ".intval($sub_action)." AND `news_category`=".$id." AND `news_class` REGEXP '".e_CLASS_REGEXP."' 
 				AND NOT (`news_class` REGEXP ".$nobody_regexp.") 
 				AND `news_start` < ".time()." AND (`news_end`=0 || `news_end` > ".time().') ORDER BY `news_id` DESC LIMIT 1';
+			
 			$sql->db_Select_gen($prev_query);
 			$prev_news = $sql->db_Fetch();
+			
 			if ($prev_news)
 			{
-				$news['news_extended'].="<div style='float:right;'><a href='".e_SELF."?extend.".$prev_news['news_id']."'>".LAN_NEWS_86."</a></div>";
+				$news['news_extended'].="<div class='news-extended-older' style='float:left;'><a class='news-extended-older' href='".e_SELF."?extend.".$prev_news['news_id']."'>".LAN_NEWS_86."</a></div>";
 			}
+			
 			$next_query = "SELECT news_id, news_title FROM `#news` AS n
 				WHERE `news_id` > ".intval($sub_action)." AND `news_category` = ".$id." AND `news_class` REGEXP '".e_CLASS_REGEXP."' 
 				AND NOT (`news_class` REGEXP ".$nobody_regexp.") 
 				AND `news_start` < ".time()." AND (`news_end`=0 || `news_end` > ".time().') ORDER BY `news_id` ASC LIMIT 1';
+			
 			$sql->db_Select_gen($next_query);
 			$next_news = $sql->db_Fetch();
+			
 			if ($next_news)
 			{
-				$news['news_extended'].="<div style='float:left;'><a href='".e_SELF."?extend.".$next_news['news_id']."'>".LAN_NEWS_87."</a></div>";
+				$news['news_extended'].="<div class='news-extended-newer' style='float:right;'><a class='news-extended-newer' href='".e_SELF."?extend.".$next_news['news_id']."'>".LAN_NEWS_87."</a></div>";
 			}
 			$news['news_extended'].="<br /><br />";
 		}
@@ -455,7 +463,8 @@ if($action != "" && !is_numeric($action))
 {
     if($action == "item" && $pref['meta_news_summary'] && $newsAr[1]['news_title'])
 	{
-	  define("META_DESCRIPTION",SITENAME.": ".$newsAr[1]['news_title']." - ".$newsAr[1]['news_summary']);
+		setNewsMeta('item',$newsAr[1]);
+		// define("META_DESCRIPTION",SITENAME.": ".$newsAr[1]['news_title']." - ".$newsAr[1]['news_summary']);
 	}
 	define("e_PAGETITLE", $p_title);
 }
@@ -508,6 +517,7 @@ if(isset($pref['news_unstemplate']) && $pref['news_unstemplate'] && file_exists(
 	$text = preg_replace("/\{(.*?)\}/e", '$\1', $NEWSCLAYOUT);
 
 	require_once(HEADERF);
+	$sub_action = intval($sub_action);
 	$parms = $news_total.",".ITEMVIEW.",".$newsfrom.",".e_SELF.'?'.($action ? $action : 'default' ).($sub_action ? ".".$sub_action : ".0").".[FROM]";
     $nextprev = $tp->parseTemplate("{NEXTPREV={$parms}}");
     $text .= ($nextprev ? "<div class='nextprev'>".$nextprev."</div>" : "");
@@ -551,6 +561,7 @@ else
 		$ix->render_newsitem($news);
 		$i++;
 	}
+	$sub_action = intval($sub_action);
 	$parms = $news_total.",".ITEMVIEW.",".$newsfrom.",".e_SELF.'?'.($action ? $action : 'default' ).($sub_action ? ".".$sub_action : ".0").".[FROM]";
 	$nextprev = $tp->parseTemplate("{NEXTPREV={$parms}}");
  	echo ($nextprev ? "<div class='nextprev'>".$nextprev."</div>" : "");
@@ -627,8 +638,10 @@ if ($action != "item" && $action != 'list' && $pref['newsposts_archive'])
 }
 // #### END -----------------------------------------------------------------------------------------------------------
 
-if ($action != "item") {
-	if (is_numeric($action)){
+if ($action != "item") 
+{
+	if (is_numeric($action))
+	{
 		$action = "";
 	}
  //	$parms = $news_total.",".ITEMVIEW.",".$newsfrom.",".e_SELF.'?'."[FROM].".$action.(isset($sub_action) ? ".".$sub_action : "");
@@ -665,6 +678,34 @@ function setNewsCache($cache_tag, $cache_data) {
 	$e107cache->set($cache_tag, $cache_data);
 	$e107cache->set($cache_tag."_title", defined("e_PAGETITLE") ? e_PAGETITLE : '');
 	$e107cache->set($cache_tag."_diz", defined("META_DESCRIPTION") ? META_DESCRIPTION : '');
+	$e107cache->set($cache_tag."_og", defined("META_OG") ? META_OG : '');
+}
+
+/**
+ * Mode: extend or item
+ */
+function setNewsMeta($mode,$news)
+{
+	if($news['news_thumbnail'])
+	{
+		$image = (substr($news['news_thumbnail'],0,3)=="{e_") ? $tp->replaceConstants($news['news_thumbnail']) : SITEURL.e_IMAGE."newspost_images/".$news['news_thumbnail'];	
+	}
+	else
+	{
+		$image = "";
+	}
+		
+	$og_array = array(
+		'title'			=> $news['news_title'],
+		'type'			=> 'article',		  		
+		'url'			=> e_SELF."?".$mode.".".$news['news_id'],
+		'image'			=> ($image) ? $image : '',
+		'description' 	=> $news['news_summary'],
+		'site_name'		=> SITENAME
+	);
+		  	
+	define('META_OG',serialize($og_array));
+	define('META_DESCRIPTION',SITENAME.': '.$news['news_title'].' - '.$news['news_summary']);
 }
 
 function checkCache($cacheString){
@@ -672,14 +713,27 @@ function checkCache($cacheString){
 	$cache_data = $e107cache->retrieve($cacheString);
 	$cache_title = $e107cache->retrieve($cacheString."_title");
 	$cache_diz = $e107cache->retrieve($cacheString."_diz");
+	$cache_og = $e107cache->retrieve($cacheString."_og");
+	
 	$etitle = ($cache_title != "e_PAGETITLE") ? $cache_title : "";
-	$ediz = ($cache_diz != "META_DESCRIPTION") ? $cache_diz : "";
-	if($etitle){
+	$ediz	= ($cache_diz != "META_DESCRIPTION") ? $cache_diz : "";
+	$og		= ($cache_og != "META_OG") ? $cache_og : "";
+	
+	if($etitle)
+	{
 		define(e_PAGETITLE,$etitle);
 	}
-	if($ediz){
+	
+	if($ediz)
+	{
     	define("META_DESCRIPTION",$ediz);
 	}
+	
+	if($og)
+	{
+		define("META_OG",$og);
+	}	
+
 	if ($cache_data) {
 		return $cache_data;
 	} else {

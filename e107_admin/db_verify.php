@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/db_verify.php $
-|     $Revision: 11691 $
-|     $Id: db_verify.php 11691 2010-08-23 17:14:39Z e107steved $
+|     $Revision: 12178 $
+|     $Id: db_verify.php 12178 2011-05-02 20:45:40Z e107steved $
 |     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
@@ -78,7 +78,8 @@ function read_tables($tab)
 				}
 			}
 
-			if (strpos($line, "TYPE=") !== FALSE) {
+			if ((strpos($line, "TYPE=") !== FALSE) || (strpos($line, "ENGINE=") !== FALSE))
+			{
 				$current_table = "";
 			}
 
@@ -402,11 +403,11 @@ if(isset($_POST['do_fix']))
 
 		if($mode == "create")
 		{
-			//$query = "CREATE TABLE ".MPREFIX.$table." ($newval) TYPE=MyISAM;";
+			//$query = "CREATE TABLE ".MPREFIX.$table." ($newval) ENGINE=MyISAM;";
 			$query = "CREATE TABLE `".MPREFIX.$table."` ({$newval}";
 			if (!preg_match('#.*?\s+?(?:TYPE|ENGINE)\s*\=\s*(.*?);#is', $newval))
 			{
-				$query .= ') TYPE=MyISAM;';
+				$query .= ') ENGINE=MyISAM;';
 			}
 		}
 

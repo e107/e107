@@ -11,12 +11,17 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_plugins/forum/forum_admin.php $
-|     $Revision: 11678 $
-|     $Id: forum_admin.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 12242 $
+|     $Id: forum_admin.php 12242 2011-06-02 19:59:08Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 $eplug_admin = true;
+if(!empty($_POST) && !isset($_POST['e-token']))
+{
+	// set e-token so it can be processed by class2
+	$_POST['e-token'] = ''; // TODO - regenerate token value just after access denied?
+}
 require_once("../../class2.php");
 include_lan(e_PLUGIN.'forum/languages/'.e_LANGUAGE.'/lan_forum_admin.php');
 
@@ -28,6 +33,16 @@ if (!getperms("P"))
 $e_sub_cat = 'forum';
 
 $forum = new forum;
+
+if (e_QUERY)
+{
+	$tmp = explode(".", e_QUERY);
+	$action = $tmp[0]; //needed by auth.php
+	$sub_action = varset($tmp[1]);
+	$id = intval(varset($tmp[2], 0));
+	unset($tmp);
+}
+
 require_once(e_ADMIN.'auth.php');
 require_once(e_HANDLER."userclass_class.php");
 require_once(e_HANDLER."form_handler.php");
@@ -40,25 +55,20 @@ define("IMAGE_sub", "<img src='".e_PLUGIN."forum/images/forums_16.png' alt='".FO
 define("IMAGE_nosub", "<img src='".e_PLUGIN."forum/images/sub_forums_16.png' alt='".FORLAN_145."' title='".FORLAN_145."' style='border:0' />");
 
 $deltest = array_flip($_POST);
-if (e_QUERY)
-{
-	$tmp = explode(".", e_QUERY);
-	$action = $tmp[0];
-	$sub_action = $tmp[1];
-	$id = $tmp[2];
-	unset($tmp);
-}
+
 
 if(isset($_POST['delete']))
 {
 	$tmp = array_pop(array_flip($_POST['delete']));
 	list($delete, $del_id) = explode("_", $tmp);
+	$del_id = intval($del_id);
 }
 
 if(isset($_POST['setMods']))
 {
 	foreach($_POST['mods'] as $fid => $modid)
 	{
+		$fid = intval($fid); $modid = intval($modid);
 		$sql->db_Update('forum',"forum_moderators = '{$modid}' WHERE forum_id = {$fid}");
 	}
 	$forum->show_message(FORLAN_144);
@@ -200,7 +210,7 @@ if (isset($_POST['update_order']))
 	while (list($key, $id) = each($forum_order))
 	{
 		$tmp = explode(".", $id);
-		$sql->db_Update("forum", "forum_order=".$tmp[1]." WHERE forum_id=".$tmp[0]);
+		$sql->db_Update("forum", "forum_order=".intval($tmp[1])." WHERE forum_id=".intval($tmp[0]));
 	}
 	$forum->show_message(FORLAN_73);
 }
@@ -226,6 +236,8 @@ if (isset($_POST['updateoptions']))
 	$pref['forum_hilightsticky'] = $_POST['forum_hilightsticky'];
 	$pref['forum_maxwidth'] = $_POST['forum_maxwidth'];
 	$pref['forum_linkimg'] = $_POST['forum_linkimg'];
+	$pref['forum_posts_sig'] = $_POST['forum_posts_sig'];
+	$pref['forum_class_sig'] = $_POST['forum_class_sig'];
 	save_prefs();
 	$forum->show_message(FORLAN_10);
 }
@@ -557,6 +569,7 @@ class forum
 		<form method='post' action='".e_SELF."?".e_QUERY."'>
 		<div style='text-align:center'>".FORLAN_180."<br /><br />
 		<input type='submit' class='button' name='confirm' value='".FORLAN_181."' />
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />
 		</div>
 		</form>
 		";
@@ -608,7 +621,7 @@ class forum
 		{
 			$txt .= "<tr><td colspan='5' class='forumheader3' style='text-align:center'>".FORLAN_146."</td>";
 		}
-
+		// e-token hidden added - protects both create and update subs
 		$txt .= "
 		<tr>
 		<td class='fcaption'>".FORLAN_151."</td>
@@ -625,7 +638,7 @@ class forum
 		<td class='forumheader2'>&nbsp;</td>
 		</tr>
 		<tr>
-		<td class='forumheader3' colspan='5' style='text-align:center'><input type='submit' class='button' name='create_sub' value='".FORLAN_148."' /></td>
+		<td class='forumheader3' colspan='5' style='text-align:center'><input type='submit' class='button' name='create_sub' value='".FORLAN_148."' /><input type='hidden' name='e-token' value='".e_TOKEN."' /></td>
 		</tr>
 		</table>
 		</form>
@@ -757,7 +770,7 @@ class forum
 		}
 		else
 		{
-			$text .= "<tr>\n<td colspan='4' style='text-align:center' class='forumheader'>\n<input class='button' type='submit' name='update_order' value='".FORLAN_72."' />\n</td>\n</tr>\n</table>\n</form>";
+			$text .= "<tr>\n<td colspan='4' style='text-align:center' class='forumheader'>\n<input type='hidden' name='e-token' value='".e_TOKEN."' />\n<input class='button' type='submit' name='update_order' value='".FORLAN_72."' />\n</td>\n</tr>\n</table>\n</form>";
 			$ns->tablerender(FORLAN_37, $text);
 		}
 
@@ -797,7 +810,8 @@ class forum
 		</tr>
 
 		<tr style='vertical-align:top'>
-		<td colspan='2'  style='text-align:center' class='forumheader'>";
+		<td colspan='2'  style='text-align:center' class='forumheader'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />";
 
 		if ($sub_action == "edit")
 		{
@@ -901,7 +915,8 @@ class forum
 		</tr>
 
 		<tr style='vertical-align:top'>
-		<td colspan='2'  style='text-align:center' class='forumheader'>";
+		<td colspan='2'  style='text-align:center' class='forumheader'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />";
 		if ($sub_action == "edit")
 		{
 			$text .= "<input class='button' type='submit' name='update_forum' value='".FORLAN_35."' />";
@@ -935,6 +950,7 @@ class forum
 		</tr>
 		<tr>
 		<td class='forumheader3'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />
 		";
 		if($sql->db_Select("forum", "*", "1 ORDER BY forum_order"))
 		{
@@ -1115,7 +1131,18 @@ class forum
 		</tr>
 
 		<tr>
+		<td style='width:75%' class='forumheader3'>".FORLAN_67."<br /><span class='smalltext'>".FORLAN_68."</span></td>
+		<td style='width:25%;text-align:center' class='forumheader3' ><input class='tbox' type='text' name='forum_posts_sig' size='3' value='".$pref['forum_posts_sig']."' maxlength='3' /></td>
+		</tr>
+
+		<tr>
+		<td style='width:75%' class='forumheader3'>".FORLAN_69."<br /></td>
+		<td style='width:25%;text-align:center' class='forumheader3' >" . r_userclass("forum_class_sig", $pref['forum_class_sig'], 'off', 'nobody,member,admin,classes') . "</td>
+		</tr>
+
+		<tr>
 		<td colspan='2'  style='text-align:center' class='forumheader'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />
 		<input class='button' type='submit' name='updateoptions' value='".FORLAN_61."' />
 		</td>
 		</tr>
@@ -1178,6 +1205,7 @@ class forum
 			<tr>
 			<td style='text-align:center' class='forumheader' colspan='2'>
 			".$rs->form_open("post", e_SELF."?sr", "", "", "", " onsubmit=\"return confirm_('sr',".$row['gen_datestamp'].")\"")."
+			<input type='hidden' name='e-token' value='".e_TOKEN."' />
 			".$rs->form_button("submit", "delete[reported_{$row['gen_id']}]", FORLAN_172)."
 			".$rs->form_close()."
 			</td>
@@ -1200,6 +1228,7 @@ class forum
 					<td style='width:80%' class='forumheader3'><a href='".e_SELF."?sr.".$row['gen_id']."'>".FORLAN_171." #".$row['gen_intdata']."</a></td>
 					<td style='width:20%; text-align:center; vertical-align:top; white-space: nowrap' class='forumheader3'>
 					".$rs->form_open("post", e_SELF."?sr", "", "", "", " onsubmit=\"return confirm_('sr',".$row['gen_datestamp'].")\"")."
+					<input type='hidden' name='e-token' value='".e_TOKEN."' />
 					".$rs->form_button("submit", "delete[reported_{$row['gen_id']}]", FORLAN_172)."
 					".$rs->form_close()."
 					</td>
@@ -1266,6 +1295,7 @@ class forum
 
 		$text .= "<tr>
 		<td colspan='2'  style='text-align:center' class='forumheader'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />
 		<input class='button' type='submit' name='do_prune' value='".FORLAN_5."' />
 		</td>
 		</tr>
@@ -1331,6 +1361,7 @@ class forum
 
 		$text .= "<tr>
 		<td colspan='3'  style='text-align:center' class='forumheader'>
+		<input type='hidden' name='e-token' value='".e_TOKEN."' />
 		<input class='button' type='submit' name='set_ranks' value='".FORLAN_94."' />
 		</td>
 		</tr>
@@ -1377,6 +1408,7 @@ class forum
 			$txt .= "
 			<tr>
 			<td colspan='2' class='fcaption' style='text-align:center'>
+			<input type='hidden' name='e-token' value='".e_TOKEN."' />
 			<input class='button' type='submit' name='setMods' value='".WMGLAN_4." ".FORLAN_33."' />
 			</td>
 			</tr>
@@ -1489,6 +1521,7 @@ class forum
 			<tr style='vertical-align:top'>
 			<td class='forumheader'>&nbsp;</td>
 			<td style='width:60%' class='forumheader'>
+			<input type='hidden' name='e-token' value='".e_TOKEN."' />
 			<input class='button' type='submit' name='frsubmit' value='".WMGLAN_4."' />
 			</td>
 			</tr>

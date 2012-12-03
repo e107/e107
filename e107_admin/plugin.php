@@ -11,9 +11,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/plugin.php $
-|     $Revision: 11678 $
-|     $Id: plugin.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 12174 $
+|     $Id: plugin.php 12174 2011-05-01 15:57:44Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 
@@ -270,7 +270,7 @@ if ($action == 'uninstall')
 			include_once(e_HANDLER."file_class.php");
 			$fi = new e_file;
 			$result = $fi->rmtree(e_PLUGIN.$eplug_folder);
-			$text .= ($result ? "<br />All files removed from ".e_PLUGIN.$eplug_folder : '<br />File deletion failed<br />'.EPL_ADLAN_31.' <b>'.e_PLUGIN.$eplug_folder.'</b> '.EPL_ADLAN_32);
+			$text .= '<br />'.($result ? EPL_ADLAN_64.e_PLUGIN.$eplug_folder : EPL_ADLAN_65.'<br />'.EPL_ADLAN_31.' <b>'.e_PLUGIN.$eplug_folder.'</b> '.EPL_ADLAN_32);
 		}
 		else
 		{
@@ -514,11 +514,11 @@ function render_plugs($pluginList)
 
 		$text .= "
 		<tr>
-		<td class='forumheader3' style='width:160px; text-align:center; vertical-align:top'>
-		<table style='width:100%'><tr><td style='text-align:left;width:40px;vertical-align:top'>
-		".$plugin_icon."
+		<td class='forumheader3' style='width:25%; text-align:left; vertical-align:top'>
+		<table style='width:100%'><tr><td style='text-align:left;width:50px;vertical-align:top'>
+		<span class='plugin-manager-icon'>".$plugin_icon."</span>
 		</td><td>
-		$img <b>".$tp->toHTML($plug['plugin_name'],FALSE,"defs,emotes_off, no_make_clickable")."</b><br />".EPL_ADLAN_11." {$plug['plugin_version']}
+		<span class='plugin-manager-status'>$img </span><b>".$tp->toHTML($plug['plugin_name'],FALSE,"defs,emotes_off, no_make_clickable")."</b><br />".EPL_ADLAN_11." {$plug['plugin_version']}
 		<br />";
 
 		$text .="</td>
@@ -545,7 +545,7 @@ function render_plugs($pluginList)
 
 
 		$text .= "</table></td>";
-		$text .= "<td class='forumheader3' style='width:70px;text-align:center'>";
+		$text .= "<td class='forumheader3' style='width:25%;text-align:center'>";
     	if ($eplug_conffile || $eplug_module || $eplug_link || is_array($eplug_table_names) || is_array($eplug_prefs) || is_array($eplug_user_prefs) || is_array($eplug_sc) || is_array($eplug_bb) || $eplug_status || $eplug_latest) {
 			$text .= ($plug['plugin_installflag'] ? "<input type='button' class='button' onclick=\"location.href='".e_SELF."?uninstall.{$plug['plugin_id']}'\" title='".EPL_ADLAN_1."' value='".EPL_ADLAN_1."' /> " : "<input type='button' class='button' onclick=\"location.href='".e_SELF."?install.{$plug['plugin_id']}'\" title='".EPL_ADLAN_0."' value='".EPL_ADLAN_0."' />");
 		} 
@@ -567,7 +567,7 @@ function render_plugs($pluginList)
 		}
 
 		if ($plug['plugin_version'] != $eplug_version && $plug['plugin_installflag']) {
-			$text .= "<br /><input type='button' class='button' onclick=\"location.href='".e_SELF."?upgrade.{$plug['plugin_id']}'\" title='".EPL_UPGRADE." to v".$eplug_version."' value='".EPL_UPGRADE."' />";
+			$text .= "<input type='button' class='button' onclick=\"location.href='".e_SELF."?upgrade.{$plug['plugin_id']}'\" title='".EPL_UPGRADE." to v".$eplug_version."' value='".EPL_UPGRADE."' />";
 		}
 
 		$text .="</td>";

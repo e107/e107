@@ -1,17 +1,16 @@
 <!--
-
 /*
 + ----------------------------------------------------------------------------+
 |	e107 website system - Javascript File.
 |
 |	$URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_files/e107.js $
-|	$Revision: 11678 $
-|	$Id: e107.js 11678 2010-08-22 00:43:45Z e107coders $
+|	$Revision: 12346 $
+|	$Id: e107.js 12346 2011-09-02 13:20:04Z secretr $
 +----------------------------------------------------------------------------+
 */
 
 /*
- * NOTE: KEEP THIS AT THE TOP OF E107.JS!
+ * NOTE: KEEP THIS AT THE TOP OF E107.JS !!
  * localTime is recorded ASAP after page load; SyncWithServerTime is called at the END
  * of page processing. We want localTime and serverTime set in close chronological order.
  * Page Processing order is as follows:
@@ -59,10 +58,10 @@ function expandit(curobj, hide) {
 	if(document.getElementById(curobj)) {
   		folder=document.getElementById(curobj).style;
 	} else {
-		if(ns6==1||operaaa==true) {
-			folder=curobj.nextSibling.nextSibling.style;
+		if(ns6==1||operaaa==true || typeof curobj['nextSibling'] != 'undefined' ) {
+			folder= typeof curobj.nextSibling.tagName != 'undefined' ? curobj.nextSibling.style : curobj.nextSibling.nextSibling.style;
 		} else {
-			folder=document.all[curobj.sourceIndex+1].style;
+			folder=document.all[curobj.sourceIndex+1].style; 
 		}
    }
 	if(folder.display=="none")
@@ -236,7 +235,7 @@ function addtext(text, emote) {
 	if (!window.e107_selectedInputArea) {
 		return; //[SecretR] TODO - alert the user 
 	}
-		
+
 	var eField = e107_selectedInputArea;	
 	var eSelection 	= false;  
 	var tagOpen = '';
@@ -257,6 +256,7 @@ function addtext(text, emote) {
 
 	// Windows user  
 	if (document.selection) {
+	
 		eSelection = document.selection.createRange().text;
 		eField.focus();
 		if (eSelection) {
@@ -277,9 +277,11 @@ function addtext(text, emote) {
 	var selLength = eField.textLength;
 	var selStart = eField.selectionStart;
 	var selEnd = eField.selectionEnd; 
-	if (selEnd <= 2 && typeof(selLength) != 'undefined') {
+	
+	if (selEnd <= 2 && typeof(selLength) != 'undefined' && (selStart != selEnd)) {
 		selEnd = selLength;
 	}
+	
 	var sel1 = (eField.value).substring(0,selStart);
 	var sel2 = (eField.value).substring(selStart, selEnd);
 	var sel3 = (eField.value).substring(selEnd, selLength);

@@ -11,9 +11,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_plugins/log/plugin.php $
-|     $Revision: 11678 $
-|     $Id: plugin.php 11678 2010-08-22 00:43:45Z e107coders $
-|     $Author: e107coders $
+|     $Revision: 12241 $
+|     $Id: plugin.php 12241 2011-05-31 17:32:33Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 
@@ -47,7 +47,7 @@ $eplug_icon_small = $eplug_folder."/images/stats_16.png";
 $eplug_caption = ADSTAT_L33;
 	
 // List of preferences -----------------------------------------------------------------------------------------------
-$eplug_prefTable = "menu_pref";
+//$eplug_prefTable = "menu_pref";
 $eplug_prefs = array(
 		"statActivate" => 0, 
 		"statUserclass" => "", 
@@ -72,7 +72,7 @@ $eplug_tables = array(
   log_data longtext NOT NULL,
   PRIMARY KEY  (log_uniqueid),
   UNIQUE KEY log_id (log_id)
-) TYPE=MyISAM ");
+) ENGINE=MyISAM ");
 	
 	
 // Create a link in main menu (yes=TRUE, no=FALSE) -------------------------------------------------------------

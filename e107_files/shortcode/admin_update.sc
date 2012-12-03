@@ -1,4 +1,4 @@
-// $Id: admin_update.sc 11796 2010-09-17 21:30:53Z e107coders $
+// $Id: admin_update.sc 12135 2011-04-13 19:45:31Z e107steved $
 //<?
 
 	if (!ADMIN) return "";
@@ -6,6 +6,16 @@
 	global $tp, $e107cache,$ns, $pref;
 	
   	if (!varset($pref['check_updates'], FALSE)) return "";
+	
+	if($parm == "adminpanel" && (strpos(e_SELF,e_ADMIN_ABS."admin.php")===FALSE))
+	{ 
+		return;
+	}
+	if(($parm == "notadminpanel") && (strpos(e_SELF,e_ADMIN_ABS."admin.php")!==FALSE))
+	{
+		return;
+	}
+	
 	
 	if (is_readable(e_ADMIN."ver.php"))
 	{
@@ -20,7 +30,9 @@
 	
     if($cacheData)
     {
-   	  	return ($cacheData !='up-to-date') ? $ns -> tablerender(LAN_NEWVERSION, $cacheData) : "";
+		if ($cacheData == 'up-to-date') return '';
+		$tmp = explode('|', $cacheData);
+   	  	return $ns -> tablerender($tmp[0], $tmp[1],'admin_update');
     }
 	
 	// Keep commented out to be sure it continues to work under all circumstances.
@@ -32,7 +44,7 @@
 	$xml = new parseXml;
 	$xm = new XMLParse();
 	
-    $ftext = "";
+    $ftext = '';
 	
 	if($rawData = $xml -> getRemoteXmlFile($feed,5))
 	{	
@@ -62,20 +74,22 @@
 				break;
 			}
 		}
+		$caption = LAN_NEWVERSION;
 	}
 	else // Error getting data
-	{  
-	  $ftext = ADLAN_154;
+	{
+		$ftext = ADLAN_154;
+		$caption = LAN_NEWVERSION_CHECK_ERROR;
 	}
 
 	if($ftext)
 	{
-		$e107cache->set("releasecheck", $ftext, TRUE);
-		return $ns -> tablerender(LAN_NEWVERSION, $ftext);
+		$e107cache->set("releasecheck", $caption.'|'.$ftext, TRUE);
+		return $ns -> tablerender($caption, $ftext,'admin_update');
 	}
 	else
 	{
 		$e107cache->set("releasecheck", 'up-to-date', TRUE);
 	}
-
+unset ($ftext, $caption);
 
