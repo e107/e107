@@ -5,4 +5,4 @@ then you have downloaded the wrong package.  For those users that have been usin
 Included in these releases are security related file changes and so you must upgrade your site with all these files.
 
 To install, simply upload the files to your server overwriting the existing 0.7.23 files.
-There are no database changes in this release.
+There are no database changes in this release!
