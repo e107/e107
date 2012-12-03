@@ -36,7 +36,7 @@ define("CRELAN_25", "");
 define("CRELAN_26", "");
 define("CRELAN_27", "\"Шо? Нет чая?? 0_0\"");
 define("CRELAN_28", "");
-define("CRELAN_29", "Вперед и ввысь!");
+define("CRELAN_29", "Наверх и вперед!");
 define("CRELAN_30", "");
 
 

@@ -6,8 +6,8 @@
 |     Released under the terms and conditions of the GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_themes/templates/header_default.php $
-|     $Revision: 12324 $
-|     $Id: header_default.php 12324 2011-07-23 21:02:44Z e107coders $
+|     $Revision: 12853 $
+|     $Id: header_default.php 12853 2012-07-01 05:25:24Z e107coders $
 |     $Author: e107coders $
 +-----------------------------------------------------------------------------------------------+
 */
@@ -244,13 +244,13 @@ function render_meta($type)
 	// if (!isset($pref['meta_'.$type][e_LANGUAGE])){ return;}
 	// if (!$pref['meta_'.$type][e_LANGUAGE]){ return; }
 
-	if($type == "tag" && defset($pref['meta_tag'][e_LANGUAGE]))
+	if($type == "tag" && !empty($pref['meta_tag'][e_LANGUAGE]))
 	{
 		return str_replace("&lt;", "<", $tp -> toHTML($pref['meta_tag'][e_LANGUAGE], FALSE, "nobreak, no_hook, no_make_clickable"))."\n";
 	}
 	elseif($type == 'og')
 	{
-		if(!defined("META_OG") || !defined("XMLNS"))
+		if(!defined("META_OG") )
 		{
 			return;
 		}
@@ -261,12 +261,23 @@ function render_meta($type)
 		// FB will still utilize 'name' instead of 'property' (which is not valid XHTML)
 		foreach($tmp as $k=>$v)
 		{
-			$ret .= '<meta name="og:'.$k.'" content="'.$v.'" />'."\n";
+			if($k == 'image')
+			{
+				foreach($v as $img)
+				{
+					$ret .= '<meta name="og:image" content="'.$img.'" />'."\n";	
+				}
+			}
+			else
+			{
+				$ret .= '<meta name="og:'.$k.'" content="'.$v.'" />'."\n";	
+			}
+			
 		}
 
 		return $ret;		
 	}
-	elseif(defset($pref['meta_'.$type][e_LANGUAGE]))
+	elseif(!empty($pref['meta_'.$type][e_LANGUAGE]))
 	{
 		return '<meta name="'.$type.'" content="'.$pref['meta_'.$type][e_LANGUAGE].'" />'."\n";
 	}
@@ -275,15 +286,18 @@ function render_meta($type)
 echo "\n<!-- Core Meta Tags -->\n";
 echo (defined("META_DESCRIPTION")) ? "<meta name=\"description\" content=\"".$diz_merge.META_DESCRIPTION."\" />\n" : render_meta('description');
 echo (defined("META_KEYWORDS")) ? "<meta name=\"keywords\" content=\"".$key_merge.META_KEYWORDS."\" />\n" : render_meta('keywords');
+echo (defined("VIEWPORT")) ? "<meta name=\"viewport\" content=\"".VIEWPORT."\" />\n" : "";
+
 echo render_meta('copyright');
 echo render_meta('author');
-echo render_meta('tag');
 echo render_meta('og');
+echo render_meta('tag');
 
 
 unset($key_merge,$diz_merge);
 
 // ---------- Favicon ---------
+	echo "\n<!-- *FAV-ICONS* -->\n";
 if (file_exists(THEME."favicon.ico")) {
 	echo "<link rel='icon' href='".THEME_ABS."favicon.ico' type='image/x-icon' />\n<link rel='shortcut icon' href='".THEME_ABS."favicon.ico' type='image/xicon' />\n";
 }elseif (file_exists(e_BASE."favicon.ico")) {
@@ -443,6 +457,14 @@ if ($e107_popup != 1) {
 			}
 		}
 		parseheader(($e107ParseHeaderFlag ? $cust_header : $HEADER));
+		if($e107ParseHeaderFlag== TRUE)
+		{
+			define('THEME_LAYOUT',$key_extract);	
+		}
+		else
+		{
+			define('THEME_LAYOUT','default');	
+		}
 	}
 
 
@@ -451,7 +473,7 @@ if ($e107_popup != 1) {
 //
 
 	if(ADMIN){
-		if(file_exists(e_BASE.'install.php')){ echo "<div class='installe' style='text-align:center'><br /><b>*** ".CORE_LAN4." ***</b><br />".CORE_LAN5."</div><br /><br />"; }
+		if(file_exists(e_BASE.'install.php')){ echo "<div class='installe' style='text-align:center'><b>*** ".CORE_LAN4." ***</b><br />".CORE_LAN5."</div>"; }
 	}
 
 // Display Welcome Message when old method activated.

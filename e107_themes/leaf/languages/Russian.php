@@ -7,18 +7,18 @@
 |
 |        $URL: ../e107_themes/leaf/languages/Russian.php $
 |        $Revision: 1.0 $
-|        $Id: 2011/09/14 23:46:55 $
+|        $Id: 2012/01/02 18:35:30 $
 |        $Author: root $
 +---------------------------------------------------------------+
 */
 
 define("LAN_THEME_1", "Комментарии:");
-define("LAN_THEME_2", "Для этой новости комментарии отключены");
+define("LAN_THEME_2", "Комментарии отключены");
 define("LAN_THEME_3", "комментарии:");
 define("LAN_THEME_4", "Читать далее ...");
-define("LAN_THEME_5", "Трекбэк:");
-define("LAN_THEME_6", "Автор:");
-define("LAN_THEME_7", "Новое");
+define("LAN_THEME_5", "Трекбэки");
+define("LAN_THEME_6", "Автор комментария:");
+define("LAN_THEME_7", "Новости");
 
 
 ?>

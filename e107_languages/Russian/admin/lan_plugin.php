@@ -72,7 +72,7 @@ define("EPL_ADLAN_60", "e107 попытается удалить все файл
 define("EPL_ADLAN_62", "Отменить деинсталляцию");
 define("EPL_ADLAN_63", "Деинсталлировать:");
 define("EPL_ADLAN_64", "Все файлы удалены из");
-define("EPL_ADLAN_65", "Не удалось удалить файлы");
+define("EPL_ADLAN_65", "Ошибка удаления файлов");
 define("LAN_UPGRADE_SUCCESSFUL", "Апгрейд успешно произведен");
 define("LAN_INSTALL_SUCCESSFUL", "Установка успешно произведена");
 

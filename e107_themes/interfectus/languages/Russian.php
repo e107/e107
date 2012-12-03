@@ -7,16 +7,16 @@
 |
 |        $URL: ../e107_themes/interfectus/languages/Russian.php $
 |        $Revision: 1.0 $
-|        $Id: 2011/09/14 23:38:49 $
+|        $Id: 2012/01/02 18:30:40 $
 |        $Author: root $
 +---------------------------------------------------------------+
 */
 
 define("LAN_THEME_1", "'interfectus' by <a href='http://e107.org' rel='external'>jalist</a>");
-define("LAN_THEME_2", "Читать / Оставить комментарий");
-define("LAN_THEME_3", "Для этой новости комментарии отключены");
+define("LAN_THEME_2", "Читать/Комментировать");
+define("LAN_THEME_3", "Комментарии отключены");
 define("LAN_THEME_4", "Читать далее ...");
-define("LAN_THEME_5", "Трекбэк:");
+define("LAN_THEME_5", "Трекбэки:");
 
 
 ?>

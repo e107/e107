@@ -11,9 +11,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/e_parse_class.php $
-|     $Revision: 12319 $
-|     $Id: e_parse_class.php 12319 2011-07-13 19:43:05Z e107steved $
-|     $Author: e107steved $
+|     $Revision: 12910 $
+|     $Id: e_parse_class.php 12910 2012-07-24 09:34:58Z e107coders $
+|     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
 if (!defined('e107_INIT')) { exit; }
@@ -217,27 +217,30 @@ class e_parse
 		{
 			$checkTags = explode(',', $tagList);
 		}
-		$data = preg_replace('#\[code\].*?\[\/code\]#i', '', $data);		// Ignore code blocks
+		$data = strtolower(preg_replace('#\[code.*?\[\/code\]#i', '', $data));		// Ignore code blocks. All lower case simplifies subsequent processing
 		foreach ($checkTags as $tag)
 		{
-			if (($pos = stripos($data, '</'.$tag)) !== FALSE)
+			$aCount = substr_count($data,  '<'.$tag);			// Count opening tags
+			$bCount = substr_count($data,  '</'.$tag);			// Count closing tags
+			if ($aCount != $bCount)
 			{
-				if ((($bPos = stripos($data, '<'.$tag )) === FALSE) || ($bPos > $pos))
-				{
-					return TRUE;		// Potentially abusive HTML found
-				}
+				return TRUE;		// Potentially abusive HTML found - tags don't balance
 			}
 		}
 		return FALSE;		// Nothing detected
 	}
 
 
-
-	function dataFilter($data)
+	/*
+	 * Filter User Input
+	*/
+	function dataFilter($data, $mode='bbcode')
 	{
 		$ans = '';
-		$vetWords = array('<applet', '<body', '<embed', '<frame', '<script', '<frameset', '<html', '<iframe', 
-					'<style', '<layer', '<link', '<ilayer', '<meta', '<object', '<plaintext', 'javascript:', 'vbscript:');
+		$vetWords = array('<applet', '<body', '<embed', '<frame', '<script','%3Cscript',
+						 '<frameset', '<html', '<iframe', '<style', '<layer', '<link',
+						 '<ilayer', '<meta', '<object', '<plaintext', 'javascript:',
+						 'vbscript:','data:text/html');
 
 		$ret = preg_split('#(\[code.*?\[/code.*?])#mis', $data, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
@@ -270,10 +273,17 @@ class e_parse
 					$s = preg_replace_callback('#('.implode('|', $vl).')#mis', array($this, 'modtag'), $t);
 				}
 			}
+					
 			$s = preg_replace('#(?:onmouse.+?|onclick|onfocus)\s*?\=#i', '[sanitised]$0[/sanitised]', $s);
 			$s = preg_replace_callback('#base64([,\(])(.+?)([\)\'\"])#mis', array($this, 'proc64'), $s);
 			$ans .= $s;
 		}
+		
+		if($mode == 'link' && count($vl))
+		{
+			return "#sanitized";
+		}
+			
 		return $ans;
 	}
 
@@ -1160,7 +1170,10 @@ class e_parse
 		return trim($text);
 	}
 
-
+	/**
+	 * Parse string into a format which is compatible with an html tag attribute. eg. name='$string' 
+	 * @param string $text 
+	 */
 	function toAttribute($text) {
 		$text = str_replace("&amp;","&",$text); // URLs posted without HTML access may have an &amp; in them.
 		$text = htmlspecialchars($text, ENT_QUOTES, CHARSET); // Xhtml compliance.
@@ -1173,6 +1186,9 @@ class e_parse
 		}
 	}
 
+	/**
+	 * Parse string into a JS compatible format. 
+	 */
 	function toJS($stringarray) {
 		$search = array("\r\n","\r","<br />","'");
 		$replace = array("\\n","","\\n","\'");
@@ -1185,6 +1201,11 @@ class e_parse
 		return strtr ($stringarray, $trans_tbl);
 	}
 
+	/**
+	 * Parse string to an RSS-compatible format
+	 * @param $text string 
+	 * @param $tags boolean - Set to TRUE to allow tags and bbcode in the result. 
+	 */
 	function toRss($text,$tags=FALSE)
 	{
 
@@ -1250,23 +1271,31 @@ class e_parse
 									SITEURL.$THEMES_DIRECTORY,
 									SITEURL.$DOWNLOADS_DIRECTORY);
 			$search = array("{e_BASE}","{e_IMAGE_ABS}","{e_THEME_ABS}","{e_IMAGE}","{e_PLUGIN}","{e_FILE}","{e_THEME}","{e_DOWNLOAD}");
-			if (ADMIN) {
+			if (defined('THEME'))
+			{
+				$search[] = '{THEME}';
+				$replace_relative[] = THEME;
+				$replace_absolute[] = SITEURL.THEME;
+			}
+			if (ADMIN) 
+			{
 				$replace_relative[] = $ADMIN_DIRECTORY;
 				$replace_absolute[] = SITEURL.$ADMIN_DIRECTORY;
 				$search[] = "{e_ADMIN}";
 			}
-			if ($all) {
-			  if (USER)
-			  {  // Can only replace with valid number for logged in users
-				$replace_relative[] = USERID;
-				$replace_absolute[] = USERID;
-			  }
-			  else
-			  {
-				$replace_relative[] = '';
-				$replace_absolute[] = '';
-			  }
-			  $search[] = "{USERID}";
+			if ($all) 
+			{
+				if (USER)
+				{  // Can only replace with valid number for logged in users
+					$replace_relative[] = USERID;
+					$replace_absolute[] = USERID;
+				}
+				else
+				{
+					$replace_relative[] = '';
+					$replace_absolute[] = '';
+				}
+				$search[] = "{USERID}";
 			}
 			$replace = ((string)$nonrelative == "full" ) ? $replace_absolute : $replace_relative;
 			return str_replace($search,$replace,$text);

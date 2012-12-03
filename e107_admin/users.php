@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/users.php $
-|     $Revision: 12284 $
-|     $Id: users.php 12284 2011-06-28 08:53:08Z secretr $
-|     $Author: secretr $
+|     $Revision: 12892 $
+|     $Id: users.php 12892 2012-07-21 03:20:42Z e107coders $
+|     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
 
@@ -103,7 +103,8 @@ if ($bounce_act)
 // ------- Resend Email. --------------
 if (isset($_POST['resend_mail']))
 {
-	$user->resend($_POST['resend_id'],$_POST['resend_key'],$_POST['resend_name'],$_POST['resend_email']);
+	$temp_name = str_replace('--', '', trim(preg_replace("/[\^\*\|\/;:#=\$'\"!#`\s\(\)%\?<>\\{}]/", '', strip_tags($_POST['resend_name']))));
+	$user->resend($_POST['resend_id'],$_POST['resend_key'],$temp_name,$_POST['resend_email']);
 }
 
 // ------- Resend Email. --------------
@@ -162,6 +163,9 @@ if (isset($_POST['update_options']))
 	$pref['track_online'] = $_POST['track_online'];
 	$pref['force_userupdate'] = $_POST['force_userupdate'];
 	$pref['memberlist_access'] = $_POST['memberlist_access'];
+	$pref['signature_access']	= $_POST['signature_access'];
+	$pref['user_new_period']	= $_POST['user_new_period'];
+
 	save_prefs();
 	$user->show_message(USRLAN_1);
 }
@@ -372,12 +376,12 @@ if (isset($_POST['useraction']) && $_POST['useraction'] == "unban") {
 if (isset($_POST['useraction']) && $_POST['useraction'] == 'resend')
 {
 	$qry = (e_QUERY) ? "?".e_QUERY : "";
-	if ($sql->db_Select("user", "*", "user_id='".$_POST['userid']."' ")) {
+	if ($sql->db_Select("user", "*", "user_id='".intval($_POST['userid'])."' ")) {
 		$resend = $sql->db_Fetch();
 		$text .= "<form method='post' action='".e_SELF.$qry."'><div style='text-align:center'>\n";
 		$text .= USRLAN_116." <b>".$resend['user_name']."</b><br /><br />
 
-			<input type='hidden' name='resend_id' value='".$_POST['userid']."' />\n
+			<input type='hidden' name='resend_id' value='".intval($_POST['userid'])."' />\n
 			<input type='hidden' name='resend_name' value='".$resend['user_name']."' />\n
 			<input type='hidden' name='resend_key' value='".$resend['user_sess']."' />\n
 			<input type='hidden' name='resend_email' value='".$resend['user_email']."' />\n
@@ -1027,6 +1031,20 @@ class users
 			<td style='width:50%' class='forumheader3'>".r_userclass("memberlist_access",$pref['memberlist_access'], "off", "public,member,guest,admin,main,classes,nobody")."
 			</td>
 			</tr>
+			
+			<tr>
+			<td style='width:50%' class='forumheader3'>".USRLAN_194.":</td>
+			<td style='width:50%' class='forumheader3'>". 
+				r_userclass('signature_access',$pref['signature_access'],'off',"member,admin,main,classes,nobody")
+				."</td>
+			</tr>
+	
+			<tr>
+			<td style='width:50%' class='forumheader3'>".USRLAN_190.":<div class='smalltext field-help'>".USRLAN_191."</div></td>
+			<td style='width:50%' class='forumheader3'>
+			<input class='tbox' type='text' name='user_new_period' size='10' value='".varset($pref['user_new_period'],0)."' maxlength='5' /> ".LANDT_04s."
+			
+			</td></tr>
 
 			<tr>
 			<td colspan='2' style='text-align:center' class='forumheader'>

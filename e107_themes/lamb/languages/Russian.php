@@ -7,16 +7,17 @@
 |
 |        $URL: ../e107_themes/lamb/languages/Russian.php $
 |        $Revision: 1.0 $
-|        $Id: 2011/09/14 23:42:58 $
+|        $Id: 2012/01/02 18:34:16 $
 |        $Author: root $
 +---------------------------------------------------------------+
 */
+
 define("LAN_THEME_1", "'lamb' by <a href='http://e107.org' rel='external'>jalist</a>");
-define("LAN_THEME_2", "Для этой новости комментарии отключены");
-define("LAN_THEME_3", "Комментарии:");
+define("LAN_THEME_2", "Комментарии отключены");
+define("LAN_THEME_3", "комментарии:");
 define("LAN_THEME_4", "Читать далее ...");
-define("LAN_THEME_5", "Трекбэк:");
-define("LAN_THEME_6", "-");
+define("LAN_THEME_5", "Трекбэки:");
+define("LAN_THEME_6", "на");
 
 
 ?>

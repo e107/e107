@@ -11,8 +11,8 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/debug_handler.php $
-|     $Revision: 11765 $
-|     $Id: debug_handler.php 11765 2010-09-07 21:46:27Z e107coders $
+|     $Revision: 12549 $
+|     $Id: debug_handler.php 12549 2012-01-13 06:55:24Z e107coders $
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
@@ -43,7 +43,7 @@ if (!defined('e107_INIT')) { exit; }
 //
 
 
-if (strstr(e_MENU, "debug") || isset($_COOKIE['e107_debug_level']) || defined('e_DEBUG')) {
+if (preg_match('/\[debug(=?)(.*?),?(\+|stick|-|unstick|)\]/', $_SERVER['REQUEST_URI']) || strstr(e_MENU, "debug") || isset($_COOKIE['e107_debug_level']) || defined('e_DEBUG')) {
 	$e107_debug = new e107_debug;
 	require_once(e_HANDLER.'db_debug_class.php');
 	$db_debug = new e107_db_debug;
@@ -113,7 +113,7 @@ class e107_debug {
 
 	function e107_debug()
 	{
-		if (preg_match('/debug(=?)(.*?),?(\+|stick|-|unstick|$)/', e_MENU, $debug_param) || isset($_COOKIE['e107_debug_level']) || defined('e_DEBUG'))
+		if (preg_match('/\[debug(=?)(.*?),?(\+|stick|-|unstick)\]/', $_SERVER['REQUEST_URI'], $debug_param) || isset($_COOKIE['e107_debug_level']) || defined('e_DEBUG'))
 		{
 			$dVals=0;
 			
@@ -122,10 +122,13 @@ class e107_debug {
 				$dVals = e_DEBUG;	
 			}
 			
-			if (isset($_COOKIE['e107_debug_level'])) {
+			if (isset($_COOKIE['e107_debug_level']))
+			{
 				$dVals = substr($_COOKIE['e107_debug_level'],6);
 			}
-			if (preg_match('/debug(=?)(.*?),?(\+|stick|-|unstick|$)/', e_MENU)) {
+			
+			if (preg_match('/\[debug(=?)(.*?),?(\+|stick|-|unstick)\]/', $_SERVER['REQUEST_URI']))
+			{
 				$dVals = $debug_param[1] == '=' ? $debug_param[2] : 'everything';
 			}
 
@@ -146,11 +149,11 @@ class e107_debug {
 			{
 				if ($debug_param[3] == '+' || $debug_param[3] == 'stick')
 				{
-					cookie('e107_debug_level', 'level='.$dVal, time() + 86400);
+					cookie('e107_debug_level', 'level='.$dVal, time() + 86400,e_HTTP,e_DOMAIN);
 				}
 				if ($debug_param[3] == '-' || $debug_param[3] == 'unstick')
 				{
-					cookie('e107_debug_level', '', time() - 3600);
+					cookie('e107_debug_level', '', time() - 3600,e_HTTP,e_DOMAIN);
 				}
 			}
 

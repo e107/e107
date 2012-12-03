@@ -32,5 +32,7 @@ define("NN_LAN_5", "Удаленных новостей админом");
 
 define("NF_LAN_1", "Файловые события"); //File Events
 define("NF_LAN_2", "Файл загружен на сервер пользователем"); //File uploaded by user
+define("CM_LAN_1", "События комментариев"); //File Events
+define("CM_LAN_2", "Комментарий отправленный пользователем, который требует одобрения"); //File uploaded by user
 
 ?>

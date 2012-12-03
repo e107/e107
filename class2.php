@@ -10,9 +10,9 @@
 |     GNU General Public License (http://gnu.org).
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/class2.php $
-|     $Revision: 12328 $
-|     $Id: class2.php 12328 2011-08-12 19:26:40Z nlstart $
-|     $Author: nlstart $
+|     $Revision: 12996 $
+|     $Id: class2.php 12996 2012-10-21 08:15:31Z e107steved $
+|     $Author: e107steved $
 +----------------------------------------------------------------------------+
 */
 //
@@ -47,7 +47,11 @@ $oblev_before_start = ob_get_level();
 // Block common bad agents / queries / php issues. 
 array_walk($_SERVER,  'e107_filter', '_SERVER');
 if (isset($_GET)) array_walk($_GET,     'e107_filter', '_GET');
-if (isset($_POST)) array_walk($_POST,    'e107_filter', '_POST');
+if (isset($_POST))
+{
+	array_walk($_POST,    'e107_filter', '_POST');
+	reset($_POST);			// Change of behaviour in PHP 5.3.17?
+}
 if (isset($_COOKIE)) array_walk($_COOKIE,  'e107_filter', '_COOKIE');
 
 //
@@ -257,6 +261,8 @@ define("e_TBQS", $_SERVER['QUERY_STRING']);
 $_SERVER['QUERY_STRING'] = e_QUERY;
 
 define("e_UC_PUBLIC", 0);
+define('e_UC_NEWUSER', 247);	// Users in 'probationary' period
+define('e_UC_BOTS', 246);	// Reserved to identify search bots
 define("e_UC_MAINADMIN", 250);
 define("e_UC_READONLY", 251);
 define("e_UC_GUEST", 252);
@@ -476,7 +482,9 @@ else
 
 $SESS_NAME = strtoupper(preg_replace("/[\W_]/","",$pref['cookie_name'])); // clean-up characters.  
 session_name('SESS'.$SESS_NAME); // avoid session conflicts with separate sites within subdomains
-unset($SESS_NAME);
+$doma = ((!e_SUBDOMAIN || defsettrue('MULTILANG_SUBDOMAIN')) && e_DOMAIN != FALSE) ? ".".e_DOMAIN : FALSE;
+session_set_cookie_params(FALSE,e_HTTP,$doma); // same cookie for www. and without 
+unset($SESS_NAME,$doma);
 
 // Start session after $prefs are available.
 session_start(); // Needs to be started after language detection (session.cookie_domain) to avoid multi-language 'access-denied' issues. 
@@ -498,9 +506,11 @@ if(e_SECURITY_LEVEL > 0 && session_id() && isset($_POST['e-token']) && ($_POST['
 		$details .= "\nPlugins:\n";
 		$details .= print_r($pref['plug_installed'],true);
 			
-		$admin_log->log_event("Access denied", $details, E_LOG_WARNING);				
+		$admin_log->log_event("Access denied", $details, E_LOG_WARNING); // admin access may not be possible. 
+		echo nl2br($details);				
 	}	
 		// do not redirect, prevent dead loop, save server resources
+
 	die('Access denied');
 }
 
@@ -1041,7 +1051,7 @@ function check_email($email) {
  */
 function check_class($var, $userclass = USERCLASS, $peer = FALSE, $debug = FALSE)
 {
-	global $tp;
+	global $tp,$pref;
 	if($var == e_LANGUAGE){
 		return TRUE;
 	}
@@ -1077,10 +1087,12 @@ function check_class($var, $userclass = USERCLASS, $peer = FALSE, $debug = FALSE
 		$_user = true;
 		$_admin = $peer['user_admin'] === 1;
 		$peer = false;
+		$_userjoined = $peer['user_joined']; 
 	} else {
 		$_adminperms = defined('ADMINPERMS') ? ADMINPERMS : '';
 		$_user = USER;
 		$_admin = ADMIN;
+		$_userjoined = USERJOINED;
 	}
 
 	//Test 'special' userclass numbers
@@ -1089,6 +1101,11 @@ function check_class($var, $userclass = USERCLASS, $peer = FALSE, $debug = FALSE
 		if ($var == e_UC_MAINADMIN && getperms('0', $_adminperms))
 		{
         	return TRUE;
+		}
+		//&& $_admin == FALSE
+		if ($var == e_UC_NEWUSER  && (time() < ($_userjoined + (varset($pref['user_new_period'],0)*86400))))
+		{
+			return TRUE;
 		}
 
 		if ($var == e_UC_MEMBER && $_user == TRUE)
@@ -1471,13 +1488,7 @@ function init_session() {
 	define('USERIP', $e107->getip());
 	if (!isset($_COOKIE[$pref['cookie_name']]) && !isset($_SESSION[$pref['cookie_name']]))
 	{
-		define("USER", FALSE);
-		define('USERID', 0);
-		define("USERTHEME", FALSE);
-		define("ADMIN", FALSE);
-		define("GUEST", TRUE);
-		define('USERCLASS', '');
-		define('USEREMAIL', '');
+		setGuest();
 	}
 	else
 	{
@@ -1488,28 +1499,27 @@ function init_session() {
 			cookie($pref['cookie_name'], "", (time() - 2592000));
 			$_SESSION[$pref['cookie_name']] = "";
 			session_destroy();
-			define("ADMIN", FALSE);
-			define("USER", FALSE);
-			define('USERID', 0);
-			define("USERCLASS", "");
+			setGuest();
 			define('USERCLASS_LIST', class_list());
-			define("LOGINMESSAGE",CORE_LAN10."<br /><br />");
+			define('LOGINMESSAGE',CORE_LAN10.'<br /><br />');
 			return (FALSE);
 		}
 
 		$result = get_user_data($uid);
-		if(is_array($result) && md5($result['user_password']) == $upw)
+		if(is_array($result) && (md5($result['user_password']) == $upw) && ($result['user_ban'] == 0))
 		{
-			define("USERID", $result['user_id']);
-			define("USERNAME", $result['user_name']);
-			define("USERURL", (isset($result['user_homepage']) ? $result['user_homepage'] : false));
-			define("USEREMAIL", $result['user_email']);
-			define("USER", TRUE);
-			define("USERCLASS", $result['user_class']);
-			define("USERREALM", $result['user_realm']);
-			define("USERVIEWED", $result['user_viewed']);
-			define("USERIMAGE", $result['user_image']);
-			define("USERSESS", $result['user_sess']);
+			define('USER', TRUE);
+			define('USERID', $result['user_id']);
+			define('USERNAME', $result['user_name']);
+			define('USERURL', (isset($result['user_homepage']) ? $result['user_homepage'] : false));
+			define('USEREMAIL', $result['user_email']);
+			define('USERCLASS', $result['user_class']);
+			define('USERREALM', $result['user_realm']);
+			define('USERVIEWED', $result['user_viewed']);
+			define('USERVISITS', $result['user_visits']);
+			define('USERIMAGE', $result['user_image']);
+			define('USERSESS', $result['user_sess']);
+			define('USERJOINED', $result['user_join']);
 
 			$update_ip = ($result['user_ip'] != USERIP ? ", user_ip = '".USERIP."'" : "");
 
@@ -1527,9 +1537,7 @@ function init_session() {
 
 			$currentUser = $result;
 			$currentUser['user_realname'] = $result['user_login']; // Used by force_userupdate
-			define("USERLV", $result['user_lastvisit']);
-
-			if ($result['user_ban'] == 1) { exit; }
+			define('USERLV', $result['user_lastvisit']);
 
 			if ($result['user_admin'])
 			{
@@ -1568,12 +1576,8 @@ function init_session() {
 		}
 		else
 		{
-			define("USER", FALSE);
-			define('USERID', 0);
-			define("USERTHEME", FALSE);
-			define("ADMIN", FALSE);
-			define("CORRUPT_COOKIE", TRUE);
-			define("USERCLASS", "");
+			setGuest();
+			define('CORRUPT_COOKIE', TRUE);
 		}
 	}
 
@@ -1594,6 +1598,29 @@ function init_session() {
 //	}
 }
 
+
+/**
+ *	Set all the defines appropriate to a guest (visitor or user who isn't logged in)
+ */
+function setGuest()
+{
+	define('USER', FALSE);
+	define('ADMIN', FALSE);
+	define('GUEST', TRUE);
+	define('USERID', 0);
+	define('USERTHEME', FALSE);
+	define('USERCLASS', '');
+	define('USEREMAIL', '');
+	define('USERURL', '');
+	define('USEREMAIL', '');
+	define('USERREALM', '');
+	define('USERVIEWED', '');
+	define('USERIMAGE', '');
+	define('USERSESS', '');
+}
+
+
+
 $sql->db_Mark_Time('Start: Go online');
 if(isset($pref['track_online']) && $pref['track_online']) {
 	$e_online->online($pref['track_online'], $pref['flood_protect']);
@@ -1601,10 +1628,11 @@ if(isset($pref['track_online']) && $pref['track_online']) {
 
 function cookie($name, $value, $expire=0, $path = e_HTTP, $domain = "", $secure = 0)
 {
-	if(defined('MULTILANG_SUBDOMAIN') && MULTILANG_SUBDOMAIN === TRUE)
+	if(!e_SUBDOMAIN || (defined('MULTILANG_SUBDOMAIN') && MULTILANG_SUBDOMAIN === TRUE))
 	{
-		$domain = e_DOMAIN;
+		$domain = (e_DOMAIN != FALSE) ? ".".e_DOMAIN : "";
 	}
+
 	setcookie($name, $value, $expire, $path, $domain, $secure);
 }
 
@@ -1741,7 +1769,7 @@ function e107_filter($input,$key,$type,$base64=FALSE)
 			$input = preg_replace("/(\[code\])(.*?)(\[\/code\])/is","",$input);
 		}
 	
-		$regex = "/(document\.write|base64_decode|chr|php_uname|fwrite|fopen|fputs|passthru|popen|proc_open|shell_exec|exec|proc_nice|proc_terminate|proc_get_status|proc_close|pfsockopen|apache_child_terminate|posix_kill|posix_mkfifo|posix_setpgid|posix_setsid|posix_setuid|phpinfo) *?\((.*) ?\;?/i";
+		$regex = "/(document\.location|document\.write|base64_decode|chr|php_uname|fwrite|fopen|fputs|passthru|popen|proc_open|shell_exec|exec|proc_nice|proc_terminate|proc_get_status|proc_close|pfsockopen|apache_child_terminate|posix_kill|posix_mkfifo|posix_setpgid|posix_setsid|posix_setuid|phpinfo) *?\((.*) ?\;?/i";
 		if(preg_match($regex,$input))
 		{
 			header('HTTP/1.0 400 Bad Request', true, 400);
@@ -1754,7 +1782,7 @@ function e107_filter($input,$key,$type,$base64=FALSE)
 			exit();	
 		}
 		
-		$regex = "/(wget |curl -o |fetch |lwp-download|onmouse)/i";
+		$regex = "/(wget |curl -o |fetch -|lwp-download|onmouse)/i";
 		if(preg_match($regex,$input))
 		{
 			header('HTTP/1.0 400 Bad Request', true, 400);
@@ -1764,16 +1792,17 @@ function e107_filter($input,$key,$type,$base64=FALSE)
 	}
 	
 	if($type == "_SERVER")
-	{	
-
+	{
 		if(($key == "QUERY_STRING") && (
 			strpos(strtolower($input),"../../")!==FALSE 
 			|| strpos(strtolower($input),"=http")!==FALSE 
-			|| strpos(strtolower($input),"http%3A%2F%2F")!==FALSE
-			|| strpos(strtolower($input),"php://")!==FALSE  
-			|| strpos(strtolower($input),"data://")!==FALSE
+			|| strpos(strtolower($input),strtolower("http%3A%2F%2F"))!==FALSE
+			|| strpos(strtolower($input),"php:")!==FALSE  
+			|| strpos(strtolower($input),"data:")!==FALSE
+			|| strpos(strtolower($input),strtolower("%3Cscript"))!==FALSE
 			))
 		{
+
 			header('HTTP/1.0 400 Bad Request', true, 400);
 			exit();
 		}
@@ -1865,9 +1894,13 @@ function force_userupdate()
 			if (!check_class($row['user_extended_struct_applicable'])) { continue; }		// Must be applicable to this user class
 			if (!check_class($row['user_extended_struct_write'])) { continue; }				// And user must be able to change it
 			$user_extended_struct_name = "user_{$row['user_extended_struct_name']}";
-			if ((!$currentUser[$user_extended_struct_name]) || (($row['user_extended_struct_type'] == 7) && ($currentUser[$user_extended_struct_name] == '0000-00-00')))
+			if (!isset($currentUser[$user_extended_struct_name]))
 			{
-			  return TRUE;
+				return TRUE;
+			}
+			if (($row['user_extended_struct_type'] == 7) && ($currentUser[$user_extended_struct_name] == '0000-00-00'))
+			{
+				return TRUE;
 			}
 		}
 	}

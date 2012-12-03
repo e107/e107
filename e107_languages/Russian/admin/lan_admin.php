@@ -71,7 +71,7 @@ define("ADLAN_103", "Нажмите здесь, чтобы сменить его
 define("ADLAN_104", "Безопасность");
 define("ADLAN_105", "Изображения");
 define("ADLAN_106", "Настройки изображений");
-define("ADLAN_110", "Зарегистрированных пользователей");
+define("ADLAN_110", "Зарегистрированых пользователей");
 define("ADLAN_111", "Неактивированных пользователей");
 define("ADLAN_112", "Запрещенных пользователей");
 define("ADLAN_113", "Сообщений в форуме");
@@ -125,8 +125,8 @@ define("ADLAN_ERR_3", "Имеется один или более файлов в
 define("ADLAN_ERR_4", "Найдены опротистованные файл(ы) плагина");
 define("ADLAN_ERR_5", "Следующие файлы следует переименовать в");
 define("ADLAN_ERR_6", "После этого щелкните сюда, чтобы просканировать заново ваши каталоги плагинов.");
-define("ADLAN_ERR_7", "На Вашем сервере были обнаружены вредоносные файлы. Они должны быть [b]СРОЧНО[/b] удалены!");
-define("ADLAN_ERR_8", "Пожалуйста запустите [File inspector] для проверки файлов ядра которые могли быть изменены.");
+define("ADLAN_ERR_7", "На Вашем сервере были обнаружены вредоносные файлы. Они должны быть [b]немедленно[/b] удалены.");
+define("ADLAN_ERR_8", "Пожалуйста, запустите [проверку], чтобы проверить наличие файлов, которые могли быть изменены.");
 define("LAN_EDIT", "Правка");
 define("LAN_DELETE", "Удалить");
 define("LAN_CREATE", "Создать");
@@ -134,7 +134,7 @@ define("LAN_UPDATE", "Обновить");
 define("LAN_SAVE", "Сохранить");
 define("LAN_SAVED", "Сохранено");
 define("LAN_SETSAVED", "Ваши настройки были сохранены");
-define("LAN_CONFIRMDEL", "Подтвердите желание удалить");
+define("LAN_CONFIRMDEL", "Подтвердите удаление");
 define("LAN_OPTIONS", "Опции");
 define("LAN_PREFS", "Свойства");
 define("LAN_DELETED", "Успешно удалено");
@@ -189,10 +189,11 @@ define("LAN_NEWVERSION", "Доступна новая версия");
 define("LAN_NEWVERSION_MORE", "Подробнее");
 define("LAN_NEWVERSION_DLD", "Скачать %s из SF.net");
 define("LAN_NEWVERSION_CHECK_ERROR", "Ошибка проверки версии");
-define("LAN_SECURITYL_0", "Поиск проблем (нету)");
+define("LAN_SECURITYL_0", "Поиск ошибок (отсутствуют)");
 define("LAN_SECURITYL_5", "Сбалансированный");
 define("LAN_SECURITYL_8", "Высокий");
-define("LAN_SECURITYL_10", "Неимоверный");
+define("LAN_SECURITYL_10", "Очень высокий");
+define("LAN_PLEASEWAIT", "Пожалуйста ожидайте...");
 
 
 ?>

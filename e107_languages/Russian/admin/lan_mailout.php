@@ -89,7 +89,7 @@ define("MAILAN_66", "Отменено успешно");
 define("MAILAN_67", "Использовать авторизацию 'POP перед SMTP'");
 define("MAILAN_68", "Проверить адрес");
 define("MAILAN_69", "Логин");
-define("MAILAN_70", "Адрес почты");
+define("MAILAN_70", "Email");
 
 
 ?>

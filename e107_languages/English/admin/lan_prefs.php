@@ -10,7 +10,7 @@
  * Site preferences - language file
  *
  * $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_languages/English/admin/lan_prefs.php $
- * $Id: lan_prefs.php 12013 2010-12-18 22:55:22Z e107steved $
+ * $Id: lan_prefs.php 12892 2012-07-21 03:20:42Z e107coders $
  */
 
 define("PRFLAN_1", "Site Information");
@@ -179,7 +179,7 @@ define("PRFLAN_168", "Site Contact Person(s)");
 define("PRFLAN_169", "If the chosen group contains more than one person, the user will be asked to select a person from the group.");
 
 define("PRFLAN_170", "Use reverse DNS to allow host banning");
-define("PRFLAN_171", "Turning this option on will allow you to ban users by hostname, rather then just IP or email address.  <br />NOTE: This may affect pageload times on some hosts");
+define('PRFLAN_171', "Turning this option on will allow you to ban users by hostname, rather than just IP or email address.  <br />NOTE: This may affect pageload times on some hosts");
 define("PRFLAN_172", "Login Name maximum length (10..100)");
 define("PRFLAN_173", "Check for E107 updates once/day");
 
@@ -200,5 +200,7 @@ define('PRFLAN_218', 'If \'off\', puts users at increased risk of XSS exploits p
 define('PRFLAN_220', 'HTML Abuse filter (experimental)');
 define('PRFLAN_221', 'Blocks some unmatched tags for those allowed to post HTML');
 
+define('PRFLAN_222', 'Moderate Comments made by');
+define('PRFLAN_223', 'Comments will require manual approval by an admin prior to being visible to other users');
 
 ?>
