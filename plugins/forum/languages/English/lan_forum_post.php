@@ -111,5 +111,6 @@ define("POLL_508", "no");
 define("LAN_FORUM_1", "Uploads disabled: ".e_FILE."public directory is not writable");
 define("LAN_FORUM_2", "Duplicate post");
 
-
+// Predator 03.09.2012
+define("LAN_FORUM_100", "&nbsp;Add message...");
 ?>

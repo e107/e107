@@ -85,17 +85,19 @@ $creditsArray = array(
 
 $contentA = array( // ORDER BY FirstName ASC ;)
 	"<h3>".CRELAN_6."<\/h3>",
-	"<h1>Cameron Hanly<\/h1>[ CaMer0n ]<br /><br /><br />".CRELAN_21,
-	"<h1>Carl Cedergren<\/h1>[ asperon ]<br /><br /><br />".CRELAN_20,
-	"<h1>Eric Vanderfeesten<\/h1> [ lisa ]<br /><br /><br />".CRELAN_23,
-	"<h1>James Currie<\/h1>[ SweetAs ]<br /><br /><br />".CRELAN_27,
-	"<h1>Martin Nicholls<\/h1>[ streaky ]<br /><br /><br />".CRELAN_26,
-	"<h1>Miroslav Yovchev<\/h1>[ SecretR ]<br /><br /><br />".defset('CRELAN_29'),
-	"<h1>Pete Holzmann<\/h1>[ MrPete ]<br /><br /><br />".CRELAN_28,
-	"<h1>Steve Dunstan<\/h1>[ jalist ]<br /><br /><br />".CRELAN_22,
-	"<h1>Steven Davies<\/h1>[ steved ]<br /><br /><br />".defset('CRELAN_30'),
-	"<h1>Thom Michelbrink<\/h1>[ McFly ]<br /><br /><br />".CRELAN_24,
-	"<h1>William Moffett<\/h1>[ que ]<br /><br /><br />".CRELAN_25,
+	"<h1>Александр Кадников<\/h1>[ Predator ]<br /><br /><br />".CRELAN_555,
+	"<h1>Александр Евланов<\/h1>[ Kapman ]<br /><br /><br />".CRELAN_556,
+	"<h1>Стив Данстан<\/h1>[ jalist ]<br /><br /><br />".CRELAN_22,
+	"<h1>Камерон Хенли<\/h1>[ CaMer0n ]<br /><br /><br />".CRELAN_21,
+	"<h1>Карл Сидергрин<\/h1>[ asperon ]<br /><br /><br />".CRELAN_20,
+	"<h1>Эрик Вандерфистен<\/h1> [ lisa ]<br /><br /><br />".CRELAN_23,
+	"<h1>Джеймс Курри<\/h1>[ SweetAs ]<br /><br /><br />".CRELAN_27,
+	"<h1>Мартин Николлс<\/h1>[ streaky ]<br /><br /><br />".CRELAN_26,
+	"<h1>Мирослав Ёвчев<\/h1>[ SecretR ]<br /><br /><br />".defset('CRELAN_29'),
+	"<h1>Пит Холзманн<\/h1>[ MrPete ]<br /><br /><br />".CRELAN_28,
+	"<h1>Стивен Дэвис<\/h1>[ steved ]<br /><br /><br />".defset('CRELAN_30'),
+	"<h1>Том Мичелбринк<\/h1>[ McFly ]<br /><br /><br />".CRELAN_24,
+	"<h1>Уильям Моффетт<\/h1>[ que ]<br /><br /><br />".CRELAN_25,
 );
 
 echo "<?xml version='1.0' encoding='".CHARSET."' ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">
@@ -106,10 +108,10 @@ echo "<?xml version='1.0' encoding='".CHARSET."' ?><!DOCTYPE html PUBLIC \"-//W3
 <meta http-equiv='content-style-type' content='text/css' />
 <link rel='stylesheet' href='".THEME."style.css' type='text/css' />
 </head>
-<body style='padding: 0; margin: 0; background-color: #e8e8e8; color: #8E8E8E'>
+<body style='padding: 0; margin: 0; background-color: #f8f8f8; color: #8E8E8E'>
 
-<div><img src='".e_IMAGE."generic/cred.png' alt='' />
-<div class='smalltext' style='position: absolute; top: 120px; left: 118px;'><b>".CRELAN_7." ".$e107info['e107_version'].", build ".($e107info['e107_build'] ? $e107info['e107_build'] : "zero")."</b><br />&copy; 2002-2008, ".CRELAN_3."</div>
+<div><img src='".e_IMAGE."generic/credits.png' alt='' />
+<div class='smalltext' style='background: #f8f8f8; padding:2px; border: #000 solid 1px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -o-border-radius: 4px; position: absolute; top: 104px; left: 46px; color: #000; font-weight: bold;'>".CRELAN_7." ".$e107info['e107_version']."<br />&copy; 2002-2012 ".CRELAN_3." All Rights Reserved.<br />&copy; е107 Клуб, 2010-2012. Все права защищены.</div>
 
 ";
 
@@ -118,9 +120,9 @@ $fadejs = "
 <script type='text/javascript'>
 <!--
 
-var delay = 2000;
+var delay = 3500;
 var maxsteps=30;
-var stepdelay=40;
+var stepdelay=70;
 var startcolor= new Array(255,255,255);
 var endcolor=new Array(0,0,0);
 var fcontent=new Array();
@@ -245,7 +247,7 @@ echo $fadejs;
 echo "
 <div style='text-align: center; margin-left: auto; margin-right: auto;'>
 <form method='get' action=''><div>".
-(e_QUERY && e_QUERY == "stps" ? "<input class='tbox' type='button' onclick=\"self.parent.location='".e_ADMIN."credits.php'\" value='".CRELAN_4."' />" : "<input class='tbox' type='button' onclick=\"self.parent.location='".e_ADMIN."credits.php?stps'\" value='".CRELAN_5."' />")."</div>
+(e_QUERY && e_QUERY == "stps" ? "<input class='button' type='button' onclick=\"self.parent.location='".e_ADMIN."credits.php'\" value='".CRELAN_4."' />" : "<input class='button' type='button' onclick=\"self.parent.location='".e_ADMIN."credits.php?stps'\" value='".CRELAN_5."' />")."</div>
 </form>
 </div>
 
@@ -253,5 +255,4 @@ echo "
 </body>
 </html>
 ";
-
 ?>

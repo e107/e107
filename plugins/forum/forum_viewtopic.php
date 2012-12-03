@@ -149,7 +149,7 @@ if ($action == "report") {
 		$sql->db_Insert('generic', "0, 'reported_post', ".time().", '".USERID."', '{$thread_info['head']['thread_name']}', ".intval($thread_id).", '{$report_add}'");
 		define("e_PAGETITLE", LAN_01." / ".LAN_428);
 		require_once(HEADERF);
-		$text = LAN_424."<br /><br /><a href='forum_viewtopic.php?".$thread_id.".post'>".LAN_429."</a";
+		$text = LAN_424."<br /><br /><a href='forum_viewtopic.php?".$thread_id.".post'>".LAN_429."</a>";
 		$ns->tablerender(LAN_414, $text, array('forum_viewtopic', 'report'));
 	} else {
 		$thread_name = $tp -> toHTML($thread_info['head']['thread_name'], TRUE, 'USER_TITLE');

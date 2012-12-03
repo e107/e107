@@ -9,6 +9,13 @@
 |     $Author: e107coders $
 +----------------------------------------------------------------------------+
 */
+
+define("FORLAN_P_01", "Forum");
+define("FORLAN_P_02", "This plugin is a fully featured Forum system.");
+define("FORLAN_P_03", "Configure Forum");
+define("FORLAN_P_04", "Your forum is now installed");
+define("FORLAN_P_05", "Forum successfully upgraded, now using version: ");
+
 define("FORLAN_5", "Poll deleted.");
 define("FORLAN_6", "Thread deleted");
 define("FORLAN_7", "replies deleted");

@@ -352,3 +352,25 @@ div.menu div.menuItemSep {
 a.menuItem.header {
 	border-bottom: 1px solid #b3b3b3;
 }
+
+/* Predator 30.09.2011 */
+.bukvica {
+    font-size: 20pt;
+    color: #3a599d;
+    font-weight: bold;
+    font-family: verdana, tahoma, arial, helvetica, sans-serif;  
+    float: left;
+    height: 15px; 
+    line-height: 20px;
+    margin-top: 0px;
+    margin-right: 1px;
+}
+
+.wrapright{
+        float: left;
+        margin-right: 5px;
+        padding: 5px;
+        width: 250px;
+        height: auto;
+        border: 0px;
+}

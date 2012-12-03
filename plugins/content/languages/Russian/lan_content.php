@@ -1,13 +1,27 @@
 <?php
 /*
-+ ----------------------------------------------------------------------------+
-|     Russian Language Pack for e107 0.7
-|     $Revision: 183 $
-|     $Date: 2008-08-30 21:41:13 +0600 (Сб, 30 авг 2008) $
-|     $Author: yarodin $
-+----------------------------------------------------------------------------+
++ ------------------------------------------------------------------------------+
+|	Русский языковой пакет для e107 0.7.26										|
+|	Сайт: http://www.e107club.ru												|
+|	Почта: translate@e107club.ru												|
+|	Ревизия: 1.0																|
+|	Кодировка: utf-8															|
+|	Дата: 25.09.2011 05:05:05													|
+|	Автор: © Кадников Александр	[Predator]										|
+|	© е107 Клуб 2010-2011. Все права защищены.									|
+|																				|
+|	Russian Language Pack for e107 0.7.26										|
+|	Site: http://www.e107club.ru												|
+|	Email: translate@e107club.ru												|
+|	Revision: 1.0																|
+|	Charset: utf-8																|
+|	Date: 25.09.2011 05:05:05													|
+|	Author: © Alexander Kadnikov [Predator]										|
+|	© е107 Club 2010-2011. All Rights Reserved.									|
++-------------------------------------------------------------------------------+
 */
-define("CONTENT_EMAILPRINT_LAN_1", "это контент от ");
+
+define("CONTENT_EMAILPRINT_LAN_1", "это контент от");
 define("POPUP_LAN_1", "щелкните для увеличения");
 define("CONTENT_NOTIFY_LAN_1", "События контента");
 define("CONTENT_NOTIFY_LAN_2", "Пункт контента представлен пользователем");
@@ -92,14 +106,14 @@ define("CONTENT_LAN_5", "Автор");
 define("CONTENT_LAN_6", "все категории");
 define("CONTENT_LAN_7", "все авторы");
 define("CONTENT_LAN_8", "лучшие по рейтингу");
-define("CONTENT_LAN_9", "категория ");
-define("CONTENT_LAN_10", "на");
-define("CONTENT_LAN_11", "добавил: ");
+define("CONTENT_LAN_9", "категория");
+define("CONTENT_LAN_10", "Дaтa");
+define("CONTENT_LAN_11", "Автор:");
 define("CONTENT_LAN_12", "лучшие по очкам");
 define("CONTENT_LAN_13", "список");
 define("CONTENT_LAN_14", "-- категории --");
 define("CONTENT_LAN_15", "пока нет авторов");
-define("CONTENT_LAN_16", "[читать далее]");
+define("CONTENT_LAN_16", "[Подробнее...]");
 define("CONTENT_LAN_17", "");
 define("CONTENT_LAN_18", "искать по ключевым словам");
 define("CONTENT_LAN_19", "поиск");
@@ -127,7 +141,7 @@ define("CONTENT_LAN_40", "об авторе");
 define("CONTENT_LAN_41", "вложения");
 define("CONTENT_LAN_42", "файл");
 define("CONTENT_LAN_43", "файлы");
-define("CONTENT_LAN_44", "просмотров: ");
+define("CONTENT_LAN_44", "просмотров:");
 define("CONTENT_LAN_45", "авторская оценка:");
 define("CONTENT_LAN_46", "индекс статьи");
 define("CONTENT_LAN_47", "автор");
@@ -136,13 +150,13 @@ define("CONTENT_LAN_49", "последние элементы");
 define("CONTENT_LAN_50", "дата");
 define("CONTENT_LAN_51", "Печатать список");
 define("CONTENT_LAN_52", "авторы не найдены");
-define("CONTENT_LAN_53", "элемент");
-define("CONTENT_LAN_54", "элемента(ов)");
+define("CONTENT_LAN_53", "статья");
+define("CONTENT_LAN_54", "статьи");
 define("CONTENT_LAN_55", "последний элемент");
 define("CONTENT_LAN_56", "показать краткий обзор");
 define("CONTENT_LAN_57", "комментарии:");
 define("CONTENT_LAN_58", "домой");
-define("CONTENT_LAN_59", "контент");
+define("CONTENT_LAN_59", "Содержaние");
 define("CONTENT_LAN_60", "недавние");
 define("CONTENT_LAN_61", "смотреть недавние элементы");
 define("CONTENT_LAN_62", "смотреть все категории");
@@ -152,18 +166,18 @@ define("CONTENT_LAN_65", "отправить контент");
 define("CONTENT_LAN_66", "нажмите здесь, чтобы отправить контент, вы можете выбрать категорию в которую хотите поместить.");
 define("CONTENT_LAN_67", "Персональный менеджер контента");
 define("CONTENT_LAN_68", "нажмите здесь, чтобы управлять вашим контентом.");
-define("CONTENT_LAN_69", "отправить по email");
+define("CONTENT_LAN_69", "отправить по e-mail");
 define("CONTENT_LAN_70", "печатать");
 define("CONTENT_LAN_71", "элемент контента");
 define("CONTENT_LAN_72", "категорию");
 define("CONTENT_LAN_73", "контента еще нет");
 define("CONTENT_LAN_74", "");
 define("CONTENT_LAN_75", "отправить элемент контента");
-define("CONTENT_LAN_76", "создать pdf-файл ");
+define("CONTENT_LAN_76", "создать pdf-файл");
 define("CONTENT_LAN_77", "Поиск по контенту");
 define("CONTENT_LAN_78", "страница без заголовка");
 define("CONTENT_LAN_79", "страница");
-define("CONTENT_LAN_80", "недавние элементы : ");
+define("CONTENT_LAN_80", "недавние элементы :");
 define("CONTENT_LAN_81", "категории");
 define("CONTENT_LAN_82", "еще нет элементов");
 define("CONTENT_LAN_83", "архив");
@@ -182,7 +196,7 @@ define("CONTENT_MENU_LAN_1", "контента еще нет");
 define("CONTENT_MENU_LAN_2", "недавние элементы");
 define("CONTENT_MENU_LAN_3", "категории");
 define("CONTENT_MENU_LAN_4", "ссылки контента");
-define("CONTENT_MENU_LAN_5", "Нет элементов в");
+define("CONTENT_MENU_LAN_5", "нет элементов в");
 define("CONTENT_MENU_LAN_6", "");
 define("CONTENT_MENU_LAN_7", "");
 define("CONTENT_MENU_LAN_8", "");

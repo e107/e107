@@ -31,6 +31,8 @@ if (!getperms("B")) {
 }
 require_once("auth.php");
 require_once(e_HANDLER."comment_class.php");
+require_once(e_HANDLER.'ren_help.php');
+
 $cobj = new comment;
 global $tp;
 
@@ -103,9 +105,9 @@ if ($editid)
 	else
 	{
 		$row = $sql->db_Fetch();
-		$text .= "<tr><td><textarea class='tbox' name='comment_comment' cols='1' rows='15' style='width:100%;'>".$row['comment_comment']."</textarea></td></tr>";
-		$text .= "<tr><td colspan='5' class='forumheader' style='text-align:center'><input class='button' type='submit' name='moderate' value='".MDCLAN_8."' />
-		</td></tr>";
+		$text .= "<tr><td><textarea class='tbox' name='comment_comment' cols='1' rows='15' style='width:100%;' onselect='storeCaret(this);' onclick='storeCaret(this);'>".$row['comment_comment']."</textarea>
+		<br /><br />".display_help('')."<br /><br /></td></tr>";
+		$text .= "<tr><td colspan='5' style='text-align:left'><input class='button' type='submit' name='moderate' value='".MDCLAN_8."' /></td></tr>";
 	}
 
 	$text .= "</table></form></div>";

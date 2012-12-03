@@ -10,6 +10,9 @@
  *
  * $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_plugins/forum/forum_class.php $
  * $Id: forum_class.php 12059 2011-01-27 19:15:03Z nlstart $
+ 
+ * Modified: © Alexander Kadnikov [Predator]
+ * Date: 03.09.2012
  */
 if (!defined('e107_INIT')) { exit; }
 
@@ -208,12 +211,27 @@ class e107forum
 
 	function forum_getforums($type = 'all')
 	{
+		// Predator 03.09.2012 Изменил запрос
 		global $sql;
 		$qry = "
-		SELECT f.*, u.user_name FROM #forum AS f
-		LEFT JOIN #user AS u ON SUBSTRING_INDEX(f.forum_lastpost_user,'.',1) = u.user_id
-		WHERE forum_parent != 0 AND forum_sub = 0
-		ORDER BY f.forum_order ASC
+		SELECT 
+			`f`.*, `u`.`user_name`, `ft`.`thread_name`
+		FROM 
+			`#forum` AS `f`
+		LEFT JOIN 
+			`#user` AS `u` 
+		ON 
+			SUBSTRING_INDEX(`f`.`forum_lastpost_user`,'.',1) = `u`.`user_id`
+		LEFT JOIN 
+			`#forum_t` AS `ft` 
+		ON 
+			SUBSTRING_INDEX(`f`.`forum_lastpost_info`,'.',-1) = `ft`.`thread_id`
+		WHERE 
+			`forum_parent` != 0 
+				AND 
+			`forum_sub` = 0
+		ORDER BY 
+			`f`.`forum_order` ASC
 		";
 		if ($sql->db_Select_gen($qry))
 		{
@@ -756,6 +774,42 @@ class e107forum
 			$thread_post_user = $post_user.chr(1).$ip;
 		}
 
+		// Predator 03.09.2012 Склейка постов одного пользователя, если пишет подряд
+		// Находим последний пост из темы
+		if (
+			$sql->db_Select('forum_t', '*', "`thread_parent`='".intval($thread_parent)."' AND `thread_datestamp` + 86400 > ".time()." ORDER BY `thread_datestamp` DESC LIMIT 1")
+				&&
+			intval($thread_parent)
+		) {
+			$last_thread_post = $sql->db_Fetch();
+			
+			// Если авторы совпадают
+			if($last_thread_post['thread_user'] == $post_user) {
+				
+				// Новый текст поста
+				$new_text = $last_thread_post['thread_thread'].PHP_EOL.PHP_EOL.'[b]'.strftime('%d.%m.%y %T').' '.LAN_FORUM_100.'[/b]'.PHP_EOL.PHP_EOL.$thread_thread;
+				
+				// Обновляем пост
+				if($sql->db_Update('forum_t', "`thread_thread` = '{$new_text}', `thread_datestamp` = '{$post_time}' WHERE `thread_id` = '{$last_thread_post['thread_id']}'")) {
+					
+					$forum_lp_info = $post_time.'.'.intval($thread_parent);
+					
+					// Обновление информации в основном форуме о последнем сообщении и увеличение счетчика ответов
+					$this->_forum_lp_update('forum_replies', $post_user, $forum_lp_info, $thread_forum_id, $forum_sub);
+
+					// Обновление основного сообщения о последнем сообщении и увеличение счетчика ответов
+					$sql->db_Update('forum_t', "`thread_lastpost`= '{$post_time}', `thread_lastuser` = '{$post_user}' WHERE `thread_id` = ".(int)$thread_parent);
+					
+					return $last_thread_post['thread_id'];
+				}
+				else {
+					echo "thread creation failed!";
+					exit;
+				}
+			}
+		}
+		// Predator конец склейки
+		
 		$post_last_user = ($thread_parent ? "" : $post_user);
 		$vals = "'0', '{$thread_name}', '{$thread_thread}', '".intval($thread_forum_id)."', '".intval($post_time)."', '".intval($thread_parent)."', '{$thread_post_user}', '0', '".intval($thread_active)."', '$post_time', '$thread_s', '0', '{$post_last_user}', '0'";
 		$newthread_id = $sql->db_Insert('forum_t', $vals);

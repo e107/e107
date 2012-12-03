@@ -957,10 +957,23 @@ class forum
 			$fList = $sql->db_getList();
 			foreach($fList as $f)
 			{
-				$txt .= "<input type='checkbox' name='forumlist[{$f['forum_id']}]' value='1' /> ".$tp->toHTML($f['forum_name'])."<br />";
+				$txt .= "<input type='checkbox' class='check_all_forums' name='forumlist[{$f['forum_id']}]' value='1' /> ".$tp->toHTML($f['forum_name'])."<br />";
 			}
-			$txt .= "<input type='checkbox' name='forum_all' value='1' /> <strong>".FORLAN_157."</strong>";
+			// Add 'Select all checkbox' checked Predator 26.08.2012
+			$txt .="<br /><input type='checkbox' id='check_all' />"."
+                    <script type=\"text/javascript\">$(document).ready(function() {
+                         $('#check_all').click(function () {
+                              if (!$('#check_all').is(':checked'))
+                                   $('.check_all_forums').removeAttr('checked');
+                              else 
+                                   $('.check_all_forums').attr('checked','checked');
+							 });
+						});
+					</script>"."&nbsp;".FORLAN_201."<br /><br />";
+			
+			$txt .= "<p><input type='checkbox' name='forum_all' value='1' /> <strong>".FORLAN_157."</strong></p>";
 		}
+		
 		$txt .= "
 		</td>
 		</tr>

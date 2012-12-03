@@ -25,5 +25,4 @@ $sim->render($_SERVER['QUERY_STRING']);
 
 exit;
 
-
 ?>

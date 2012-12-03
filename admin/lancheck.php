@@ -70,16 +70,25 @@ if(isset($_POST['submit']))
 	{
 		// create CVS compatible description.
 		$diz = chr(47)."*\n";
-		$diz .= "+---------------------------------------------------------------+\n";
-		$diz .= "|        e107 website system ".$lan." Language File\n";
-		$diz .= "|        Released under the terms and conditions of the\n";
-		$diz .= "|        GNU General Public License (http://gnu.org).\n";
-		$diz .= "|\n";
-		$diz .= "|        ".chr(36)."URL: $writeit ".chr(36)."\n";
-		$diz .= "|        ".chr(36)."Revision: 1.0 ".chr(36)."\n";
-		$diz .= "|        ".chr(36)."Id: ".date("Y/m/d H:i:s")." ".chr(36)."\n";
-		$diz .= "|        ".chr(36)."Author: ".USERNAME." ".chr(36)."\n";
-		$diz .= "+---------------------------------------------------------------+\n";
+		$diz .= "+ -----------------------------------------------------------------------------+\n";
+		$diz .= "|	Русский языковой пакет для e107 0.7.26										|\n";
+		$diz .= "|	Сайт: http://www.e107club.ru												|\n";
+		$diz .= "|	Почта: translate@e107club.ru												|\n";
+		$diz .= "|	Ревизия: 1.0																|\n";
+		$diz .= "|	Кодировка: utf-8															|\n";
+		$diz .= "|	Дата: ".date("d.m.Y H:i:s")."												|\n";
+		$diz .= "|	Автор: © Кадников Александр	[Predator]										|\n";
+		$diz .= "|	© е107 Клуб 2010-2011. Все права защищены.									|\n";
+		$diz .= "|																				|\n";
+		$diz .= "|	Russian Language Pack for e107 0.7.26										|\n";
+		$diz .= "|	Site: http://www.e107club.ru												|\n";
+		$diz .= "|	Email: translate@e107club.ru												|\n";
+		$diz .= "|	Revision: 1.0																|\n";
+		$diz .= "|	Charset: utf-8																|\n";
+		$diz .= "|	Date: ".date("d.m.Y H:i:s")."												|\n";
+		$diz .= "|	Author: © Alexander Kadnikov [Predator]										|\n";
+		$diz .= "|	© е107 Club 2010-2011. All Rights Reserved.									|\n";
+		$diz .= "+------------------------------------------------------------------------------+\n";
 		$diz .= "*".chr(47)."\n\n";
 	}
 	else
@@ -261,7 +270,7 @@ if(isset($_POST['language_sel'])){
     </form>
 	<form name='refresh' method='post' action='".e_SELF."?tools'>
 	<span>
-	<input type='hidden' name='language' value='".$_POST['language']."' />
+	<input type='hidden' name='language' value='".$_POST['language']."' /><br />
     <input type='submit' name='language_sel[".$_POST['language']."]' value=\"".$lang_sel_diz."\" class='button' />
 	</span>
     </form>
@@ -403,11 +412,6 @@ function check_lan_errors($english,$translation,$def)
 	if((strpos($eng_line,"e107.org")!==FALSE && strpos($trans_line,"e107.org")==FALSE))
 	{
 		$error[] = $def. ": Missing e107.org URL";
-	}
-	
-	if((strpos($eng_line,"e107coders.org")!==FALSE && strpos($trans_line,"e107coders.org")==FALSE))
-	{
-		$error[] = $def. ": Missing e107coders.org URL";
 	}
 	
 	if(strip_tags($eng_line) != $eng_line)

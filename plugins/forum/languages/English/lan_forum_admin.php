@@ -199,7 +199,6 @@ define("FORLAN_173", "Thread title");
 define("FORLAN_174", "Reported by user");
 define("FORLAN_175", "Report submitted");
 define("FORLAN_176", "Report");
-
 define("FORLAN_177", "email notification ON by default");
 define("FORLAN_178", "Tick this to allow make the email notification checkbox be on by default");
 
@@ -207,6 +206,7 @@ define("FORLAN_179", "(Adding a * to the beginning of the forum name will make t
 define("FORLAN_180", "Confirm delete operation");
 define("FORLAN_181", "Confirm Delete");
 define("FORLAN_182", "also recalculate replies for all threads in selected forum");
-define("FORLAN_183", "(this function is not allowed when selecting 'all forums' due to the number of queries it will generate)");
+define("FORLAN_183", "<strong>Attention:</strong>&nbsp;This function is not allowed when selecting <strong>'All forums'</strong> due to the number of queries it will generate!");
+define("FORLAN_201", "Select all");
 
 ?>

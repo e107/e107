@@ -1,20 +1,5 @@
 <?php
-/*
-+ ----------------------------------------------------------------------------+
-|     e107 website system
-|
-|     Copyright (C) 2001-2002 Steve Dunstan (jalist@e107.org)
-|     Copyright (C) 2008-2010 e107 Inc (e107.org)
-|
-|     Released under the terms and conditions of the
-|     GNU General Public License (http://gnu.org).
-|
-|     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/newspost.php $
-|     $Revision: 12061 $
-|     $Id: newspost.php 12061 2011-01-30 21:42:15Z e107coders $
-|     $Author: e107coders $
-+----------------------------------------------------------------------------+
-*/
+
 require_once('../class2.php');
 
 if (!getperms('H')) 
@@ -334,9 +319,10 @@ class newspost
 			<table class='fborder' style='".ADMIN_WIDTH."'>
 			<tr>
 			<td style='width:5%' class='fcaption'><a href='".e_SELF."?main.news_id.{$sort_link}.{$from}'>".LAN_NEWS_45."</a></td>
+			<td style='width:15%' class='fcaption'><a href='".e_SELF."?main.news_datestamp.{$sort_link}.{$from}'>Дата</a></td>
 			<td style='width:55%' class='fcaption'><a href='".e_SELF."?main.news_title.{$sort_link}.{$from}'>".NWSLAN_40."</a></td>
 			<td style='width:15%' class='fcaption'>".LAN_NEWS_49."</td>
-			<td style='width:15%' class='fcaption'>".LAN_OPTIONS."</td>
+			<td style='width:10%' class='fcaption'>".LAN_OPTIONS."</td>
 			</tr>";
 			$ren_type = array('default','title','other-news','other-news 2');
 			foreach($newsarray as $row)
@@ -346,8 +332,9 @@ class newspost
 				// But make EDIT a 'button' and DELETE 'submit'
 				$text .= "<tr>
 				<td style='width:5%' class='forumheader3'>{$news_id}</td>
+				<td style='width:15%' class='forumheader3'>".date('d.m.Y H:i:s', $news_datestamp)."</td>
 				<td style='width:55%' class='forumheader3'><a href='".e_BASE."news.php?item.{$news_id}.{$news_category}'>".($news_title ? $tp->toHTML($news_title,"","no_hook,emotes_off,no_make_clickable") : "[".NWSLAN_42."]")."</a></td>
-				<td style='20%' class='forumheader3'>";
+				<td style='10%' class='forumheader3'>";
 				$text .= $ren_type[$news_render_type];
 				if($news_sticky)
 				{

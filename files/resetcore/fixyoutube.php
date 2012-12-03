@@ -4,7 +4,7 @@ require_once('./../../class2.php');
 
 if (!ADMIN)
 {
-	echo 'Not allowed!';
+	echo 'Не разрешено!';
 	exit();
 }
 
@@ -13,7 +13,7 @@ define('YT_TEST_MODE', FALSE);
 //define('YT_TEST_MODE', TRUE);
 
 
-echo "Youtube tag conversion<br /><br />";
+echo "Преобразование тега Youtube<br /><br />";
 
 
 $ytChanged = FALSE;
@@ -37,7 +37,7 @@ function checkTable($tableName, $idField, $fieldList,$test = TRUE)
 	}
 	elseif ($temp = 0)
 	{
-		echo 'No data found.<br /><br />';
+		echo 'Не найдены данные.<br /><br />';
 		return;
 	}
 	$fieldArray = explode(',', $fieldList);
@@ -70,7 +70,7 @@ function checkTable($tableName, $idField, $fieldList,$test = TRUE)
 			}
 			else
 			{
-				echo "<br />Test: ".$new_data;
+				echo "<br />Тест: ".$new_data;
 			}
 			
 		}

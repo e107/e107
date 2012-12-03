@@ -203,6 +203,9 @@ if (!defined('E_16_USERCLASS')) {
 if (!defined('E_16_LANGUAGE')) {
 	define('E_16_LANGUAGE', "<img src='".e_IMAGE."admin_images/language_16.png' alt='' style='border:0px; vertical-align:bottom; width: 16px; height: 16px' />");
 }
+if (!defined('E_16_JQUERY')) {
+	define('E_16_JQUERY', "<img src='".e_IMAGE."admin_images/jquery_16.png' alt='' style='border:0px; vertical-align:bottom; width: 16px; height: 16px' />");
+}
 
 // Small Admin Other Link Images
 if (!defined('E_16_PLUGIN')) {
@@ -326,6 +329,9 @@ if (!defined('E_32_USERCLASS')) {
 if (!defined('E_32_LANGUAGE')) {
 	define('E_32_LANGUAGE', "<img src='".e_IMAGE."admin_images/language_32.png' alt='' style='border:0px; width: 32px; height: 32px' />");
 }
+if (!defined('E_32_JQUERY')) {
+	define('E_32_JQUERY', "<img src='".e_IMAGE."admin_images/jquery_32.png' alt='' style='border:0px; vertical-align:bottom; width: 32px; height: 32px' />");
+}
 
 // Large Admin Other Link Images
 if (!defined('E_32_PLUGIN')) {
@@ -393,7 +399,8 @@ $e_icon_array = array(
 	'userclass' => E_32_USERCLASS,
 	'user_extended' => E_32_USER_EXTENDED,
 	'users' => E_32_USER,
-	'wmessage' => E_32_WELCOME );
+	'wmessage' => E_32_WELCOME,
+	'jquery' => E_32_JQUERY );
 
 $admin_cat['title'][1] = ADLAN_CL_1;
 $admin_cat['id'][1] = 'setMenu';
@@ -461,6 +468,7 @@ $array_functions = array(
 	26 => array(e_ADMIN."mailout.php", ADLAN_136, ADLAN_137, "W", 2, E_16_MAIL, E_32_MAIL),
 	27 => array(e_ADMIN."users_extended.php", ADLAN_78, ADLAN_79, "4", 2, E_16_USER_EXTENDED, E_32_USER_EXTENDED),
 	28 => array(e_ADMIN."fileinspector.php", ADLAN_147, ADLAN_148, "Y", 4, E_16_INSPECT, E_32_INSPECT),
-	29 => array(e_ADMIN."notify.php", ADLAN_149, ADLAN_150, "O", 4, E_16_NOTIFY, E_32_NOTIFY)
+	29 => array(e_ADMIN."notify.php", ADLAN_149, ADLAN_150, "O", 4, E_16_NOTIFY, E_32_NOTIFY),
+	30 => array(e_ADMIN."jquery.php", ADLAN_156, ADLAN_157, "0", 1, E_16_JQUERY, E_32_JQUERY)
 	);
 ?>

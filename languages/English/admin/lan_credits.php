@@ -10,14 +10,13 @@
 +----------------------------------------------------------------------------+
 */
 
-define("PAGE_NAME", "e107 Credits");
-
-define("CRELAN_1", "Credits");
+define("PAGE_NAME", "Developers е107");
+define("CRELAN_1", "Developers");
 define("CRELAN_2", "Here is a list of third-party software / resources used in e107. The e107 development team would like to personally thank the developers of the following for allowing us to redistribute their code with e107, and for releasing their software under the GPL licence.");
-define("CRELAN_3", "all rights reserved");
+define("CRELAN_3", "e107 Inc.");
 define("CRELAN_4", "Show e107 Dev Team");
 define("CRELAN_5", "Show third party scripts");
-define("CRELAN_6", "e107 v0.7 was brought to you by ...");
+define("CRELAN_6", "e107 cms v0.7.26 was brought to you by ...");
 define("CRELAN_7", "version");
 define("CRELAN_8", "permission granted");
 define("CRELAN_9", "Licence");
@@ -50,9 +49,6 @@ define("CRELAN_27", "\"Wot? No tea?? 0_0\""); // SweetAs
 define("CRELAN_28", ""); // MrPete
 define("CRELAN_29", "Up and forward!"); // SecretR
 define("CRELAN_30", ""); // steved
-//define("CRELAN_31", "");
-//define("CRELAN_32", "");
-
-// end dev team
-
+define("CRELAN_555", "Founder and Chief Administrator of the portal e107 Club<br />Leading translator and localizer of Russian versions of e107 cms and plug-ins ...<br />Developer of plugins, author of lessons and articles ...");
+define("CRELAN_556", "Leading security expert<br />Chief Administrator of the portal e107 Club<br />Developer of plug-ins, author of lessons and just a good man ...");
 ?>

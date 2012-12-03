@@ -1,21 +1,24 @@
 <?php
-
 /*
-+ ----------------------------------------------------------------------------+
-|     e107 website system
-|
-|     Copyright (C) 2001-2002 Steve Dunstan (jalist@e107.org)
-|     Copyright (C) 2008-2010 e107 Inc (e107.org)
-|
-|
-|     Released under the terms and conditions of the
-|     GNU General Public License (http://gnu.org).
-|
-|     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_handlers/comment_class.php $
-|     $Revision: 11941 $
-|     $Id: comment_class.php 11941 2010-11-01 22:10:28Z e107steved $
-|     $Author: e107steved $
-+----------------------------------------------------------------------------+
++-------------------------------------------------------------------------------+
+|	е107 Система Управления Контентом											|
+|	Сайт: http://www.e107club.ru												|
+|	Файл: comment_class.php														|
+|	Ревизия: 14000																|
+|	Кодировка: utf-8															|
+|	Дата: 23.02.2012 05:05:05													|
+|	Автор: © Кадников Александр	[Predator]										|
+|	© е107 Клуб, 2010-2012. Все права защищены.									|
++-------------------------------------------------------------------------------+
+|	e107 website system															|
+|	Site: http://www.e107club.ru												|
+|	File: comment_class.php														|
+|	Revision: 14000																|
+|	Charset: utf-8																|
+|	Date: 23.02.2012 05:05:05													|
+|	Author: © Alexander Kadnikov [Predator]										|
+|	© 2010-2012 е107 Club. All Rights Reserved.									|
++-------------------------------------------------------------------------------+
 */
 
 if (!defined('e107_INIT')) { exit; }
@@ -137,11 +140,10 @@ class comment {
 			$text .= "<tr>\n<td style='width:20%; vertical-align:top;'>".COMLAN_16."</td>\n<td style='width:80%'>\n<input class='tbox comment author' type='text' name='author_name' size='61' value='{$author_name}' maxlength='100' />\n</td>\n</tr>";
 			}
 			$text .= $rate."<tr> \n
-			<td style='width:20%; vertical-align:top;'>".COMLAN_8.":</td>\n<td id='commentform' style='width:80%;'>\n<textarea class='tbox comment' id='comment' name='comment' cols='62' rows='7' onselect='storeCaret(this);' onclick='storeCaret(this);' onkeyup='storeCaret(this);'>$comval</textarea>\n<br />
-			".display_help('helpb',"comment")."</td></tr>\n<tr style='vertical-align:top'> \n<td style='width:20%'>".$text2."</td>\n
-			<td id='commentformbutton' style='width:80%;'>
-			<input type='hidden' name='e-token' value='".e_TOKEN."' />\n
-			". (isset($action) && $action == "reply" ? "<input type='hidden' name='pid' value='{$id}' />" : '').(isset($eaction) && $eaction == "edit" ? "<input type='hidden' name='editpid' value='{$id}' />" : "").(isset($content_type) && $content_type ? "<input type='hidden' name='content_type' value='{$content_type}' />" : ''). "<input class='button' type='submit' name='".$action."submit' value='".(isset($eaction) && $eaction == "edit" ? COMLAN_320 : COMLAN_9)."' />\n</td>\n</tr>\n</table>\n</form></div>";
+			<td style='width:20%; vertical-align:top;'>".COMLAN_8.":</td>\n<td id='commentform' style='width:80%;'>\n<textarea style='width: 96%; height: 140px' class='tbox comment' id='comment' name='comment' onselect='storeCaret(this);' onclick='storeCaret(this);' onkeyup='storeCaret(this);'>$comval</textarea>\n<br /><br />
+			".display_help('helpb','comment')."</td></tr>\n<tr style='vertical-align:top'>\n<td style='width:20%'>".$text2."</td>\n
+			<td id='commentformbutton' style='width:80%;'>\n
+			". (isset($action) && $action == "reply" ? "<input type='hidden' name='pid' value='{$id}' />" : '').(isset($eaction) && $eaction == "edit" ? "<input type='hidden' name='editpid' value='{$id}' />" : "").(isset($content_type) && $content_type ? "<input type='hidden' name='content_type' value='{$content_type}' />" : ''). "<br /><input class='button' type='submit' name='".$action."submit' value='".(isset($eaction) && $eaction == "edit" ? COMLAN_320 : COMLAN_9)."' />\n</td>\n</tr>\n</table>\n</form></div>";
 
 			if($tablerender)
 			{
@@ -454,14 +456,16 @@ class comment {
 	 * @param unknown_type $id
 	 * @return unknown
 	 */
+	
+	// Разбиваем комментарии на страницы Predator 16.08.2012
 	function count_comments($table, $id)
 	{
-		global $sql, $tp;
+		global $sql, $tp, $pref;
 		$type = $this -> getCommentType($table);
-		$count_comments = $sql -> db_Count("comments", "(*)", "WHERE comment_item_id='".intval($id)."' AND comment_type='".$tp -> toDB($type, true)."' ");
+		$count_comments = $sql -> db_Count("comments", "(*)", "WHERE comment_item_id='".intval($id)."'".($pref['nested_comments']?" AND comment_pid='0'":'').
+		" AND comment_type='".$tp -> toDB($type, true)."' ");
 		return $count_comments;
 	}
-
 
 	/**
 	 * Enter description here...
@@ -487,25 +491,81 @@ class comment {
 //		Query no longer used
 //		$count_comments = $this -> count_comments($table, $id, $pid=FALSE);
 
+	// Разбиваем комментарии на страницы Predator 16.08.2012
+	
+	// Сортировка комментариев
+	$pref['comment_sortlog'] = $tp->toDB($_POST['comment_sortlog']);
+		
+	$np_amount = 10; // Комментариев на страницу
+	$np_parse = explode( '.' , e_QUERY );
+
+	if(e_PAGE == 'comment.php'){
+		$np_query = 'comment.'.$table.'.'.$id; // составляем QUERY_STRING
+		$np_pos = intval(varset($np_parse[3], 0)); // номер страницы
+		$np_total = ( $this->count_comments($table, $id) ); // общее кол-во комментариев
+	}elseif(e_PAGE == 'download.php'){ //тоже самое для загрузок
+		$np_query = 'view.'.$id;
+		$np_pos = intval(varset($np_parse[2], 0));
+		$np_total = ( $this->count_comments($table, $id));
+	}elseif(e_PAGE == 'page.php'){
+		$np_query = $id;
+		$np_pos = intval(varset($np_parse[1], 0));
+		$np_total = ( $this->count_comments($table, $id));
+	}
+
+ 
 		$type = $this -> getCommentType($table);
 
 		$query = $pref['nested_comments'] ?
 		"SELECT c.*, u.*, ue.* FROM #comments AS c
 		LEFT JOIN #user AS u ON SUBSTRING_INDEX(c.comment_author,'.',1) = u.user_id
 		LEFT JOIN #user_extended AS ue ON SUBSTRING_INDEX(c.comment_author,'.',1) = ue.user_extended_id
-		WHERE c.comment_item_id='".intval($id)."' AND c.comment_type='".$tp -> toDB($type, true)."' AND c.comment_pid='0' ORDER BY c.comment_datestamp"
+		WHERE c.comment_item_id='".intval($id)."' AND c.comment_type='".$tp -> toDB($type, true)."' AND c.comment_pid='0' ORDER BY c.comment_datestamp LIMIT ".$np_pos.",".$np_amount.""
 		:
-		"SELECT c.*, u.*, ue.* FROM #comments AS c
-		LEFT JOIN #user AS u ON SUBSTRING_INDEX(c.comment_author,'.',1) = u.user_id
-		LEFT JOIN #user_extended AS ue ON SUBSTRING_INDEX(c.comment_author,'.',1) = ue.user_extended_id
-		WHERE c.comment_item_id='".intval($id)."' AND c.comment_type='".$tp -> toDB($type, true)."' ORDER BY c.comment_datestamp";
+		"SELECT 
+			`c`.*, `u`.*, `ue`.* 
+		FROM 
+			`#comments` AS `c`
+		LEFT JOIN 
+			`#user` AS `u`
+		ON 
+			SUBSTRING_INDEX(`c`.`comment_author`, '.', 1) = `u`.`user_id`
+		LEFT JOIN 
+			`#user_extended` AS `ue`
+		ON 
+			SUBSTRING_INDEX(`c`.`comment_author`, '.' , 1) = `ue`.`user_extended_id`
+		WHERE 
+			`c`.`comment_item_id` = '".intval($id)."' 
+				AND 
+			`c`.`comment_type` = '".$tp -> toDB($type, true)."' 
+		ORDER BY 
+			`c`.`comment_datestamp` ".( !$_COOKIE['comment_sortlog'] ? 'ASC' : 'DESC' )." 
+		LIMIT 
+			{$np_pos}, {$np_amount}";
 
 		$text = "";
 		$comment = '';
 		$modcomment = '';
 		$lock = '';
 		$ret['comment'] = '';
+		
+// Сортировка комментариев
+$text .=	"
+			<div>
+				<div style='vertical-align: top;'>".COMLAN_331."
+					<select style='padding:2px; width: 120px' class='tbox' name='comment_sortlog' onchange='set_cookie(\"comment_sortlog\", this.value);'>
+						<option value='0' ".( !$_COOKIE['comment_sortlog'] ? 'selected="selected"' : '' ).">".COMLAN_332."</option>
+						<option value='1' ".( $_COOKIE['comment_sortlog'] === '1' ? 'selected="selected"' : '' ).">".COMLAN_333."</option>
+					</select>
+				</div>
+			</div>";
 
+// Постраничная навигация			
+$parms = $np_total.",".$np_amount.",".$np_pos.",".e_SELF.'?'.$np_query.".[FROM]";
+$nextprev = $tp->parseTemplate("{NEXTPREV={$parms}}");
+$text .= ($nextprev ? '<div class="nextprev">'.$nextprev.'</div>' : '');
+//-------------------------------------------------------------------------
+			
 		if ($comment_total = $sql->db_Select_gen($query))
 		{
 			$width = 0;
@@ -522,7 +582,16 @@ class comment {
 					$text .= $this->render_comment($row, $table , $action, $id, $width, $tp->toHTML($subject), $rate);
 				}
 			}
+			
+// Разбиваем комментарии на страницы, навигация нижняя Predator 16.08.2012
+$text .= ($nextprev ? '<div class="nextprev">'.$nextprev.'</div>' : '');
+//-------------------------------------------------------------------------
 
+	if (ADMIN && getperms("B"))
+		{
+			$text .= "<div style='text-align:left;'><a style='text-decoration: none;' class='button' href='".e_ADMIN_ABS."modcomment.php?$table.$id'>".COMLAN_314."</a></div><br />";
+		}
+			
 			if ($tablerender)
 			{
 				$text = $ns->tablerender(COMLAN_99, $text, '', TRUE);
@@ -535,11 +604,6 @@ class comment {
             else
             {
 				$ret['comment'] = $text;
-			}
-
-			if (ADMIN && getperms("B"))
-			{
-				$modcomment =  "<div style='text-align:right'><a href='".e_ADMIN_ABS."modcomment.php?$table.$id'>".COMLAN_314."</a></div><br />";
 			}
 		}
 
@@ -639,8 +703,8 @@ class comment {
 	function get_e_comment()
 	{
 		$data = getcachedvars('e_comment');
-		if($data!==FALSE)
-		{
+	  if($data!==FALSE)
+	  {
 			return $data;
 		}
 
@@ -650,24 +714,18 @@ class comment {
 		$omit = array('^\.$','^\.\.$','^\/$','^CVS$','thumbs\.db','.*\._$','.bak$');
 		$files = $fl->get_files(e_PLUGIN, 'e_comment.php', $omit, 1, 0);
 
-		foreach($files as $file)
-		{
+		foreach($files as $file){
 			unset($e_comment, $key);
 			include($file['path'].$file['fname']);
-			if(isset($e_comment) && is_array($e_comment))
-			{
+			if($e_comment && is_array($e_comment)){
 				$key = $e_comment['eplug_comment_ids'];
-				if(isset($key) && $key!='')
-				{
+				if(isset($key) && $key!=''){
 					$data[$key] = $e_comment;
 				}
-			}
-			else
-			{
+			}else{
 				//convert old method variables into the same array method
 				$key = $e_plug_table;
-				if(isset($key) && $key!='')
-				{
+				if(isset($key) && $key!=''){
 					$e_comment['eplug_comment_ids']	= $e_plug_table;
 					$e_comment['plugin_name']		= $plugin_name;
 					$e_comment['plugin_path']		= $plugin_path;
@@ -850,7 +908,7 @@ class comment {
 					  }
 					}
 				  }		// End Switch
-				  if(varset($ret['comment_title']))
+				  if($ret['comment_title'])
 				  {
 					$reta[] = $ret;
 					$valid++;

@@ -3,7 +3,7 @@
 + ----------------------------------------------------------------------------+
 |     e107 website system
 |
-|     Copyright (C) 2001-2002 Steve Dunstan (jalist@e107.org)
+|     © e107 Club, 2010-2012
 |     Copyright (C) 2008-2010 e107 Inc (e107.org)
 |
 |
@@ -12,10 +12,11 @@
 |
 |     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/print.php $
 |     $Revision: 11692 $
-|     $Id: print.php 11692 2010-08-23 17:32:16Z e107steved $
-|     $Author: e107steved $
+|     $Id: print.php 04.09.2012 22:45:10
+|     $Author: Alex Kadnikov [Predator] $
 +----------------------------------------------------------------------------+
 */
+
 require_once("class2.php");
 $HEADER="";
 $FOOTER="";
@@ -71,7 +72,7 @@ else
 	}
 	$news_datestamp = $con->convert_date($news_datestamp, "long");
 	$print_text = "<span style=\"font-size: 13px; color: black; font-family: tahoma, verdana, arial, helvetica; text-decoration: none\">
-	<b>".LAN_PRINT_135.$news_title."</b>
+	<b>".LAN_PRINT_135.": ".$news_title."</b>
 	<br />
 	(".LAN_PRINT_86." ".$tp->toHTML($category_name, FALSE, "defs").")
 	<br />
@@ -105,7 +106,9 @@ echo "
 <div style='background-color:white'>
 <div style='text-align:".$align."'>".$tp->parseTemplate("{LOGO}", TRUE)."</div><hr /><br />
 <div style='text-align:".$align."'>".$print_text."</div><br /><br />
-<form action=''><div style='text-align:center'><input type='button' value='".LAN_PRINT_307."' onclick='window.print()' /></div></form></div>";
+<form action=''><div style='text-align:center' class='no-print'><div><input type='button' value='".LAN_PRINT_307."' onclick='window.print()' /></div></form>
+<br />
+<div><input type='button' value='".LAN_PRINT_BACK."' onclick='history.back();return false' /></div></div></div>";
 
 require_once(FOOTERF);
 

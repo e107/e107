@@ -37,12 +37,12 @@ class secure_image
 		$imgp = dirname(__FILE__);
 		if (substr($imgp,-1,1) != DIRECTORY_SEPARATOR) $imgp .= DIRECTORY_SEPARATOR;
 		$imgp = str_replace('/', DIRECTORY_SEPARATOR, $imgp);
-		@include($imgp.'..'.DIRECTORY_SEPARATOR.'e107_config.php');
+		@include($imgp.'..'.DIRECTORY_SEPARATOR.'config.php');
 		if(!isset($mySQLserver))
 		{
 			if(defined('e_DEBUG'))
 			{
-				echo "FAILED TO LOAD e107_config.php in secure_img_handler.php";
+				echo "Не удалось загрузить config.php в secure_img_handler.php";
 			}
 			exit;
 		}
@@ -186,6 +186,9 @@ class secure_image
 			case "jpeg":
 				$image = ImageCreateFromJPEG($path.$bg_file.".jpg");
 				break;
+			case "jpg":
+				$image = ImageCreateFromJPG($path.$bg_file.".jpg");
+				break;
 			case "png":
 				$image = ImageCreateFromPNG($path.$bg_file.".png");
 				break;
@@ -222,6 +225,9 @@ class secure_image
 			case "jpeg":
 				imagejpeg($image);
 				break;
+			case "jpg":
+				imagejpg($image);
+				break;
 			case "png":
 				imagepng($image);
 				break;
@@ -234,3 +240,4 @@ class secure_image
 	}
 
 }
+?>

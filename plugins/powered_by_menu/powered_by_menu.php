@@ -21,6 +21,9 @@ if (!defined('e107_INIT')) { exit; }
 $text = "
 <div style='text-align: center'>
 <div class='spacer'>
+<a href='http://www.e107club.ru' rel='external'><img src='".e_IMAGE_ABS."e107club.png' alt='e107 Club' style='border: 0px; width: 88px; height: 31px' /></a>
+</div>
+<div class='spacer'>
 <a href='http://e107.org' rel='external'><img src='".e_IMAGE_ABS."button.png' alt='e107' style='border: 0px; width: 88px; height: 31px' /></a>
 </div>
 <div class='spacer'>

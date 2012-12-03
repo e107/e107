@@ -154,7 +154,7 @@ class rss{
 
 	//check for config
 	function file_check(){
-		$arrays = file_get_contents(e_BASE."e107_config.php");
+		$arrays = file_get_contents(e_BASE."config.php");
 		$arrays2 = file_get_contents(e_PLUGIN."rss_menu/languages/".e_LANGUAGE.".php");
 		if($arrays[0] != "<" || $arrays2[0] != "<"){
 			return TRUE;

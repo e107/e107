@@ -140,8 +140,12 @@ if (varset($pref['wysiwyg'],FALSE) && check_class($pref['post_html']) && varset(
 	define("e_WYSIWYG",FALSE);
 }
 
+if ($pref['jq_core']){
+	echo "<script type='text/javascript' src='".e_FILE_ABS."jquery.js'></script>\n";
+	}
+	
 if (strpos(e_SELF.'?'.e_QUERY, 'menus.php?configure') === FALSE) {
-	echo "<script type='text/javascript' src='".e_FILE_ABS."e107.js'></script>\n";
+	echo "<script type='text/javascript' src='".e_FILE_ABS."core.js'></script>\n";
 }
 	if (file_exists(THEME.'theme.js')) { echo "<script type='text/javascript' src='".THEME_ABS."theme.js'></script>\n"; }
 	if (is_readable(e_FILE.'user.js') && filesize(e_FILE.'user.js')) { echo "<script type='text/javascript' src='".e_FILE_ABS."user.js'></script>\n"; }
@@ -219,7 +223,8 @@ else
 	echo "<link rel='stylesheet' href='".$css_file."' type='text/css' />\n";
 }
 if (!isset($no_core_css) || !$no_core_css) {
-	echo "<link rel='stylesheet' href='".e_FILE_ABS."e107.css' type='text/css' />\n";
+	echo "<link rel='stylesheet' href='".e_FILE_ABS."core.css' type='text/css' />\n";
+	echo "<link rel='stylesheet' href='".e_FILE_ABS."nextprev.css' type='text/css' />\n";
 }
 
 

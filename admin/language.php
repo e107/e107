@@ -9,7 +9,7 @@
 |     Released under the terms and conditions of the
 |     GNU General Public License (http://gnu.org).
 |
-|     $URL: https://e107.svn.sourceforge.net/svnroot/e107/trunk/e107_0.7/e107_admin/language.php $
+|     Modified: Alexander Kadnikov [Predator]
 |     $Revision: 12128 $
 |     $Id: language.php 12128 2011-04-11 10:39:05Z e107coders $
 |     $Author: e107coders $
@@ -426,7 +426,7 @@ function show_tools()
 			<td class='forumheader3' >".$value['date']."</td>
 			<td class='forumheader3' >".$value['compatibility']."</td>
 			<td class='forumheader3' style='text-align:center' >".($ver == $value['compatibility'] || varset($_SESSION['lancheck_'.$language]['total']) =='0' ? ADMIN_TRUE_ICON : ADMIN_FALSE_ICON)."</td>
-			<td class='forumheader3' style='text-align:center'><input type='submit' name='language_sel[{$language}]' value=\"".LAN_CHECK_2."\" class='button' />
+			<td class='forumheader3' style='text-align:center'><input type='submit' name='language_sel[{$language}]' value=\"".LAN_CHECK_2."\" class='button' /><br /><br />
 			<input type='submit' name='ziplang[{$language}]' value=\"".LANG_LAN_23."\" class='button' /></td>	
 			</tr>";
 		}
@@ -691,7 +691,7 @@ function zip_up_lang($language)
 	if(!$locale = find_locale($language))
 	{
 		$ret['error'] = TRUE;
-		$file = "e107_languages/{$language}/{$language}.php";
+		$file = "languages/{$language}/{$language}.php";
 		$def = (defined('LANG_LAN_25')) ? LANG_LAN_25 : "Please check that CORE_LC and CORE_LC2 have values in [lcpath] and try again.";
 		$ret['message'] = str_replace("[lcpath]",$file,$def); // 
 		return $ret;	
@@ -699,14 +699,14 @@ function zip_up_lang($language)
 		
 	global $THEMES_DIRECTORY, $PLUGINS_DIRECTORY, $LANGUAGES_DIRECTORY, $HANDLERS_DIRECTORY, $HELP_DIRECTORY;
 		
-	if(($HANDLERS_DIRECTORY != "e107_handlers/") || ( $LANGUAGES_DIRECTORY != "e107_languages/") || ($THEMES_DIRECTORY != "e107_themes/") || ($HELP_DIRECTORY != "e107_docs/help/") || ($PLUGINS_DIRECTORY != "e107_plugins/"))
+	if(($HANDLERS_DIRECTORY != "handlers/") || ( $LANGUAGES_DIRECTORY != "languages/") || ($THEMES_DIRECTORY != "themes/") || ($HELP_DIRECTORY != "docs/help/") || ($PLUGINS_DIRECTORY != "plugins/"))
 	{
 		$ret['error'] = TRUE;
-		$ret['message'] = (defined('LANG_LAN_26')) ? LANG_LAN_26 : "Please make sure you are using default folder names in e107_config.php (eg. e107_languages/, e107_plugins/ etc.) and try again.";
+		$ret['message'] = (defined('LANG_LAN_26')) ? LANG_LAN_26 : "Пожалуйста, удостоверьтесь, что вы используете имена папок установленных по умолчанию в файле config.php (например: languages/, plugins/ и т.д.) и попробуйте еще раз.";
 		return $ret;	
 	}	
 		
-	$newfile = e_FILE."public/e107_".$ver."_".$language."_".$locale."-utf8.zip";
+	$newfile = e_FILE."public/".$ver."_".$language."_".$locale."-utf8.zip";
 	
 	$archive = new PclZip($newfile);
  
@@ -734,13 +734,13 @@ function zip_up_lang($language)
 			$fileName = e_FILE."public/".$language.".xml";
 			@unlink($fileName);
 		$fileData = '<?xml version="1.0" encoding="utf-8"?>
-<e107Language name="'.$language.'" compatibility="'.$ver.'" date="'.date("Y-m-d").'" >
+<e107Language name="'.$language.'" compatibility="'.$ver.'" date="'.date("d.m.Y").'" >
 <author name ="'.USERNAME.'" email="'.USEREMAIL.'" url="'.SITEURL.'" />
 </e107Language>';
 
 			if(file_put_contents($fileName,$fileData))
 			{
-				$addTag = $archive->add($fileName, PCLZIP_OPT_ADD_PATH, 'e107_languages/'.$language, PCLZIP_OPT_REMOVE_PATH, e_FILE.'public/');				
+				$addTag = $archive->add($fileName, PCLZIP_OPT_ADD_PATH, 'languages/'.$language, PCLZIP_OPT_REMOVE_PATH, e_FILE.'public/');				
 				$_SESSION['lancheck_'.$language]['xml'] = "Yes";
 			}
 			@unlink($fileName);	

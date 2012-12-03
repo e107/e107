@@ -111,8 +111,11 @@ else
 	define("e_WYSIWYG",FALSE);
 }
 
+if ($pref['jq_core']){
+	echo "<script type='text/javascript' src='".e_FILE_ABS."jquery.js'></script>\n";
+	}
 
-echo "<script type='text/javascript' src='".e_FILE_ABS."e107.js'></script>\n";
+echo "<script type='text/javascript' src='".e_FILE_ABS."core.js'></script>\n";
 if (isset($theme_js_php) && $theme_js_php)
 {
 	echo "<script type='text/javascript' src='".THEME_ABS."theme-js.php'></script>\n";
@@ -187,6 +190,10 @@ if(defined("PREVIEWTHEME")) {
             	echo "<link rel='stylesheet' href='".THEME_ABS."style_print.css' type='text/css' media='print' />\n";
                 $css_default = "screen";
 			}
+			if(file_exists(THEME."nextprev.css")){
+            	echo "<link rel='stylesheet' href='".THEME_ABS."nextprev.css' type='text/css' />\n";
+                $css_default = "screen";
+			}
 			echo "<link rel='stylesheet' href='".THEME_ABS."{$pref['themecss']}' type='text/css' media='{$css_default}' />\n";
 
 
@@ -202,10 +209,15 @@ if(defined("PREVIEWTHEME")) {
             	echo "<link rel='stylesheet' href='".THEME_ABS."style_print.css' type='text/css' media='print' />\n";
                 $css_default = "screen";
 			}
+			if(file_exists(THEME."nextprev.css")){
+            	echo "<link rel='stylesheet' href='".THEME_ABS."nextprev.css' type='text/css' />\n";
+                $css_default = "screen";
+			}
 			echo "<link rel='stylesheet' href='".THEME_ABS."style.css' type='text/css' media='{$css_default}' />\n";
 		}
 		if (!isset($no_core_css) || !$no_core_css) {
-			echo "<link rel='stylesheet' href='".e_FILE_ABS."e107.css' type='text/css' />\n";
+			echo "<link rel='stylesheet' href='".e_FILE_ABS."core.css' type='text/css' />\n";
+			echo "<link rel='stylesheet' href='".e_FILE_ABS."nextprev.css' type='text/css' />\n";
 		}
 	}
 }
@@ -244,7 +256,7 @@ function render_meta($type)
 	// if (!isset($pref['meta_'.$type][e_LANGUAGE])){ return;}
 	// if (!$pref['meta_'.$type][e_LANGUAGE]){ return; }
 
-	if($type == "tag" && defset($pref['meta_tag'][e_LANGUAGE]))
+	if($type == "tag" && varset($pref['meta_tag'][e_LANGUAGE]))
 	{
 		return str_replace("&lt;", "<", $tp -> toHTML($pref['meta_tag'][e_LANGUAGE], FALSE, "nobreak, no_hook, no_make_clickable"))."\n";
 	}
@@ -266,7 +278,7 @@ function render_meta($type)
 
 		return $ret;		
 	}
-	elseif(defset($pref['meta_'.$type][e_LANGUAGE]))
+	elseif(varset($pref['meta_'.$type][e_LANGUAGE]))
 	{
 		return '<meta name="'.$type.'" content="'.$pref['meta_'.$type][e_LANGUAGE].'" />'."\n";
 	}

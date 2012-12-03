@@ -156,4 +156,5 @@ function openPerfectPopup(oSrc, oWidth, oTitle, oText){
 	imgWin.document.close();
 	if( imgWin.focus ) { imgWin.focus(); }
 	return false;
+	
 }

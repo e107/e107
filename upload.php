@@ -14,6 +14,7 @@
 |     $Revision: 11678 $
 |     $Id: upload.php 11678 2010-08-22 00:43:45Z e107coders $
 |     $Author: e107coders $
+|	  $Modified: Alex Kadnikov [Predator] 11.08.2012
 +----------------------------------------------------------------------------+
 */
 
@@ -33,6 +34,7 @@ if (!$pref['upload_enabled'] || $pref['upload_class'] == 255)
 }
 
 require_once(HEADERF);
+require_once(e_HANDLER.'ren_help.php');
 
 if (!defined("USER_WIDTH")){ define("USER_WIDTH","width:97%"); }
 
@@ -238,7 +240,8 @@ $text .= "
 
 	<tr>
 	<td class='forumheader3'><span style='text-decoration:underline'>".LAN_413."</span></td>
-	<td class='forumheader3'><textarea class='tbox' style='width:90%' name='file_description' id='file_description' cols='59' rows='6'></textarea></td>
+	<td class='forumheader3'><textarea  name='file_description' id='file_description' class='tbox' style='width: 90%; height: 140px;' onselect='storeCaret(this);' onclick='storeCaret(this);'></textarea><br /><br />
+		".display_help('')."<br /></td>
 	</tr>
 
 	<tr>

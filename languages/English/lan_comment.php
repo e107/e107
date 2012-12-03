@@ -58,6 +58,10 @@ define("COMLAN_328", 'Comments are locked');
 define("COMLAN_329", 'Unauthorized');
 define("COMLAN_330", 'IP:');
 
+define('COMLAN_331', 'Sort comments:&nbsp;');
+define('COMLAN_332', 'Ascending');
+define('COMLAN_333', 'Descending');
+
 define("COMLAN_TYPE_1", "news");
 define("COMLAN_TYPE_2", "download");
 define("COMLAN_TYPE_3", "faq");

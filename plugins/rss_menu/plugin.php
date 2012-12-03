@@ -22,13 +22,13 @@ include_lan(e_PLUGIN."rss_menu/languages/".e_LANGUAGE.".php");
 
 // Plugin info ----------------------------------------------------------------
 $eplug_name				= "RSS_PLUGIN_LAN_1";
-$eplug_version			= "1.1";
+$eplug_version			= "1.2";
 $eplug_author			= "e107dev";
 $eplug_logo				= "";
 $eplug_url				= "http://e107.org";
 $eplug_email			= "";
 $eplug_description		= RSS_MENU_L2;
-$eplug_compatible		= "e107v0.7+";
+$eplug_compatible		= "e107v0.7++";
 $eplug_readme			= "";		//leave blank if no readme file
 $eplug_latest			= FALSE;	//Show reported threads in admin (use latest.php)
 $eplug_status			= FALSE;	//Show post count in admin (use status.php)

@@ -29,7 +29,7 @@ include_once(e_HANDLER."user_extended_class.php");
 $ue = new e107_user_extended;
 
 if (isset($_POST['newver'])) {
-	header("location:http://e107.org/index.php");
+	header("location:http://www.e107club.ru/index.php");
 	exit;
 }
 
@@ -725,15 +725,14 @@ $text .= "<div id='textpost' style='display:none; text-align:center'>
 	<input type='radio' name='old_np' value='0'".(!$pref['old_np'] ? " checked='checked'" : "")." /> ".PRFLAN_113."
 	</td>
 	</tr>
-";
-	// Deprecated as of 0.7.16
-	// <tr>
-	// <td class='forumheader3' style='width:50%;'>".PRFLAN_131.":  <div class='smalltext'>".PRFLAN_132."</div></td>
-	// <td class='forumheader3' style='width:50%; text-align: right;'>
-	// ".r_userclass('php_bbcode',$pref['php_bbcode'],'off','nobody,admin,main,classes')."
-	// </td>
-	// </tr>\n
 
+	<tr>
+	<td class='forumheader3' style='width:50%;'>".PRFLAN_131.":  <div class='smalltext'>".PRFLAN_132."</div></td>
+	<td class='forumheader3' style='width:50%; text-align: right;'>
+	".r_userclass('php_bbcode',$pref['php_bbcode'],'off','nobody,admin,main')."
+	</td>
+	</tr>\n
+";
 
 
 	if(file_exists(e_PLUGIN."geshi/geshi.php")) {

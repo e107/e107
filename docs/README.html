@@ -30,7 +30,7 @@ $Author: e107steved $
   <br />
   <a id='requirements'></a><span class="headertext">Requirements</span>
   <ul>
-    <li>e107 requires a webserver that has PHP 4.3 (or newer) and MySQL 3.22 (or newer - 4.21 or newer preferred), contact your host if you're not sure if you have these installed.</li>
+    <li>e107 requires a webserver that has PHP 5.0 (or newer) and MySQL 5.0, contact your host if you're not sure if you have these installed.</li>
     <li>If you host your own site you can download <a href="http://php.net">PHP</a> and <a href="http://mysql.com">MySQL</a> and install them yourself, both are free.</li>
     <li>You will need your MySQL username and password, and a database for content storage. Don't worry if you only have one database, e107 is happy to share it's database with other applications.</li>
     <li>A complete e107 install requires approximately 9MB of disk space on your server, although this should be reduced dramatically for most users by removing the plugins and themes they won't be using, simply by removing the relevant folder.</li>
@@ -58,12 +58,12 @@ $Author: e107steved $
   <ul>
     <li>You now need to set the file permissions of some files for e107 to access them correctly. Set the file permissions to 0777 (readable writable by the server), if a series of checkboxes appear tick every box. Here is a list of the files you need to ensure the server can read / write to...<br /><br />
       <ul>
-        <li>e107_config.php</li>
-        <li>e107_files/public/</li>
-        <li>e107_files/cache/</li>
-        <li>e107_files/public/avatars/</li>
-        <li>e107_plugins/</li>
-        <li>e107_themes/</li>
+        <li>config.php</li>
+        <li>files/public/</li>
+        <li>files/cache/</li>
+        <li>files/public/avatars/</li>
+        <li>plugins/</li>
+        <li>themes/</li>
       </ul>
     </li>
   </ul>
@@ -116,31 +116,31 @@ $Author: e107steved $
   <br />
   Security has been a primary concern since the first released versions of e107, and for this reason there are some very easy measures you can take to make your site more secure ...
   <ul>
-    <li>Rename your e107_admin directory: this will make it less obvious to other e107 users where your admin files are.<br /><br /></li>
+    <li>Rename your admin directory: this will make it less obvious to other e107 users where your admin files are.<br /><br /></li>
 
-    <li><strong>The procedure to change your directory names has changed. The definitions have been moved to e107_config.php.</strong><br /><br /></li>
+    <li><strong>The procedure to change your directory names has changed. The definitions have been moved to config.php.</strong><br /><br /></li>
 
     <li>If you are <span style="text-decoration: underline;"><b>UPGRADING</b></span> from a very old version of e107 (e.g. less than v.615), you will need to open class2.php and find the following lines.<br /><br />
 
     <div class='indent'> // If you need to change the names of any of your directories, change the value here then rename the respective folder on your server ...<br />
-      $ADMIN_DIRECTORY = "e107_admin/";<br />
-      $FILES_DIRECTORY = "e107_files/";<br />
-      $IMAGES_DIRECTORY = "e107_images/";<br />
-      $THEMES_DIRECTORY = "e107_themes/";<br />
-      $PLUGINS_DIRECTORY = "e107_plugins/";<br />
-      $HANDLERS_DIRECTORY = "e107_handlers/";<br />
-      $LANGUAGES_DIRECTORY = "e107_languages/";<br />
-      $HELP_DIRECTORY = "e107_docs/help/";<br />
-      $DOWNLOADS_DIRECTORY = "e107_files/downloads/";</div><br />
+      $ADMIN_DIRECTORY = "admin/";<br />
+      $FILES_DIRECTORY = "files/";<br />
+      $IMAGES_DIRECTORY = "images/";<br />
+      $THEMES_DIRECTORY = "themes/";<br />
+      $PLUGINS_DIRECTORY = "plugins/";<br />
+      $HANDLERS_DIRECTORY = "handlers/";<br />
+      $LANGUAGES_DIRECTORY = "languages/";<br />
+      $HELP_DIRECTORY = "docs/help/";<br />
+      $DOWNLOADS_DIRECTORY = "files/downloads/";</div><br />
     </li>
-    <li>Cut these lines from <span style="text-decoration: underline;">class2.php</span> and paste them into <span style="text-decoration: underline;">e107_config.php</span>. Now you can change the folder names from here.<br /><br /></li>
+    <li>Cut these lines from <span style="text-decoration: underline;">class2.php</span> and paste them into <span style="text-decoration: underline;">config.php</span>. Now you can change the folder names from here.<br /><br /></li>
 
-    <li>If this is a <span style="text-decoration: underline;"><b>NEW INSTALL</b></span> the folder names are already in e107_config.php.<br /><br /></li>
+    <li>If this is a <span style="text-decoration: underline;"><b>NEW INSTALL</b></span> the folder names are already in config.php.<br /><br /></li>
 
-    <li>This procedure depends on you completing the steps above and making sure the file paths are located in e107_config.php now.</li>
-    <li>To rename your e107_admin directory (or any of your other directories), first rename the folder in the usual manner using your FTP client. Then open e107_config.php from the root directory of your e107 installation in a text editor, and find the following line near the top of the file ...<br />
-      <i>$ADMIN_DIRECTORY = "e107_admin/";</i><br />
-      ... and change <i>e107_admin/</i> to the name you've renamed it on your server </li>
+    <li>This procedure depends on you completing the steps above and making sure the file paths are located in config.php now.</li>
+    <li>To rename your admin directory (or any of your other directories), first rename the folder in the usual manner using your FTP client. Then open config.php from the root directory of your e107 installation in a text editor, and find the following line near the top of the file ...<br />
+      <i>$ADMIN_DIRECTORY = "admin/";</i><br />
+      ... and change <i>admin/</i> to the name you've renamed it on your server </li>
     <li>You can change the name of all your e107 directories using this method</li>
     <li>There are some security settings that you can change from your admin area. Go to the preferences page and you'll see a section marked Security</li>
   </ul>
@@ -148,16 +148,18 @@ $Author: e107steved $
   <a id='problems'></a><span class="headertext">Common Problems</span><br />
   <br />
   <ul>
-    <li>If for any reason you get a critical error message concerning your core settings, you can easily reset them to default using the resetcore utility. You can find this in your e107_files folder, use your web browser to navigate to http://yoursite.com/e107_files/resetcore/resetcore.php and follow the instructions. This will not affect any content on your site; it will merely reset your core settings, so your site theme etc will revert to default. You can make a backup of your core at any time and restore this from the resetcore utility, to backup your core go to your admin section, click on Database ten click on Backup Core</li>
+    <li>If for any reason you get a critical error message concerning your core settings, you can easily reset them to default using the resetcore utility. You can find this in your e107_files folder, use your web browser to navigate to http://yoursite.ru/files/resetcore/resetcore.php and follow the instructions. This will not affect any content on your site; it will merely reset your core settings, so your site theme etc will revert to default. You can make a backup of your core at any time and restore this from the resetcore utility, to backup your core go to your admin section, click on Database ten click on Backup Core</li>
     <li>If after installing e107 you get a blank page, check your error_reporting level in your php.ini file. This is generally caused by an error on your site not being reported because your error reporting is set too low, or turned off completely. If you don't have access to your php.ini contact your web host</li>
     <li>If you are seeing Undefined Variable or Notice errors on your site, your error_reporting is set too high. Make sure it's set to E_ERROR | E_WARNING | E_PARSE in your php.ini, again if you don't have access contact your web hosts and ask them to change it</li>
   </ul>
   <br />
-  <a id='support'></a><span class="headertext">Support</span><br />
+  <a id='support'></a><span class="headertext">Поддержка</span><br />
   <br />
   All these places are very friendly, please don't hesitate to use them even if you think your question is trivial, you'll get a polite reply.
   <ul>
-    <li><b>e107 forums</b><br />
+    <li><b>e107 Клуб</b><br />
+      <a href='http://www.e107club.ru'>http://www.e107club.ru</a></li>
+	<li><b>e107 forums</b><br />
       <a href='http://e107.org/forum.php'>http://e107.org/forum.php</a></li>
     <li><b>e107 faq</b><br />
       <a href='http://e107faq.bkwon.net'>http://e107faq.org</a></li>
@@ -173,8 +175,8 @@ $Author: e107steved $
   <p><br />
     <a id='development'></a><span class="headertext">Development</span><br />
     <br />
-    e107 has been tested, and developed on Apache 1 and 2, IIS, and PHP 4.3+ (Including 5.0).<br />
-    It is developed by the e107 dev team (Jalist, McFly, Cameron, Streaky, SweetAs, Asperon, Que, Lolo, Chavo, Lisa, MrPete).<br />
+    e107 has been tested, and developed on Apache 2, IIS, and PHP 5.0+.<br />
+    It is developed by the e107 dev team (Jalist, Predator, Kapman, McFly, Cameron, Streaky, SweetAs, Asperon, Que, Lolo, Chavo, Lisa, MrPete).<br />
     <br />
     If you have made changes to the core you think might benefit others please let us know about them in the forums at e107.org :)<br />
     <br />

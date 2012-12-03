@@ -29,8 +29,8 @@ class e_bbcode
 	{
 		global $pref;
 		$core_bb = array(
-		'blockquote', 'img', 'i', 'u', 'center',
-		'_br', 'color', 'size', 'code',
+		'blockquote', 'img', 'wrapright', 'i', 'u', 'center',
+		'bukvica', '_br', 'color', 'size', 'code',
 		'html', 'flash', 'link', 'email',
 		'url', 'quote', 'left', 'right',
 		'b', 'justify', 'file', 'stream',

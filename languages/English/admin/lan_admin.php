@@ -175,6 +175,13 @@ define("ADLAN_152", "Enter Code");
 define("ADLAN_153", "Administration Area");
 define('ADLAN_154', "Error contacting e107.org to check for new version");
 
+define("ADLAN_155", "");
+define("ADLAN_156", "Library jQuery");
+define("ADLAN_157", "Connection of jQuery library to a site");
+define("ADLAN_158", "Save settings");
+define("ADLAN_159", "Connect jQuery library:<br /><span style='color:#555'>Marked the checkbox you connect to a site jQuery library.<br /> If you connected library here, it is necessary to disconnect it in all plug-ins to avoid the conflicts of libraries.</span>");
+define("ADLAN_160", "Successfully saved!");
+
 define('ADLAN_CL_1', 'Settings');
 define('ADLAN_CL_2', 'Users');
 define('ADLAN_CL_3', 'Content');

@@ -79,5 +79,6 @@ define("ADMSLAN_69", "is already an administrator and must be edited.");
 
 define("ADMSLAN_70", "Return to Administrator Listing");
 define("ADMSLAN_71", "Click here to display privileges");  
+define("ADMSLAN_72", "Сonnect jQuery library to a site");  
 
 ?>

@@ -229,6 +229,7 @@ function edit_administrator($row){
 	$text .= checkb("M", $a_perms).ADMSLAN_46."<br />";			// Welcome message
 	$text .= checkb("N", $a_perms).ADMSLAN_47."<br /><br />";	// Moderate submitted news
 
+
 	$text .= "<br /><div class='fcaption'>".ADLAN_CL_7."</div><br />";
 	$text .= checkb("Z", $a_perms).ADMSLAN_62."<br /><br />";	// Plugin Manager
 
@@ -286,14 +287,7 @@ function edit_administrator($row){
 	$ns->tablerender(ADMSLAN_52, $text);
 }
 
-
-
 require_once("footer.php");
-
-
-
-
-
 
 function checkb($arg, $perms)
 {

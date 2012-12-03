@@ -56,4 +56,5 @@ $text .= "</table></div>";
 
 $ns->tablerender(ADLAN_47." ".ADMINNAME, $text);
 
+
 ?>

@@ -25,10 +25,10 @@
 // C Remove registered globals (SECURITY for all following code)
 // D Setup PHP error handling (now we can see php errors ;))
 // E Setup other PHP essentials
-// F Grab e107_config to get directory paths
+// F Grab config to get directory paths
 // G Retrieve Query from URI (i.e. what are the request parameters?!)
 // H Initialize debug handling (NOTE: A-G cannot use debug tools!)
-// I: Sanity check to ensure e107_config is ok
+// I: Sanity check to ensure config is ok
 // J: MYSQL setup (NOTE: A-I cannot use database!)
 // K: Compatibility mode
 // L: Retrieve core prefs
@@ -160,11 +160,11 @@ if($inc_path[0] != ".") {
 unset($inc_path);
 
 //
-// F: Grab e107_config, get directory paths and create $e107 object
+// F: Grab config, get directory paths and create $e107 object
 //
-@include_once(realpath(dirname(__FILE__).'/e107_config.php'));
+@include_once(realpath(dirname(__FILE__).'/config.php'));
 
-// set debug mode in e107_config.php when admin access is unavailable
+// set debug mode in config.php when admin access is unavailable
 if(defset('e_DEBUG')==TRUE) 
 {
 	$error_handler->debug = true;
@@ -178,7 +178,7 @@ if(isset($CLASS2_INCLUDE) && ($CLASS2_INCLUDE!=''))
 
 if(!isset($ADMIN_DIRECTORY))
 {
-  // e107_config.php is either empty, not valid or doesn't exist so redirect to installer..
+  // config.php is either empty, not valid or doesn't exist so redirect to installer..
   header("Location: install.php");
   exit();
 }
@@ -187,7 +187,7 @@ if(!isset($ADMIN_DIRECTORY))
 // clever stuff that figures out where the paths are on the fly.. no more need fo hard-coded e_HTTP :)
 //
 e107_require_once(realpath(dirname(__FILE__).'/'.$HANDLERS_DIRECTORY).'/e107_class.php');
-$e107_paths = compact('ADMIN_DIRECTORY', 'FILES_DIRECTORY', 'IMAGES_DIRECTORY', 'THEMES_DIRECTORY', 'PLUGINS_DIRECTORY', 'HANDLERS_DIRECTORY', 'LANGUAGES_DIRECTORY', 'HELP_DIRECTORY', 'DOWNLOADS_DIRECTORY');
+$e107_paths = compact('ADMIN_DIRECTORY', 'CUSTOM_DIRECTORY', 'FILES_DIRECTORY', 'IMAGES_DIRECTORY', 'THEMES_DIRECTORY', 'PLUGINS_DIRECTORY', 'HANDLERS_DIRECTORY', 'LANGUAGES_DIRECTORY', 'HELP_DIRECTORY', 'DOWNLOADS_DIRECTORY');
 $e107 = new e107($e107_paths, realpath(dirname(__FILE__)));
 
 $inArray = array("'", ";", "/**/", "/UNION/", "/SELECT/", "AS ");
@@ -202,7 +202,7 @@ unset($inArray);
 
 /**
  * NEW - system security levels
- * Could be overridden by e107_config.php OR $CLASS2_INCLUDE script (if not set earlier)
+ * Could be overridden by config.php OR $CLASS2_INCLUDE script (if not set earlier)
  * 
  * 0 (disabled)
  * 5 (balanced) - token value once per session
@@ -280,10 +280,10 @@ if(E107_DEBUG_LEVEL && isset($db_debug) && is_object($db_debug)) {
 }
 
 //
-// I: Sanity check on e107_config.php
-//     e107_config.php upgrade check
+// I: Sanity check on config.php
+//     config.php upgrade check
 if (!$ADMIN_DIRECTORY && !$DOWNLOADS_DIRECTORY) {
-	message_handler("CRITICAL_ERROR", 8, ": generic, ", "e107_config.php");
+	message_handler("CRITICAL_ERROR", 8, ": generic, ", "config.php");
 	exit;
 }
 
@@ -447,7 +447,7 @@ $pref['sitelanguage'] = (isset($pref['sitelanguage']) ? $pref['sitelanguage'] : 
 
 // if a cookie name pref isn't set, make one :)
 if (!$pref['cookie_name']) {
-	$pref['cookie_name'] = "e107cookie";
+	$pref['cookie_name'] = "cookie";
 }
 
 $sql->db_Mark_Time('Start: Init Language and detect changes');
@@ -789,7 +789,7 @@ $sql->db_Mark_Time('Start: Signup/splash/admin');
 
 define("e_SIGNUP", e_BASE.(file_exists(e_BASE."customsignup.php") ? "customsignup.php" : "signup.php"));
 
-if(!defined('e_LOGIN')) // customizable via e107_config.php
+if(!defined('e_LOGIN')) // customizable via config.php
 {
 	define("e_LOGIN", e_BASE.(file_exists(e_BASE."customlogin.php") ? "customlogin.php" : "login.php"));	
 }
@@ -846,7 +846,7 @@ if (e_QUERY == 'logout')
 
 
 /*
-* Calculate time zone offset, based on session cookie set in e107.js.
+* Calculate time zone offset, based on session cookie set in core.js.
 * (Buyer beware: this may be wrong for the first pageview in a session,
 * which is while the user is logged out, so not a problem...)
 *
@@ -861,7 +861,7 @@ if (e_QUERY == 'logout')
 $e_deltaTime=0;
 
 if (isset($_COOKIE['e107_tdOffset'])) {
-	// Actual seconds of delay. See e107.js and footer_default.php
+	// Actual seconds of delay. See core.js and footer_default.php
 	$e_deltaTime = (15*floor((($_COOKIE['e107_tdOffset'] + 450)/60)/15))*60; // Delay in seconds rounded to the nearest quarter hour
 }
 
@@ -1989,5 +1989,6 @@ function e107_ini_set($var, $value)
 	}
 	return FALSE;
 }
+
 
 ?>

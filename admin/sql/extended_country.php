@@ -255,7 +255,7 @@ INSERT INTO user_extended_country VALUES('WLF', 'Wallis and Futuna', 'Oceania', 
 INSERT INTO user_extended_country VALUES('VUT', 'Vanuatu', 'Oceania', 'Melanesia', 'VU');
 INSERT INTO user_extended_country VALUES('VAT', 'Holy See (Vatican City State)', 'Europe', 'Southern Europe', 'VA');
 INSERT INTO user_extended_country VALUES('VEN', 'Venezuela', 'South America', 'South America', 'VE');
-INSERT INTO user_extended_country VALUES('RUS', 'Russian Federation', 'Europe', 'Eastern Europe', 'RU');
+INSERT INTO user_extended_country VALUES('RUS', 'Россия', 'Europe', 'Eastern Europe', 'RU');
 INSERT INTO user_extended_country VALUES('VNM', 'Vietnam', 'Asia', 'Southeast Asia', 'VN');
 INSERT INTO user_extended_country VALUES('EST', 'Estonia', 'Europe', 'Baltic Countries', 'EE');
 INSERT INTO user_extended_country VALUES('USA', 'United States', 'North America', 'North America', 'US');

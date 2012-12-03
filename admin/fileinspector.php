@@ -34,7 +34,7 @@ if (substr($HELP_DIRECTORY,-5,5) == 'help/')
 {
 	$DOCS_DIRECTORY = substr($HELP_DIRECTORY,0,-5);		// Whatever $HELP_DIRECTORY is set to, assume docs are in a subdirectory called 'help' off it
 }
-$maindirs = array('admin' => $ADMIN_DIRECTORY, 'files' => $FILES_DIRECTORY, 'images' => $IMAGES_DIRECTORY, 'themes' => $THEMES_DIRECTORY, 'plugins' => $PLUGINS_DIRECTORY, 'handlers' => $HANDLERS_DIRECTORY, 'languages' => $LANGUAGES_DIRECTORY, 'downloads' => $DOWNLOADS_DIRECTORY, 'docs' => $DOCS_DIRECTORY);
+$maindirs = array('admin' => $ADMIN_DIRECTORY, 'custom' => $CUSTOM_DIRECTORY, 'files' => $FILES_DIRECTORY, 'images' => $IMAGES_DIRECTORY, 'themes' => $THEMES_DIRECTORY, 'plugins' => $PLUGINS_DIRECTORY, 'handlers' => $HANDLERS_DIRECTORY, 'languages' => $LANGUAGES_DIRECTORY, 'downloads' => $DOWNLOADS_DIRECTORY, 'docs' => $DOCS_DIRECTORY);
 foreach ($maindirs as $maindirs_key => $maindirs_value) {
 	$coredir[$maindirs_key] = substr($maindirs_value, 0, -1);
 }
@@ -245,12 +245,13 @@ class file_inspector {
 
 	  // Files that are unable to be checked
 	  $test_list[$admin_dir.'core_image.php'] = 'uncalc';
-	  $test_list[$this->root_dir.'/e107_config.php'] = 'uncalc';
+	  $test_list[$this->root_dir.'/config.php'] = 'uncalc';
 
       // Files that are likely to be renamed by user
-	  $test_list[$admin_dir.'filetypes_.php'] = 'ignore';
-	  $test_list[$this->root_dir.'/e107.htaccess'] = 'ignore';
-	  $test_list[$this->root_dir.'/e107.robots.txt'] = 'ignore';
+	  // Predator 25.09.2011
+	  $test_list[$admin_dir.'filetypes.php'] = 'ignore';
+	  $test_list[$this->root_dir.'/.htaccess'] = 'ignore';
+	  $test_list[$this->root_dir.'/robots.txt'] = 'ignore';
 	  
 	  if (isset($test_list[$filename])) { return $test_list[$filename]; }
 	  return 'check';
@@ -420,7 +421,7 @@ class file_inspector {
 			while (false !== ($readdir = readdir($handle))) {
 				if ($readdir != '.' && $readdir != '..' && $readdir != '/' && $readdir != 'CVS' && $readdir != 'Thumbs.db' && (strpos('._', $readdir) === FALSE)) {
 					if (is_dir($dir.'/'.$readdir)) {
-						if (!isset($list[$readdir]) && ($level > 1 || $readdir == 'e107_install')) {
+						if (!isset($list[$readdir]) && ($level > 1 || $readdir == 'install')) {
 							$child_open = false;
 							$child_end = true;
 							$sub_text .= $this -> inspect(array(), $deprecated[$readdir], $level, $dir.'/'.$readdir, $child_end, $child_expand);
@@ -731,16 +732,16 @@ class file_inspector {
 			<form action='".e_SELF."' method='post' id='main_page'>
 			<table style='".ADMIN_WIDTH."' class='fborder'>
 			<tr>
-			<td class='fcaption'>Snapshot Created</td>
+			<td class='fcaption'>Снимок создан</td>
 			</tr>";
 		
 			$text .= "<tr>
 			<td class='forumheader3' style='text-align:center'>
-			The snapshot (".e_ADMIN."core_image.php) was successfully created.
+			Снимок (".e_ADMIN."core_image.php) успешно создан.
 			</td>
 			</tr>
 			<tr>
-			<td style='text-align:center' class='forumheader'>".$rs -> form_button('submit', 'main_page', 'Return To Main Page')."</td>
+			<td style='text-align:center' class='forumheader'>".$rs -> form_button('submit', 'main_page', 'Вернуться на Главную страницу')."</td>
 			</tr>
 			</table>
 			</form>
@@ -751,12 +752,12 @@ class file_inspector {
 		<form action='".e_SELF."?".e_QUERY."' method='post' id='snapshot'>
 		<table style='".ADMIN_WIDTH."' class='fborder'>
 		<tr>
-		<td class='fcaption' colspan='2'>Create Snapshot</td>
+		<td class='fcaption' colspan='2'>Снимок создан<</td>
 		</tr>";
 		
 		$text .= "<tr>
 		<td class='forumheader3' style='width:50%'>
-		Absolute path of root directory to create image from:
+		Абсолютный путь до корневого каталога для создания изображения из:
 		</td>
 		<td class='forumheader3' style='width:50%'>
 		<input class='tbox' type='text' name='snapshot_path' size='60' value='".(isset($_POST['snapshot_path']) ? $_POST['snapshot_path'] : $this -> root_dir)."' />
@@ -764,22 +765,22 @@ class file_inspector {
 		
 		<tr>
 		<td class='forumheader3' style='width: 35%'>
-		Create snapshot of current or deprecated core files:
+		Создать снимок текущих или устаревших файлов ядра:
 		</td>
 		<td colspan='2' class='forumheader3' style='width: 65%'>
-		<input type='radio' name='snaptype' value='current'".($_POST['snaptype'] == 'current' || !isset($_POST['snaptype']) ? " checked='checked'" : "")." /> Current&nbsp;&nbsp;
-		<input type='radio' name='snaptype' value='deprecated'".($_POST['snaptype'] == 'deprecated' ? " checked='checked'" : "")." /> Deprecated&nbsp;&nbsp;
+		<input type='radio' name='snaptype' value='current'".($_POST['snaptype'] == 'current' || !isset($_POST['snaptype']) ? " checked='checked'" : "")." /> Текущих&nbsp;&nbsp;
+		<input type='radio' name='snaptype' value='deprecated'".($_POST['snaptype'] == 'deprecated' ? " checked='checked'" : "")." /> Устаревших&nbsp;&nbsp;
 		</td>
 		</tr>
 		
 		<tr>
-		<td class='forumheader' style='text-align:center' colspan='2'>".$rs -> form_button('submit', 'create_snapshot', 'Create Snapshot')."</td>
+		<td class='forumheader' style='text-align:center' colspan='2'>".$rs -> form_button('submit', 'create_snapshot', 'Создать снимок')."</td>
 		</tr>
 		</table>
 		</form>
 		</div>";
 
-		$ns -> tablerender('Snapshot', $text);
+		$ns -> tablerender('Снимок', $text);
 
 	}
 	

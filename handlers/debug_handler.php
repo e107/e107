@@ -117,7 +117,7 @@ class e107_debug {
 		{
 			$dVals=0;
 			
-			if(defined('e_DEBUG')) // manual debug via e107_config 
+			if(defined('e_DEBUG')) // manual debug via config 
 			{
 				$dVals = e_DEBUG;	
 			}

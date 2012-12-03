@@ -94,7 +94,7 @@ class db {
 	 * @access public
 	 * Connects to mySQL server and selects database - generally not required if your table is in the main DB.<br />
 	 * <br />
-	 * Example using e107 database with variables defined in e107_config.php:<br />
+	 * Example using e107 database with variables defined in config.php:<br />
 	 * <code>$sql = new db;
 	 * $sql->db_Connect($mySQLserver, $mySQLuser, $mySQLpassword, $mySQLdefaultdb);</code>
 	 * <br />

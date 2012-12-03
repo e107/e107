@@ -21,14 +21,15 @@
 /* ####################################################
 
 
-To use this file, you must edit the following line, removing the // so it reads:
-define("ACTIVE", true);
-If you don't, the script will not be usable.
+Чтобы использовать этот файл, вы должны отредактировать следующую строку: define("ACTIVE", false);
 
-When you have finished with resetcore you should swap true for false so it can't be used by
-people it shouldn't be used by.
+И заменить в ней false на true, должна получиться такая строка: define("ACTIVE", true);
 
-If your site uses a different charset than utf-8, change the CHARSET to reflect the correct encoding.
+Если вы этого не сделаете, скрипт не будет работать.
+
+Когда вы закончили работу с утилитой resetcore, вам нужно произвести обратное изменение true на false во избежание использования утилиты посторонними людми. 
+
+Если ваш сайт использует отличную от utf-8 кодировку, измените КОДИРОВКУ на ту, которая используется вашим сайтом для корректного отображения.
 
 */
 
@@ -55,7 +56,7 @@ if($register_globals == true)
 	unset($global);
 }
 
-require_once("../../e107_config.php");
+require_once("../../config.php");
 mysql_connect($mySQLserver, $mySQLuser, $mySQLpassword);
 mysql_select_db($mySQLdefaultdb);
 define("MAGIC_QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
@@ -68,14 +69,14 @@ echo "<?xml version='1.0' encoding='".CHARSET."' ?>\n";
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>e107 resetcore</title>
+<title>e107 Сброс настроек ядра</title>
 <link rel="stylesheet" href="style.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>" />
 <meta http-equiv="content-style-type" content="text/css" />
 </head>
 <body>
 <div class='mainbox'>
-<a href="http://e107.org"><img src="../../e107_images/logo_template_large.png" alt="Logo" style="border: 0px; vertical-align: middle;" /></a> <span class='headertext'>e107 Reset Core Utility</span>
+<a href="http://www.e107club.ru"><img src="../../images/icon_32.png" alt="Logo" style="border: 0px; vertical-align: middle;" /></a> <span class='headertext'>e107 Утилита для сброса настроек ядра</span>
 <br />
 <br />
 <br />
@@ -83,7 +84,7 @@ echo "<?xml version='1.0' encoding='".CHARSET."' ?>\n";
 <?php
 
 if(ACTIVE !== true) {
-	echo "<span class='headertext2'>Currently disabled. To enable please open this file in a text editor and follow the instructions to activate.</span>";
+	echo "<span class='headertext2'>В настоящее время отключена. Чтобы включить, пожалуйста, откройте этот файл в текстовом редакторе и следуйте инструкциям по активации.</span>";
 	exit;
 }
 
@@ -94,16 +95,16 @@ if (isset($_POST['usubmit'])) {
 		$result = mysql_query("SELECT * FROM ".$mySQLprefix."core WHERE e107_name='pref_backup' ");
 		$bu_exist = ($row = mysql_fetch_array($result) ? TRUE : FALSE);
 
-		$admin_directory = "e107_admin";
+		$admin_directory = "admin";
 
 //			<input type='radio' name='mode' value='1' /> <span class='headertext2'>Manually edit core values</span><br />
 
-		echo "<span class='headertext2'><b>Please select which method you want to use, then click the button to proceed ...</b></span><br /><br /><br /><br />
+		echo "<span class='headertext2'><b>Пожалуйста, выберите, какой метод вы хотите использовать, затем нажмите кнопку, чтобы продолжить...</b></span><br /><br /><br /><br />
 			<table style='width: auto; margin-left:auto; margin-right: auto;'>
 			<tr>
 			<td>
 			<form method='post' action='".$_SERVER['PHP_SELF']."'>
-			<input type='radio' name='mode' value='2' /> <span class='headertext2'>Reset core to default values</span><br />". ($bu_exist ? "<input type='radio' name='mode' value='3' /> <span class='headertext2'>Restore core backup</span>" : "<br />( There is no backed-up core - unable to offer option to restore backup )")."<br /><br /><input class='button' type='submit' name='reset_core_sub' value='Select method then click here to continue' />
+			<input type='radio' name='mode' value='2' /> <span class='headertext2'>Сброс ядра к значениям по умолчанию</span><br />". ($bu_exist ? "<input type='radio' name='mode' value='3' /> <span class='headertext2'>Восстановите базовое резервное копирование</span>" : "<br />( Нет существующей резервной копии ядра - утилита не в состоянии использовать опцию восстановления резервной копии )")."<br /><br /><input class='button' type='submit' name='reset_core_sub' value='Выбрав метод нажмите здесь, чтобы продолжить' />
 				 
 			<input type='hidden' name='a_name' value='".$_POST['a_name']."' />
 			<input type='hidden' name='a_password' value='".$_POST['a_password']."' />
@@ -116,7 +117,7 @@ if (isset($_POST['usubmit'])) {
 
 		$END = TRUE;
 	} else {
-		$message = "<b>Administrator not found in database / incorrect password / insufficient permissions - aborting.</b><br />";
+		$message = "<b>Администратор не найден в базе данных / неправильный пароль / недостаточные полномочия - выполнение прервано.</b><br />";
 		$END = TRUE;
 	}
 }
@@ -131,7 +132,7 @@ if (isset($_POST['reset_core_sub']) && $_POST['mode'] == 2)
 	$tmpr = substr(str_replace($_SERVER['DOCUMENT_ROOT'], "", $_SERVER['SCRIPT_FILENAME']), 1);
 	$root = "/".substr($tmpr, 0, strpos($tmpr, "/"))."/";
 	$e_HTTP = $root;
-	$admin_directory = "e107_admin";
+	$admin_directory = "admin";
 	$url_prefix = substr($_SERVER['PHP_SELF'], strlen($e_HTTP), strrpos($_SERVER['PHP_SELF'], "/")+1-strlen($e_HTTP));
 	$num_levels = substr_count($url_prefix, "/");
 	$link_prefix = '';
@@ -147,19 +148,19 @@ if (isset($_POST['reset_core_sub']) && $_POST['mode'] == 2)
 	define("e_PATH", $e_path);
 
 
-	$pref_language = "English";
-	include_once("../../".$LANGUAGES_DIRECTORY."English/lan_prefs.php");
-	require_once("../../".$FILES_DIRECTORY."def_e107_prefs.php");
+	$pref_language = "Russian";
+	include_once("../../".$LANGUAGES_DIRECTORY."Russian/lan_prefs.php");
+	require_once("../../".$FILES_DIRECTORY."prefs.php");
 
 	$PrefOutput = $eArrayStorage->WriteArray($pref);
 
 	mysql_query("DELETE FROM ".$mySQLprefix."core WHERE e107_name='SitePrefs' OR e107_name='SitePrefs_Backup'");
 	if (!mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs', '{$PrefOutput}')")) {
-		$message = "Rebuild failed ...";
+		$message = "Восстановление не удалось...";
 		$END = TRUE;
 	} else {
 		mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs_Backup', '{$PrefOutput}')");
-		$message = "Core reset. <br /><br /><a href='../../index.php'>Click here to continue</a>";
+		$message = "Сброс настроек ядра. <br /><br /><a href='../../index.php'>Нажмите здесь для продолжения</a>";
 		$END = TRUE;
 	}
 }
@@ -191,7 +192,7 @@ if (isset($_POST['coreedit_sub']))
 	mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs', '{$PrefOutput}')");
 	mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs_Backup', '{$PrefOutput}')");
 
-	$message = "Core settings successfully updated. <br /><br /><a href='../../index.php'>Click here to continue</a>";
+	$message = "Настройки ядра успешно обновлены. <br /><br /><a href='../../index.php'>Нажмите здесь для продолжения</a>";
 	$END = TRUE;
 }
 
@@ -211,7 +212,7 @@ if (isset($_POST['reset_core_sub']) && $_POST['mode'] == 3) {
 	mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs', '{$PrefOutput}')");
 	mysql_query("INSERT INTO ".$mySQLprefix."core VALUES ('SitePrefs_Backup', '{$PrefOutput}')");
 
-	$message = "Core backup successfully restored. <br /><br /><a href='../../index.php'>Click here to continue</a>";
+	$message = "Основное резервное копирование успешно восстановлено. <br /><br /><a href='../../index.php'>Нажмите здесь для продолжения</a>";
 	$END = TRUE;
 }
 
@@ -228,7 +229,7 @@ if (isset($_POST['reset_core_sub']) && $_POST['mode'] == 1)
 	$pref = $eArrayStorage->ReadArray($row['e107_value']);
 
 	echo "
-		<span class='headertext2'><b>Edit your individual core items and click the button to save - <span class='headertext'>use this script with caution</span>.</b></span><br /><br />
+		<span class='headertext2'><b>Измените отдельные элементы ядра и нажмите кнопку, чтобы сохранить - <span class='headertext'>используйте этот скрипт с осторожностью</span>.</b></span><br /><br />
 		<form method='post' action='".$_SERVER['PHP_SELF']."'>
 		<table style='width:95%'>\n";
 
@@ -246,7 +247,7 @@ if (isset($_POST['reset_core_sub']) && $_POST['mode'] == 1)
 	}
 	echo "
 		<tr>
-		<td colspan='2' style='text-align:center'><br /><input class='button' type='submit' name='coreedit_sub' value='Save Core Settings' /></td>
+		<td colspan='2' style='text-align:center'><br /><input class='button' type='submit' name='coreedit_sub' value='Сохранить настройки ядра' /></td>
 		</tr>
 		</table>
 		<input type='hidden' name='a_name' value='".$_POST['a_name']."' />
@@ -265,20 +266,20 @@ if (isset($END)) {
 }
 
 echo "<span class='headertext2'>
-	This is the e107 resetcore utility. It allows you to completely rebuild your core if it becomes corrupt, or to restore a backup. <br />It won't affect your actual content (news posts, forum posts, articles etc).<br />
-	<b>Only run this utility if your site is failing to load due to a critical core error, or if you need to change a setting and can't log into your admin area.</b></span><br /><br /><br /><br />
+	Утилита сброса настроек ядра. Позволит вам полностью восстановить ядро, если оно повреждено, или восстановить из резервной копии. <br/>Работа утилиты не повлияет на ваш фактический контент (Новости, сообщения форума, статьи и т.д.).<br />
+	<b>Запускайте эту утилиту, только если ваш сайт не в состоянии загружаться из-за критической ошибки ядра или если вам необходимо изменить настройки и вы не можете войти в Админпанель сайта.</b></span><br /><br /><br /><br />
 	 
-	<span class='headertext'>Please enter your main administrator username and password to continue ...</span><br /><br />
+	<span class='headertext'>Пожалуйста, введите имя Главного Администратора и пароль для продолжения...</span><br /><br />
 	<form method='post' action='".$_SERVER['PHP_SELF']."'>
 	<table style='width:95%'>
 	<tr>
-	<td style='width:50%; text-align:right;' class='mediumtext'>Main administrator name:</td>
+	<td style='width:50%; text-align:right;' class='mediumtext'>Имя Главного Администратора:</td>
 	<td style='width:50%'>
 	<input class='tbox' type='text' name='a_name' size='30' value='' maxlength='100' />
 	</td>
 	</tr>
 	<tr>
-	<td style='width:50%; text-align:right;' class='mediumtext'>Main administrator Password:</td>
+	<td style='width:50%; text-align:right;' class='mediumtext'>Пароль Главного Администратора:</td>
 	<td style='width:50%'>
 	<input class='tbox' type='password' name='a_password' size='30' value='' maxlength='100' />
 	</td>
@@ -286,7 +287,7 @@ echo "<span class='headertext2'>
 	<tr>
 	<td colspan='2' style='text-align:center'>
 	<br />
-	<input class='button' type='submit' name='usubmit' value='Continue' />
+	<input class='button' type='submit' name='usubmit' value='Продолжить' />
 	</td>
 	</tr>
 	</table>

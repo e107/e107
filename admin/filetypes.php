@@ -1,0 +1,1 @@
+zip, gz, gzip, rar, jpeg, jpg, png, gif

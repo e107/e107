@@ -20,8 +20,6 @@ define("LAN_PRINT_304", "Title: ");
 define("LAN_PRINT_305", "Subheading: ");
 define("LAN_PRINT_306", "This is from: ");
 define("LAN_PRINT_307", "Print this page");
-
 define("LAN_PRINT_1", "printer friendly");
-
-
+define("LAN_PRINT_BACK", "Revert Back");
 ?>

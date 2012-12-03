@@ -60,11 +60,19 @@ define("IMAGE_admin_lock", "src='".img_path('admin_lock.png')."' alt='".LAN_399.
 define("IMAGE_admin_unlock", "src='".img_path('admin_unlock.png')."' alt='".LAN_400."' title='".LAN_400."' style='border:0' ");
 	
 // Multi Language Images
-	
-define("IMAGE_newthread", "<img src='".img_path('newthread.png')."' alt='".FORLAN_10."' title='".FORLAN_10."' style='border:0' />");
-define("IMAGE_reply", "<img src='".img_path('reply.png')."' alt='' title='' style='border:0' />");
-define("IMAGE_rank_moderator_image", "<img src='".img_path('moderator.png', '', 'rank_moderator_image')."' alt='' />");
-define("IMAGE_rank_main_admin_image", "<img src='".img_path('main_admin.png', '', 'rank_main_admin_image')."' alt='' />");
-define("IMAGE_rank_admin_image", "<img src='".img_path('admin.png', '', 'rank_admin_image')."' alt='' />");
-	
+
+if 	(e_LANGUAGE == "English"){
+	define("IMAGE_newthread", "<img src='".img_path('English_newthread.png')."' alt='".FORLAN_10."' title='".FORLAN_10."' style='border:0' />");
+	define("IMAGE_reply", "<img src='".img_path('English_reply.png')."' alt='' title='' style='border:0' />");
+	define("IMAGE_rank_moderator_image", "<img src='".img_path('English_moderator.png', '', 'rank_moderator_image')."' alt='' />");
+	define("IMAGE_rank_main_admin_image", "<img src='".img_path('English_main_admin.png', '', 'rank_main_admin_image')."' alt='' />");
+	define("IMAGE_rank_admin_image", "<img src='".img_path('English_admin.png', '', 'rank_admin_image')."' alt='' />");
+	}
+		else{
+		define("IMAGE_newthread", "<img src='".img_path('Russian_newthread.png')."' alt='".FORLAN_10."' title='".FORLAN_10."' style='border:0' />");
+		define("IMAGE_reply", "<img src='".img_path('Russian_reply.png')."' alt='' title='' style='border:0' />");
+		define("IMAGE_rank_moderator_image", "<img src='".img_path('Russian_moderator.png', '', 'rank_moderator_image')."' alt='' />");
+		define("IMAGE_rank_main_admin_image", "<img src='".img_path('Russian_main_admin.png', '', 'rank_main_admin_image')."' alt='' />");
+		define("IMAGE_rank_admin_image", "<img src='".img_path('Russian_admin.png', '', 'rank_admin_image')."' alt='' />");
+}
 ?>

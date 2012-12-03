@@ -1,27 +1,37 @@
 <?php
 /*
-+---------------------------------------------------------------+
-|        e107 website system Russian Language File
-|        Released under the terms and conditions of the
-|        GNU General Public License (http://gnu.org).
-|
-|        $URL: ../plugins/links_page/languages/Russian_help.php $
-|        $Revision: 1.0 $
-|        $Id: 2010/09/24 17:40:51 $
-|        $Author: root $
-+---------------------------------------------------------------+
++ ------------------------------------------------------------------------------+
+|	Русский языковой пакет для e107 0.7.26										|
+|	Сайт: http://www.e107club.ru												|
+|	Почта: translate@e107club.ru												|
+|	Ревизия: 1.0																|
+|	Кодировка: utf-8															|
+|	Дата: 25.09.2011 05:05:05													|
+|	Автор: © Кадников Александр	[Predator]										|
+|	© е107 Клуб 2010-2011. Все права защищены.									|
+|																				|
+|	Russian Language Pack for e107 0.7.26										|
+|	Site: http://www.e107club.ru												|
+|	Email: translate@e107club.ru												|
+|	Revision: 1.0																|
+|	Charset: utf-8																|
+|	Date: 25.09.2011 05:05:05													|
+|	Author: © Alexander Kadnikov [Predator]										|
+|	© е107 Club 2010-2011. All Rights Reserved.									|
++-------------------------------------------------------------------------------+
 */
-define("LAN_ADMIN_HELP_0", "Помощь по странице ссылок");
-define("LAN_ADMIN_HELP_1", "<i> Страница управления категориями ссылок показывает все существующие категории.</i><br /><br /><b>детализированный список</b><br />Вы сможете увидеть список категорий с их иконками, именами и расшифровкой, опциями и опциями сортировки.<br /><br /><b>Объяснение иконок</b><br /> ".LINK_ICON_LINK." : Ссылка на категории<br /><br /> ".LINK_ICON_EDIT." : редактирование категорий<br /><br /> ".LINK_ICON_DELETE." : удаление категории<br /><br /> ".LINK_ICON_ORDER_UP." : подвинуть категороию вверх.<br /><br /> ".LINK_ICON_ORDER_DOWN." : подвинуть категорию вниз.<br /> <br /> <b>порядок</b><br />тут вы можете вручную указать порядок отображения категорий. Вам необходимо изменить значения и нажать кнопку упорядочить, для того чтобы применился новый порядок отображения.<br />");
-define("LAN_ADMIN_HELP_2", "<i>страница категории ссылок  разрешает вам добавить новую категорию ссылок</i><br /><br />Вы можете добавлять новые иконки, и после загрузки применить их к категории.");
-define("LAN_ADMIN_HELP_3", "<i>Страница управления ссылками показывает все категории.</i><br /><br />".LINK_ICON_LINK." : ссылка на категории<br /><br />".LINK_ICON_EDIT." : нажмите иконку для просмотре ссылок категории<br />");
-define("LAN_ADMIN_HELP_4", "<i>Страница создания ссылок разрешает вам добавлять новые ссылки</i><br /><br />Вы можете добавлять новые иконки, и после загрузки применить их к ссылке.<br /><br />Тип открытия ссылки разрешает пользователю изменять тип открывания ссылки, при нажатии на нее.");
-define("LAN_ADMIN_HELP_5", "<i>страница сообщенных ссылок отображает список всех ссылок, которые были сообщены пользователями</i><br /><br /><b>детализированный список</b><br />Вы сможете увидеть ссылку,имя пользователя, который отправил ссылку и опции.<br /><br /><b>объяснения иконок</b><br /> ".LINK_ICON_EDIT." : отправить сообщенную ссылку на страницу создания ссылок<br /><br /> ".LINK_ICON_DELETE." : удалить сообщенную ссылку<br />");
-define("LAN_ADMIN_HELP_6", "<i>страница опций позволяет менять поведение плагина links_page</i><br /><br /> Основные опции<br /> эти варианты, как правило, используются в ссылке страницы.<br /><br /> управляющие ссылками<br /> люди, которым разрешено управлять собственными ссылками.<br /><br /> страница категорий<br /> тут вы можете манять опции страницы категорий.<br /><br /> Страница ссылок<br /> Опции оспользуемые на странице ссылок.<br /><br /> реферал<br />Опции используемые на странице наиболее посещаемых ссылок<br /><br /> страница рейтинга<br /> Опции страницы наиболее используемых ссылок.<br />");
-define("LAN_ADMIN_HELP_7", "<i>страничка редактирования категорий ссылок разрешает вам редактировать уже существующие категории</i><br /><br />Вы можете добавлять новые иконки, и после загрузки применить их к категории.<br />Вы можете обновить штамп даты, при отметке данного чекбокса.");
-define("LAN_ADMIN_HELP_8", "<i>эта страница отображает все существующие ссылки в выбранной категории.</i><br /><br /><b>детализированный список</b><br />Вы увидите список  ссылок с их изображением, именем, опциями, и опциями сортировки.<br /><br /><b>Объяснение иконок</b><br /> ".LINK_ICON_LINK." : Ссылка на сайт<br /><br /> ".LINK_ICON_EDIT." : редактирование ссылки<br /><br /> ".LINK_ICON_DELETE." : удаление ссылки<br /><br /> ".LINK_ICON_ORDER_UP." : передвинуть ссылку вверх.<br /><br /> ".LINK_ICON_ORDER_DOWN." : передвинуть ссылку вниз.<br /> <br /> <b>порядок</b><br />тут вы сможете вручную указать порядок отображения ссылок в категории. Вам лишь необходимо указать значения в полях и нажать клавишу сохранения.<br />");
-define("LAN_ADMIN_HELP_9", "<i>страничка редактирования ссылок разрешает вам редактировать уже существующие ссылки</i><br /><br />Вы можете добавлять новые иконки, и после загрузки применить их к сылке.<br /><br />Тип открытия ссылки разрешает пользователю изменять тип открывания ссылки, при нажатии на нее.");
-define("LAN_ADMIN_HELP_10", "<i>Страница сообщенных ссылок разрешает вам добавлять ссообщенные ссылки к уже существующим</i><br /><br />Небольшой текст будет добавлен к ссылке в описании<br /><br />Вы можете добавлять новые иконки, и после загрузки применить их к ссылке.<br /><br />Тип открытия ссылки разрешает пользователю изменять тип открывания ссылки, при нажатии на нее.");
+
+define("LAN_ADMIN_HELP_0", "Страница ссылок - Помощь");
+define("LAN_ADMIN_HELP_1", "<i>the manage link categories page shows all categories present.</i><br /><br /><b>detailed list</b><br />You see a list of all categories with their icon, name and description, options, and sorting options.<br /><br /><b>explanation of icons</b><br /> ".LINK_ICON_LINK." : link to the category<br /><br /> ".LINK_ICON_EDIT." : edit the category<br /><br /> ".LINK_ICON_DELETE." : delete the category<br /><br /> ".LINK_ICON_ORDER_UP." : the up button allows you to move the category item one up in order.<br /><br /> ".LINK_ICON_ORDER_DOWN." : the down button allows you to move the category item one down in order.<br /> <br /> <b>order</b><br />here you can manually set the order of all the categories. You need to change the values in the select boxes to your desired order, and click on the reorder button below to save the new order.<br />");
+define("LAN_ADMIN_HELP_2", "<i>создать ссылку на страницу категории позволяет добавлять новые категории</i><br /><br />Вы можете загрузить новый значок, и после загрузки назначить значок категории.");
+define("LAN_ADMIN_HELP_3", "<i>the manage links page first show all categories.</i><br /><br />".LINK_ICON_LINK." : link to the category<br /><br />".LINK_ICON_EDIT." : click the icon to view all links in this category<br />");
+define("LAN_ADMIN_HELP_4", "<i>the create link page allows you to add a new link</i><br /><br />You can upload a new icon, and after uploading assign the icon to the link.<br /><br />the open type allows you to define how the link will be opened when a user clicks on it.");
+define("LAN_ADMIN_HELP_5", "<i>the submitted links page shows all links that are submitted by users</i><br /><br /><b>detailed list</b><br />You see the link url, the name of the user who submitted the link and options.<br /><br /><b>explanation of icons</b><br /> ".LINK_ICON_EDIT." : post the submitted link to the link create form<br /><br /> ".LINK_ICON_DELETE." : delete the submitted link<br />");
+define("LAN_ADMIN_HELP_6", "<i>the options page allows you to change the behaviour of the links_page plugin</i><br /><br /> general options<br /> these options are generally used throughout the link pages.<br /><br /> personal link managers<br /> the personal link managers are privileged users who can manage their own personally added links.<br /><br /> category page<br /> here you can change options for the category page.<br /><br /> links page<br /> These options are used on the link pages.<br /><br /> refer page<br /> These options are used on the top refer links page.<br /><br /> rating page<br /> These options are used on the top rated links page.<br />");
+define("LAN_ADMIN_HELP_7", "<i>the edit link category page allows you to edit an existing category</i><br /><br />You can upload a new icon, and after uploading assign the icon to the category.<br />You can update the timestamp of the link by checking the box.");
+define("LAN_ADMIN_HELP_8", "<i>this page shows all existing links in the selected category.</i><br /><br /><b>detailed list</b><br />You see a list of the links with their image, name, options, and sorting options.<br /><br /><b>explanation of icons</b><br /> ".LINK_ICON_LINK." : link to the website<br /><br /> ".LINK_ICON_EDIT." : edit the link<br /><br /> ".LINK_ICON_DELETE." : delete the link<br /><br /> ".LINK_ICON_ORDER_UP." : the up button allows you to move a link up one in the list.<br /><br /> ".LINK_ICON_ORDER_DOWN." : the down button allows you to move a link down one in the list.<br /> <br /> <b>order</b><br />here you can manually set the order of all the links. You need to change the values in the select boxes to your desired order, and click on the reorder button below to save the new order.<br />");
+define("LAN_ADMIN_HELP_9", "<i>the edit link page allows you to edit an existing link</i><br /><br />You can upload a new icon, and after uploading assign the icon to the link.<br /><br />the open type allows you to define how the link will be opened when a user clicks on it.");
+define("LAN_ADMIN_HELP_10", "<i>the post submitted link page allows you to add a submitted link to the existing links</i><br /><br />A small submitted text is added into the description field.<br /><br />You can upload a new icon, and after uploading assign the icon to the link.<br /><br />the open type allows you to define how the link will be opened when a user clicks on it.");
 
 
 ?>

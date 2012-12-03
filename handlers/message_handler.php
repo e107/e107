@@ -33,15 +33,16 @@ function show_emessage($mode, $message, $line = 0, $file = "") {
 	$emessage[7] = "<b>".LAN_ERROR_31."</b>";
 	$emessage[8] = "
 		<div style='text-align:center; font: 12px Verdana, Tahoma'><b>".LAN_ERROR_32." </b><br /><br />
-		".chr(36)."ADMIN_DIRECTORY = \"e107_admin/\";<br />
-		".chr(36)."FILES_DIRECTORY = \"e107_files/\";<br />
-		".chr(36)."IMAGES_DIRECTORY = \"e107_images/\"; <br />
-		".chr(36)."THEMES_DIRECTORY = \"e107_themes/\"; <br />
-		".chr(36)."PLUGINS_DIRECTORY = \"e107_plugins/\"; <br />
-		".chr(36)."HANDLERS_DIRECTORY = \"e107_handlers/\"; <br />
-		".chr(36)."LANGUAGES_DIRECTORY = \"e107_languages/\"; <br />
-		".chr(36)."HELP_DIRECTORY = \"e107_docs/help/\";  <br />
-		".chr(36)."DOWNLOADS_DIRECTORY =  \"e107_files/downloads/\";\n
+		".chr(36)."ADMIN_DIRECTORY = \"admin/\";<br />
+		".chr(36)."CUSTOM_DIRECTORY = \"custom/\";<br />
+		".chr(36)."FILES_DIRECTORY = \"files/\";<br />
+		".chr(36)."IMAGES_DIRECTORY = \"images/\"; <br />
+		".chr(36)."THEMES_DIRECTORY = \"themes/\"; <br />
+		".chr(36)."PLUGINS_DIRECTORY = \"plugins/\"; <br />
+		".chr(36)."HANDLERS_DIRECTORY = \"handlers/\"; <br />
+		".chr(36)."LANGUAGES_DIRECTORY = \"languages/\"; <br />
+		".chr(36)."HELP_DIRECTORY = \"docs/help/\";  <br />
+		".chr(36)."DOWNLOADS_DIRECTORY =  \"files/downloads/\";\n
 		</div>";
 	}
 

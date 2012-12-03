@@ -232,6 +232,12 @@ if (abs($_serverTime - $lastSet) > 120) {
 //
 // H Final HTML
 //
+echo "\n<!-- Copyrights of Developers -->
+	<div style='display: none'>
+		<a href='http://e107.org'>© 2002-2012 e107 Inc. All Rights Reserved.</a>
+		<a href='http://www.e107club.ru'>© e107 Club, 2004-2012. All Rights Reserved.</a>
+	</div>\n"; // Copyrights - No delete! If deleted copyrights, support won't turn out!
+	
 echo "</body></html>";
 
 //

@@ -147,7 +147,7 @@ function update_check()
 
 	if ($update_needed === TRUE) {
 		$txt = "<div style='text-align:center;'>".ADLAN_120;
-		$txt .= "<br /><form method='post' action='".e_ADMIN."e107_update.php'>
+		$txt .= "<br /><form method='post' action='".e_ADMIN."update_db.php'>
 		<input class='button' type='submit' value='".LAN_UPDATE."' />
 		</form></div>";
 		$ns->tablerender(LAN_UPDATE, $txt);

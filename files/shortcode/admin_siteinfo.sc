@@ -1,4 +1,4 @@
-// $Id: admin_siteinfo.sc 12060 2011-01-30 19:22:47Z secretr $
+// $Id: admin_siteinfo.sc 12060 25,09,2011 03:54:47 Predator $
 //<?
 if (ADMIN) 
 {
@@ -20,7 +20,8 @@ if (ADMIN)
 	$obj = new convert;
 	$install_date = $obj->convert_date($pref['install_date'], "long");
 
-	$text = "<b>".FOOTLAN_1."</b>
+	$text = "<input style=\"display:block; margin:5px auto 5px;\" alt=\"е107 Клуб - Официальный портал поддержки пользователей русскоязычного сообщества е107 cms - Нажмите кнопку для перехода\" title=\"е107 Клуб - Официальный портал поддержки пользователей русскоязычного сообщества е107 cms - Нажмите кнопку для перехода\" type=\"button\" class=\"button\" value=\"Портал поддержки пользователей\" onclick=\"window.open('http://www.e107club.ru/', '_blank');\" /><br /><br />
+	<b>".FOOTLAN_1."</b>
 	<br />".
 	SITENAME."
 	<br /><br />

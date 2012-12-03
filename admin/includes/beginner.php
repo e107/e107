@@ -86,4 +86,5 @@ if($_GET['mode'] == "e_advanced"){
 
 	$ns->tablerender(ADLAN_CL_7, $text);
 
+	
 ?>

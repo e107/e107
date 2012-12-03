@@ -1,14 +1,25 @@
 <?php
 /*
-+ ----------------------------------------------------------------------------+
-|     Russian Language Pack for e107 0.7
-|     $Revision: 183 $
-|     $Date: 2008-08-30 21:41:13 +0600 (Сб, 30 авг 2008) $
-|     $Author: yarodin $
-+----------------------------------------------------------------------------+
++ ------------------------------------------------------------------------------+
+|	Русский языковой пакет для e107 0.7.26										|
+|	Сайт: http://www.e107club.ru												|
+|	Почта: translate@e107club.ru												|
+|	Ревизия: 1.0																|
+|	Кодировка: utf-8															|
+|	Дата: 25.09.2011 05:05:05													|
+|	Автор: © Кадников Александр	[Predator]										|
+|	© е107 Клуб 2010-2011. Все права защищены.									|
+|																				|
+|	Russian Language Pack for e107 0.7.26										|
+|	Site: http://www.e107club.ru												|
+|	Email: translate@e107club.ru												|
+|	Revision: 1.0																|
+|	Charset: utf-8																|
+|	Date: 25.09.2011 05:05:05													|
+|	Author: © Alexander Kadnikov [Predator]										|
+|	© е107 Club 2010-2011. All Rights Reserved.									|
++-------------------------------------------------------------------------------+
 */
-
-//v.616
 define("ONLINE_EL1", "Гостей: ");
 define("ONLINE_EL2", "Пользователей: ");
 define("ONLINE_EL3", "На этой странице: ");
@@ -48,14 +59,15 @@ define("LISTNEW", "Посмотреть обновления");
 define("USERPOSTS", "Сообщения пользователя");
 define("SUBCONTENT", "Разместить статью/обзор");
 define("TOP", "Самые активные отправители/наиболее интересные темы");
-define("ADMINAREA", "Админцентр");
-define("BUGTRACKER", "Bugtracker");
+define("ADMINAREA", "Админпанель");
+define("BUGTRACKER", "Багтрекер");
 define("EVENT", "Список событий");
 define("CALENDAR", "Календарь событий");
-define("FAQ", "Faq");
+define("FAQ", "В/О");
 define("PM", "Приватные сообщения"); //Private Messaging
 define("SURVEY", "Форма опроса");
 define("ARTICLE", "Статья");
 define("CONTENT", "Страница контента");
 define("REVIEW", "Обзор");
+
 ?>

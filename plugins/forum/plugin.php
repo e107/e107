@@ -22,12 +22,12 @@ if (!defined('e107_INIT')) { exit; }
 include_lan(e_PLUGIN.'forum/languages/'.e_LANGUAGE.'/lan_forum_conf.php');
 
 // Plugin info -------------------------------------------------------------------------------------------------------
-$eplug_name = 'Forum';
-$eplug_version = '1.2';
+$eplug_name = FORLAN_P_01;
+$eplug_version = '1.3';
 $eplug_author = 'e107dev';
 $eplug_url = 'http://e107.org';
 $eplug_email = '';
-$eplug_description = 'This plugin is a fully featured Forum system.';
+$eplug_description = FORLAN_P_02;
 $eplug_compatible = 'e107v0.7+';
 $eplug_readme = '';
 $eplug_latest = TRUE; //Show reported threads in admin (use latest.php)
@@ -45,7 +45,7 @@ $eplug_conffile = "forum_admin.php";
 // Icon image and caption text ------------------------------------------------------------------------------------
 $eplug_icon = $eplug_folder."/images/forums_32.png";
 $eplug_icon_small = $eplug_folder."/images/forums_16.png";
-$eplug_caption = 'Configure Forum';
+$eplug_caption = FORLAN_P_03;
 
 // List of preferences -----------------------------------------------------------------------------------------------
 $eplug_prefs = array(
@@ -108,13 +108,13 @@ $eplug_tables = array(
 
 // Create a link in main menu (yes=TRUE, no=FALSE) -------------------------------------------------------------
 $eplug_link = TRUE;
-$eplug_link_name = "Forum";
+$eplug_link_name = FORLAN_P_01;
 $eplug_link_url = e_PLUGIN.'forum/forum.php';
 
 // Text to display after plugin successfully installed ------------------------------------------------------------------
-$eplug_done = 'Your forum is now installed';
+$eplug_done = FORLAN_P_04;
 
-$eplug_upgrade_done = 'Forum successfully upgraded, now using version: '.$eplug_version;
+$eplug_upgrade_done = FORLAN_P_05.$eplug_version;
 
 $upgrade_alter_tables = array(
 "ALTER TABLE ".MPREFIX."forum ADD forum_postclass TINYINT( 3 ) UNSIGNED DEFAULT '0' NOT NULL ;"
@@ -133,5 +133,6 @@ if (!function_exists('forum_install')) {
 		$sql -> db_Update("user", "user_forums='0'");
 	}
 }
+
 
 ?>

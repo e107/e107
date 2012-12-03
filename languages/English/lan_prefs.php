@@ -12,7 +12,10 @@
 
 define("LAN_PREF_1", "e107 Powered Website");
 define("LAN_PREF_2", "e107 Website System");
-define("LAN_PREF_3", "This site is powered by <a href=&quot;http://e107.org/&quot; rel=&quot;external&quot;>e107</a>, which is released under the terms of the <a href=&quot;http://www.gnu.org/&quot; rel=&quot;external&quot;>GNU</a> GPL License.");
+define("LAN_PREF_3", "This site is powered by <a href=&quot;http://e107.org/&quot; rel=&quot;external&quot;>e107</a>, which is released under the terms of the <a href=&quot;http://www.gnu.org/&quot; rel=&quot;external&quot;>GNU</a> GPL License.<br />
+					Build of the present version of system and russian localization are prepared by a portal command е107 Club.<br />
+					Author of translation and localization: Alexander Kadnikov [Predator]<br />
+					© <a href='http://www.e107club.ru'>e107 Club</a> 2010-2011. All Rights Reserved.");
 define("LAN_PREF_4", "censored");
 define("LAN_PREF_5", "Forums");
 
